@@ -1,1957 +1,2352 @@
 {
-	"info": {
-		"_postman_id": "c2694ad5-f758-48f7-a7eb-64ef8d4c5c6a",
-		"name": "AyojanPro",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "54804380",
-		"_collection_link": "https://go.postman.co/collection/54804380-c2694ad5-f758-48f7-a7eb-64ef8d4c5c6a?source=collection_link"
-	},
-	"item": [
-		{
-			"name": "auth",
-			"item": [
-				{
-					"name": "client register",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"safayet Hossain\",\n  \"email\": \"sadhinvut7@gmail.com\",\n  \"password\": \"WeddingPlanner123!\",\n  \"client\": {\n  \"phone\": \"+8801712345678\",\n  \"bio\": \"Organizing a grand wedding reception for 500 guests.\",\n  \"address\": \"House 12, Road 5, Banani\",\n  \"city\": \"Dhaka\",\n  \"country\": \"Bangladesh\"\n  }\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/register",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "register"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "verify email",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"email\": \"sadhinvut7@gmail.com\",\n  \"otp\": \"799092\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/verify-email",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "verify-email"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login client",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"sadhinvut7@gmail.com\",\n  \"password\": \"WeddingPlanner123!\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/login",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "login"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login professional",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"sadhinv@gmail.com\",\n  \"password\": \"NewSecurePass456!\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/login",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "login"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login admin",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"testeradmin@gmail.com\",\n  \"password\": \"Tester@admin12345\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/login",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "login"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "google login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"idToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/google",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "google"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "refresh token",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/refresh-token",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "refresh-token"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "forgot password",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"sadhinv@gmail.com\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/forgot-password",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "forgot-password"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reset password",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"sadhinv@gmail.com\",\n  \"otp\": \"576571\",\n  \"newPassword\": \"NewSecurePass456!\",\n  \"confirmPassword\": \"NewSecurePass456!\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/reset-password",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "reset-password"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get me",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/auth/me",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "auth", "me"]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "user",
-			"item": [
-				{
-					"name": "upload profile image",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "profileImage",
-									"type": "file",
-									"src": ["/C:/Users/sadhin/Downloads/sadhin (2).jpg"]
-								}
-							]
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/user/profile-image",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "user", "profile-image"]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "professional",
-			"item": [
-				{
-					"name": "apply as professional",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "data",
-									"value": "{\"user\":{\"name\":\"sadhin vut\",\"email\":\"sadhinv@gmail.com\"},\"professional\":{\"phone\":\"+8801812345678\",\"address\":\"45 Gulshan Avenue, Gulshan-1\",\"city\":\"Dhaka\",\"country\":\"Bangladesh\",\"professionalTitle\":\"Event Photographer\",\"bio\":\"Professional event and wedding photographer with 8 years of experience capturing unforgettable moments.\",\"experienceYears\":8}}",
-									"type": "text"
-								},
-								{
-									"key": "resume",
-									"type": "file",
-									"src": ["/C:/Users/sadhin/Downloads/sadhin.pdf"]
-								},
-								{
-									"key": "additionalFiles",
-									"type": "file",
-									"src": [
-										"/C:/Users/sadhin/Downloads/ICT_Lecture1_Study_Notes_Visual.pdf"
-									]
-								}
-							]
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/apply-as-professional",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "apply-as-professional"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "verify professional email",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"sadhinv@gmail.com\",\n  \"otp\": \"343871\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/apply-as-professional/verify-email",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"apply-as-professional",
-								"verify-email"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "approve professional",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"professionalId\": \"bd476b16-6ae8-4312-8648-8838c13ae3f9\",\n  \"status\": \"APPROVED\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/approve-professional",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "approve-professional"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get all professionals",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/all-professionals?searchTerm=&status=APPROVED&page=1&limit=10",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "all-professionals"],
-							"query": [
-								{
-									"key": "searchTerm",
-									"value": "",
-									"description": "Search by name, email, professional title, city, country, or bio"
-								},
-								{
-									"key": "professionalTitle",
-									"value": "",
-									"description": "Filter by professional title"
-								},
-								{
-									"key": "city",
-									"value": "",
-									"description": "Filter by city"
-								},
-								{
-									"key": "country",
-									"value": "",
-									"description": "Filter by country"
-								},
-								{
-									"key": "minExperience",
-									"value": "",
-									"description": "Minimum years of experience"
-								},
-								{
-									"key": "maxExperience",
-									"value": "",
-									"description": "Maximum years of experience"
-								},
-								{
-									"key": "minRating",
-									"value": "",
-									"description": "Minimum average rating"
-								},
-								{
-									"key": "acceptingBookings",
-									"value": "",
-									"description": "Filter by whether they accept bookings (true or false)"
-								},
-								{
-									"key": "status",
-									"value": "APPROVED",
-									"description": "Filter by application status (PENDING, APPROVED, REJECTED)"
-								},
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Items per page"
-								},
-								{
-									"key": "sortBy",
-									"value": "createdAt",
-									"description": "Sort field"
-								},
-								{
-									"key": "sortOrder",
-									"value": "desc",
-									"description": "Sort order (asc or desc)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get all professionals public",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/public/all-Professionals?searchTerm=&page=1&limit=10&sortOrder=desc",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"public",
-								"all-Professionals"
-							],
-							"query": [
-								{
-									"key": "searchTerm",
-									"value": "",
-									"description": "Search by name, email, professional title, city, or country"
-								},
-								{
-									"key": "professionalTitle",
-									"value": "",
-									"description": "Filter by professional title"
-								},
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Items per page"
-								},
-								{
-									"key": "sortBy",
-									"value": "createdAt",
-									"description": "Sort field"
-								},
-								{
-									"key": "sortOrder",
-									"value": "desc",
-									"description": "Sort order (asc or desc)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get professional public profile",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/public/bd476b16-6ae8-4312-8648-8838c13ae3f9",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"public",
-								"bd476b16-6ae8-4312-8648-8838c13ae3f9"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update my profile",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"bio\": \"Specialized in wedding, birthday, and corporate event photography. Known for candid shots and creative compositions.\",\n  \"location\": \"Gulshan, Dhaka\",\n  \"contactNumber\": \"+8801812345678\",\n  \"experienceYears\": 8,\n  \"hourlyRate\": 5000,\n  \"acceptingBookings\": true,\n  \"website\": \"https://tanvirevents.com\",\n  \"instagramUrl\": \"https://instagram.com/tanvirevents\",\n  \"facebookUrl\": \"https://facebook.com/tanvirevents\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/update-my-profile",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "update-my-profile"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "add service",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": " {\n    \"name\": \"Themed Birthday Party Decor\",\n    \"pricingNote\": \"Flat rate covers standard balloon arches, backdrop banners, cake table styling, and welcome boards.\",\n    \"minimumPrice\": 45000.00,\n    \"maximumPrice\": 150000.00\n  }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/service",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "service"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get my services",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/me/services",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "me", "services"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update service",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"description\": \"Professional video coverage with cinematic editing for weddings and events.\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/service/0614b1b3-8e4c-4f54-b532-b6fb4689fd0e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"service",
-								"0614b1b3-8e4c-4f54-b532-b6fb4689fd0e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete service",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/service/0614b1b3-8e4c-4f54-b532-b6fb4689fd0e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"service",
-								"0614b1b3-8e4c-4f54-b532-b6fb4689fd0e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "add skill",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Portrait Photography\",\n  \"description\": \"Expert in portrait and candid event photography\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/skill",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "skill"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete skill",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/skill/023500e0-3738-4d06-a8f6-2c4f3fc3bc9d",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"skill",
-								"023500e0-3738-4d06-a8f6-2c4f3fc3bc9d"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "add experience",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"Lead Photographer\",\n  \"organization\": \"Sheraton Dhaka Hotel & Towers\",\n  \"startDate\": \"2019-01-01\",\n  \"endDate\": \"2024-12-31\",\n  \"description\": \"Covered 200+ weddings and corporate events at Sheraton, managing a team of 2 assistant photographers.\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/experience",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "experience"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update experience",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"Senior Event Photographer\",\n  \"organization\": \"Radisson Blu Water Garden\",\n  \"startDate\": \"2020-06-01\",\n  \"endDate\": \"2024-11-30\",\n  \"description\": \"Exclusive photographer for high-end wedding receptions and corporate galas at Radisson Blu.\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/experience/9cff8892-9b85-4d58-8911-fab274839743",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"experience",
-								"9cff8892-9b85-4d58-8911-fab274839743"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete experience",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/experience/9cff8892-9b85-4d58-8911-fab274839743",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"experience",
-								"9cff8892-9b85-4d58-8911-fab274839743"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create portfolio",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "data",
-									"value": "{\n  \"title\": \"TechCon 2026 Annual Summit\",\n  \"description\": \"Managed full-scale production, stage design, and vendor coordination for a 3-day hybrid conference with over 1,500 attendees.\",\n  \"eventType\": \"Conference\",\n  \"workDate\": \"2026-05-12\",\n  \"externalUrl\": \"https://example-events.com\"\n}\n",
-									"type": "text"
-								},
-								{
-									"key": "mediaFile",
-									"type": "file",
-									"src": [
-										"/C:/Users/sadhin/Downloads/Telegram Desktop/photo_2025-10-23_12-45-4418.jpg"
-									]
-								}
-							]
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/portfolio",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "portfolio"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get my portfolio",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/me/portfolio",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "professional", "me", "portfolio"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update portfolio",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": " {\n    \"title\": \"Elegance Waterfront Wedding\",\n    \"description\": \"Coordinated timeline, floral arrangements, and day-of management for a luxury 200-guest wedding.\",\n    \"eventType\": \"Wedding\",\n    \"workDate\": \"2026-06-14\",\n    \"externalUrl\": \"https://example-events.com\"\n  }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/portfolio/0caaede6-f825-4474-beca-ddb36f036bfe",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"portfolio",
-								"0caaede6-f825-4474-beca-ddb36f036bfe"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete portfolio",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/professional/portfolio/560609a6-ee1b-4851-88a4-e0dba7e2acfe",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"professional",
-								"portfolio",
-								"560609a6-ee1b-4851-88a4-e0dba7e2acfe"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "client",
-			"item": [
-				{
-					"name": "update client profile",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"bio\": \"Organizing my sister's wedding reception. Looking for the best photographers, decorators, and sound professionals in Dhaka.\",\n  \"phone\": \"+8801977989963\",\n  \"address\": \"House 12, Road 5, Banani\",\n  \"city\": \"Dhaka\",\n  \"country\": \"Bangladesh\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/client/my-profile",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "client", "my-profile"]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "event",
-			"item": [
-				{
-					"name": "create event",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"Wedding Reception of Rifat's Sister\",\n  \"description\": \"A grand wedding reception at Radisson Blu Water Garden Dhaka. 500+ guests expected. Need photography, videography, decoration, and DJ services.\",\n  \"eventType\": \"Wedding Reception\",\n  \"city\": \"Dhaka\",\n  \"country\": \"Bangladesh\",\n  \"address\": \"Radisson Blu Water Garden, Airport Road, Dhaka\",\n  \"startAt\": \"2026-10-15T16:00:00.000Z\",\n  \"endAt\": \"2026-10-16T23:00:00.000Z\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "event"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create event service",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"serviceName\": \"Wedding videoman\",\n  \"description\": \"Need a professional lightman for full-day coverage including pre-event portraits, ceremony, and reception candid shots.\",\n  \"budget\": 20000,\n  \"currency\": \"BDT\",\n  \"startAt\": \"2026-10-15T16:00:00.000Z\",\n  \"endAt\": \"2026-10-16T23:00:00.000Z\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/services/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"event",
-								"services",
-								"3b815ba9-c1a0-4291-886a-82e76ee19f3e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get all published events",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/all-events?searchTerm=&page=1&limit=10&sortBy=createdAt&sortOrder=desc",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "event", "all-events"],
-							"query": [
-								{
-									"key": "searchTerm",
-									"value": "",
-									"description": "Search events by title, description, city, country, address, or client name/email"
-								},
-								{
-									"key": "clientId",
-									"value": "",
-									"description": "Filter by client id"
-								},
-								{
-									"key": "email",
-									"value": "",
-									"description": "Filter by client email"
-								},
-								{
-									"key": "status",
-									"value": "",
-									"description": "Filter by service requirement status (OPEN, PARTIALLY_FILLED, FILLED, IN_PROGRESS, COMPLETED, CANCELLED)"
-								},
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Items per page"
-								},
-								{
-									"key": "sortBy",
-									"value": "createdAt",
-									"description": "Sort field"
-								},
-								{
-									"key": "sortOrder",
-									"value": "desc",
-									"description": "Sort order (asc or desc)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get event by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"event",
-								"3b815ba9-c1a0-4291-886a-82e76ee19f3e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update event",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"Wedding Reception of Rifat's Sister (Updated)\",\n  \"description\": \"A grand wedding reception at Radisson Blu Water Garden. 600+ guests. Added DJ requirement.\",\n  \"eventType\": \"Wedding Reception\",\n  \"city\": \"Dhaka\",\n  \"country\": \"Bangladesh\",\n  \"startAt\": \"2026-09-19T16:00:00.000Z\",\n  \"endAt\": \"2026-09-20T23:30:00.000Z\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/update/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"event",
-								"update",
-								"3b815ba9-c1a0-4291-886a-82e76ee19f3e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "publish event",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/publish-event/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"event",
-								"publish-event",
-								"3b815ba9-c1a0-4291-886a-82e76ee19f3e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get event required services",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"event",
-								"3b815ba9-c1a0-4291-886a-82e76ee19f3e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update event service",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"serviceName\": \"Wedding videoman\",\n  \"description\": \"Need a professional lightman for full-day coverage including pre-event portraits, ceremony, and reception candid shots.\",\n  \"budget\": 20000,\n  \"currency\": \"BDT\",\n  \"startAt\": \"2026-09-19T16:00:00.000Z\",\n        \"endAt\": \"2026-09-20T23:30:00.000Z\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/update/3b815ba9-c1a0-4291-886a-82e76ee19f3e/services/98188634-fe60-41a7-8395-afa7b0b6a79c",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"event",
-								"update",
-								"3b815ba9-c1a0-4291-886a-82e76ee19f3e",
-								"services",
-								"98188634-fe60-41a7-8395-afa7b0b6a79c"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete event service",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/550e8400-e29b-41d4-a716-446655440000/services/660e8400-e29b-41d4-a716-446655440001",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"event",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"services",
-								"660e8400-e29b-41d4-a716-446655440001"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete event",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/event/87432758-98bb-4c5f-ba0e-b18524b7c21e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"event",
-								"87432758-98bb-4c5f-ba0e-b18524b7c21e"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "proposal",
-			"item": [
-				{
-					"name": "create proposal",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"message\": \"Hi Rifat, I would love to cover your sister's wedding reception! I have 8 years of experience shooting weddings at 5-star venues in Dhaka. I'll bring 2 assistant photographers and all professional gear including studio lights.\",\n  \"items\": [\n    {\n      \"eventServiceRequirementId\": \"98188634-fe60-41a7-8395-afa7b0b6a79c\",\n      \"professionalServiceId\": \"43072e0f-0ed1-4602-9066-65af96b2c392\",\n      \"proposedAmount\": 22000,\n      \"currency\": \"BDT\",\n      \"proposedStartAt\": \"2026-09-19T14:00:00.000Z\",\n      \"proposedEndAt\": \"2026-09-20T23:00:00.000Z\"\n    }\n  ]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/proposal/events/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"proposal",
-								"events",
-								"3b815ba9-c1a0-4291-886a-82e76ee19f3e"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get proposals by requirement",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/proposal/requirements/550e8400-e29b-41d4-a716-446655440000",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"proposal",
-								"requirements",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get proposal details",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/proposal/f6a5be95-d8c5-4f23-967a-2c3bd83f53c5",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"proposal",
-								"f6a5be95-d8c5-4f23-967a-2c3bd83f53c5"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "accept proposal",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/proposal/f6a5be95-d8c5-4f23-967a-2c3bd83f53c5/accept",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"proposal",
-								"f6a5be95-d8c5-4f23-967a-2c3bd83f53c5",
-								"accept"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reject proposal",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/proposal/550e8400-e29b-41d4-a716-446655440000/reject",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"proposal",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"reject"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "withdraw proposal",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/proposal/550e8400-e29b-41d4-a716-446655440000/withdraw",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"proposal",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"withdraw"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "contract",
-			"item": [
-				{
-					"name": "list contracts",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/contract",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "contract"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get contract details",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/contract/084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"contract",
-								"084961bf-7f6c-41e6-9155-5a28e9d8b6dd"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "cancel contract",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"reason\": \"Event venue changed to a different city, need to find a local photographer instead.\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/contracts/550e8400-e29b-41d4-a716-446655440000/cancel",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"contracts",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"cancel"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "attach deliverable",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"title\": \"Wedding Reception Photos & Album\",\n  \"description\": \"800+ edited photos from the reception and a 20-page premium album design.\",\n  \"externalUrl\": [\"https://drive.google.com/wedding-photos-sakib-nusrat\", \"https://tanvirevents.com/albums/sakib-nusrat\"]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/contract/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/deliverable",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"contract",
-								"084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
-								"deliverable"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get deliverable",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/contract/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/deliverable",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"contract",
-								"084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
-								"deliverable"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "complete contract",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/contract/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/complete",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"contract",
-								"084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
-								"complete"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "review",
-			"item": [
-				{
-					"name": "create review",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"rating\": 5,\n    \"comment\": \"Tanvir was absolutely amazing at our wedding reception! The photos turned out stunning, especially the candid shots during the ceremony. He arrived early, stayed late, and captured every moment perfectly. Highly recommend!\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/review/contracts/084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"review",
-								"contracts",
-								"084961bf-7f6c-41e6-9155-5a28e9d8b6dd"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get professional reviews",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/review/professionals?page=1&limit=10",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "review", "professionals"],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Items per page"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get client reviews",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/review/clients?page=1&limit=10",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "review", "clients"],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number"
-								},
-								{
-									"key": "limit",
-									"value": "10",
-									"description": "Items per page"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "payment",
-			"item": [
-				{
-					"name": "initiate initial payment",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/payment/contracts/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/initial",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"payment",
-								"contracts",
-								"084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
-								"initial"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "initiate final payment",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/payment/contracts/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/final",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"payment",
-								"contracts",
-								"084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
-								"final"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "bkash payment callback",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/payment/bkash/callback?paymentID=BKASHWEDDING789&status=success",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "payment", "bkash", "callback"],
-							"query": [
-								{
-									"key": "paymentID",
-									"value": "BKASHWEDDING789",
-									"description": "bKash transaction payment ID returned to the redirect callback"
-								},
-								{
-									"key": "status",
-									"value": "success",
-									"description": "Callback status (success, failure, or cancel)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get contract payments",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/payment/contracts/084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"payment",
-								"contracts",
-								"084961bf-7f6c-41e6-9155-5a28e9d8b6dd"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "notification",
-			"item": [
-				{
-					"name": "list notifications",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/notification?isRead=false",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "notification"],
-							"query": [
-								{
-									"key": "isRead",
-									"value": "false",
-									"description": "Filter by read status (true or false)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "mark all as read",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/notification/read-all",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "notification", "read-all"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "mark as read",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/notification/550e8400-e29b-41d4-a716-446655440000/read",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"notification",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"read"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "dispute",
-			"item": [
-				{
-					"name": "raise dispute",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "reason",
-									"value": "Photographer delivered only 200 photos instead of the agreed 800+ edited photos.",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "The contract specified 800+ edited photos and a premium album. Only 200 low-quality photos were delivered via Google Drive. The album was not provided.",
-									"type": "text"
-								},
-								{
-									"key": "evidence",
-									"type": "file",
-									"src": ["/C:/Users/sadhin/Downloads/sadhin (2).jpg"]
-								}
-							]
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/dispute/contracts/550e8400-e29b-41d4-a716-446655440000",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"dispute",
-								"contracts",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "list disputes",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/dispute?status=OPEN",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "dispute"],
-							"query": [
-								{
-									"key": "status",
-									"value": "OPEN",
-									"description": "Filter by dispute status (OPEN, UNDER_REVIEW, RESOLVED, REJECTED, CLOSED)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get dispute details",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/dispute/550e8400-e29b-41d4-a716-446655440000",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"dispute",
-								"550e8400-e29b-41d4-a716-446655440000"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update dispute status",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"status\": \"UNDER_REVIEW\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/dispute/550e8400-e29b-41d4-a716-446655440000/status",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"dispute",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"status"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "resolve dispute",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"resolution\": \"After reviewing the contract and evidence, the professional must deliver the remaining 600 photos and the premium album within 7 days. A partial refund of 30% will be issued if deliverables are not met.\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/dispute/550e8400-e29b-41d4-a716-446655440000/resolve",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"dispute",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"resolve"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "admin",
-			"item": [
-				{
-					"name": "list users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/admin/users?role=CLIENT&status=ACTIVE&search=",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "admin", "users"],
-							"query": [
-								{
-									"key": "role",
-									"value": "CLIENT",
-									"description": "Filter by role (CLIENT, PROFESSIONAL, ADMIN)"
-								},
-								{
-									"key": "status",
-									"value": "ACTIVE",
-									"description": "Filter by status (ACTIVE, DELETED, SUSPENDED, BLOCKED)"
-								},
-								{
-									"key": "search",
-									"value": "",
-									"description": "Search by name or email"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "list events",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/admin/events?status=PUBLISHED",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "admin", "events"],
-							"query": [
-								{
-									"key": "status",
-									"value": "PUBLISHED",
-									"description": "Filter by event status (DRAFT, PUBLISHED, IN_PROGRESS, COMPLETED, CANCELLED)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "list contracts",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/admin/contracts?status=CONFIRMED",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "admin", "contracts"],
-							"query": [
-								{
-									"key": "status",
-									"value": "CONFIRMED",
-									"description": "Filter by contract status (PENDING, CONFIRMED, IN_PROGRESS, DELIVERED, COMPLETED, CANCELLED, DISPUTED, RESOLVED)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "list payments",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/admin/payments?status=PENDING&stage=INITIAL",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "admin", "payments"],
-							"query": [
-								{
-									"key": "status",
-									"value": "PENDING",
-									"description": "Filter by payment status (PENDING, PROCESSING, PARTIALLY_COMPLETED, COMPLETED, FAILED, CANCELLED, REFUNDED)"
-								},
-								{
-									"key": "stage",
-									"value": "INITIAL",
-									"description": "Filter by payment stage (INITIAL, FINAL)"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update user status",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"status\": \"SUSPENDED\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/admin/users/550e8400-e29b-41d4-a716-446655440000/status",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": [
-								"api",
-								"v1",
-								"admin",
-								"users",
-								"550e8400-e29b-41d4-a716-446655440000",
-								"status"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "analytics",
-			"item": [
-				{
-					"name": "get client analytics",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/analytics/client-analytics",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "analytics", "client-analytics"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get professional analytics",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/analytics/professional-analytics",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "analytics", "professional-analytics"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get admin analytics",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://ayojan-pro.vercel.app/api/v1/analytics/admin-analytics",
-							"protocol": "https",
-							"host": ["ayojan-pro", "vercel", "app"],
-							"path": ["api", "v1", "analytics", "admin-analytics"]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	],
-	"variable": [
-		{
-			"key": "supabase_service_role_api_key_0ehr"
-		}
-	]
+  "info": {
+    "_postman_id": "08174ce5-fd49-44c1-b9ed-3f54292f4968",
+    "name": "AyojanPro",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54804380",
+    "_collection_link": "https://go.postman.co/collection/54804380-08174ce5-fd49-44c1-b9ed-3f54292f4968?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "client register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"safayet Hossain\",\n  \"email\": \"sadhinvut7@gmail.com\",\n  \"password\": \"WeddingPlanner123!\",\n  \"client\": {\n  \"phone\": \"+8801712345678\",\n  \"bio\": \"Organizing a grand wedding reception for 500 guests.\",\n  \"address\": \"House 12, Road 5, Banani\",\n  \"city\": \"Dhaka\",\n  \"country\": \"Bangladesh\"\n  }\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verify email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n   \"email\": \"sadhinvut7@gmail.com\",\n  \"otp\": \"379925\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/verify-email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "verify-email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login client",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sadhinvut7@gmail.com\",\n  \"password\": \"WeddingPlanner123!\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sadhinvut7@gmail.com\",\n  \"password\": \"WeddingPlanner123!\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login professional",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sadhinv@gmail.com\",\n  \"password\": \"NewSecurePass456!\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testeradmin@gmail.com\",\n  \"password\": \"Tester@admin12345\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "google login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/google",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "google"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "forgot password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sadhinv@gmail.com\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "forgot-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reset password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sadhinv@gmail.com\",\n  \"otp\": \"576571\",\n  \"newPassword\": \"NewSecurePass456!\",\n  \"confirmPassword\": \"NewSecurePass456!\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "upload profile image",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "profileImage",
+                  "type": "file",
+                  "src": "/C:/Users/sadhin/Downloads/sadhin (2).jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/profile-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "profile-image"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "professional",
+      "item": [
+        {
+          "name": "apply as professional",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\"user\":{\"name\":\"sadhin vut\",\"email\":\"sadhinv@gmail.com\"},\"professional\":{\"phone\":\"+8801812345678\",\"address\":\"45 Gulshan Avenue, Gulshan-1\",\"city\":\"Dhaka\",\"country\":\"Bangladesh\",\"professionalTitle\":\"Event Photographer\",\"bio\":\"Professional event and wedding photographer with 8 years of experience capturing unforgettable moments.\",\"experienceYears\":8}}",
+                  "type": "text"
+                },
+                {
+                  "key": "resume",
+                  "type": "file",
+                  "src": "/C:/Users/sadhin/Downloads/sadhin.pdf"
+                },
+                {
+                  "key": "additionalFiles",
+                  "type": "file",
+                  "src": "/C:/Users/sadhin/Downloads/ICT_Lecture1_Study_Notes_Visual.pdf"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/apply-as-professional",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "apply-as-professional"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verify professional email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sadhinv@gmail.com\",\n  \"otp\": \"343871\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/apply-as-professional/verify-email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "apply-as-professional",
+                "verify-email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "approve professional",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"professionalId\": \"bd476b16-6ae8-4312-8648-8838c13ae3f9\",\n  \"status\": \"APPROVED\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/approve-professional",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "approve-professional"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all professionals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/all-professionals?searchTerm=&professionalTitle=&city=&country=&minExperience=&maxExperience=&minRating=&acceptingBookings=&status=APPROVED&page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "all-professionals"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "",
+                  "description": "Search by name, email, professional title, city, country, or bio"
+                },
+                {
+                  "key": "professionalTitle",
+                  "value": "",
+                  "description": "Filter by professional title"
+                },
+                {
+                  "key": "city",
+                  "value": "",
+                  "description": "Filter by city"
+                },
+                {
+                  "key": "country",
+                  "value": "",
+                  "description": "Filter by country"
+                },
+                {
+                  "key": "minExperience",
+                  "value": "",
+                  "description": "Minimum years of experience"
+                },
+                {
+                  "key": "maxExperience",
+                  "value": "",
+                  "description": "Maximum years of experience"
+                },
+                {
+                  "key": "minRating",
+                  "value": "",
+                  "description": "Minimum average rating"
+                },
+                {
+                  "key": "acceptingBookings",
+                  "value": "",
+                  "description": "Filter by whether they accept bookings (true or false)"
+                },
+                {
+                  "key": "status",
+                  "value": "APPROVED",
+                  "description": "Filter by application status (PENDING, APPROVED, REJECTED)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "Sort order (asc or desc)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all professionals public",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/public/all-Professionals?searchTerm=&professionalTitle=&page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "public",
+                "all-Professionals"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "",
+                  "description": "Search by name, email, professional title, city, or country"
+                },
+                {
+                  "key": "professionalTitle",
+                  "value": "",
+                  "description": "Filter by professional title"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "Sort order (asc or desc)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get professional public profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/public/bd476b16-6ae8-4312-8648-8838c13ae3f9",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "public",
+                "bd476b16-6ae8-4312-8648-8838c13ae3f9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update my profile",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Specialized in wedding, birthday, and corporate event photography. Known for candid shots and creative compositions.\",\n  \"location\": \"Gulshan, Dhaka\",\n  \"contactNumber\": \"+8801812345678\",\n  \"experienceYears\": 8,\n  \"hourlyRate\": 5000,\n  \"acceptingBookings\": true,\n  \"website\": \"https://tanvirevents.com\",\n  \"instagramUrl\": \"https://instagram.com/tanvirevents\",\n  \"facebookUrl\": \"https://facebook.com/tanvirevents\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/update-my-profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "update-my-profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "add service",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": " {\n    \"name\": \"Themed Birthday Party Decor\",\n    \"pricingNote\": \"Flat rate covers standard balloon arches, backdrop banners, cake table styling, and welcome boards.\",\n    \"minimumPrice\": 45000.00,\n    \"maximumPrice\": 150000.00\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/service",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "service"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get my services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/me/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "me",
+                "services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update service",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Professional video coverage with cinematic editing for weddings and events.\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/service/0614b1b3-8e4c-4f54-b532-b6fb4689fd0e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "service",
+                "0614b1b3-8e4c-4f54-b532-b6fb4689fd0e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete service",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/service/0614b1b3-8e4c-4f54-b532-b6fb4689fd0e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "service",
+                "0614b1b3-8e4c-4f54-b532-b6fb4689fd0e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "add skill",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Portrait Photography\",\n  \"description\": \"Expert in portrait and candid event photography\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/skill",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "skill"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete skill",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/skill/023500e0-3738-4d06-a8f6-2c4f3fc3bc9d",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "skill",
+                "023500e0-3738-4d06-a8f6-2c4f3fc3bc9d"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "add experience",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lead Photographer\",\n  \"organization\": \"Sheraton Dhaka Hotel & Towers\",\n  \"startDate\": \"2019-01-01\",\n  \"endDate\": \"2024-12-31\",\n  \"description\": \"Covered 200+ weddings and corporate events at Sheraton, managing a team of 2 assistant photographers.\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "experience"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update experience",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Event Photographer\",\n  \"organization\": \"Radisson Blu Water Garden\",\n  \"startDate\": \"2020-06-01\",\n  \"endDate\": \"2024-11-30\",\n  \"description\": \"Exclusive photographer for high-end wedding receptions and corporate galas at Radisson Blu.\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/experience/9cff8892-9b85-4d58-8911-fab274839743",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "experience",
+                "9cff8892-9b85-4d58-8911-fab274839743"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete experience",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/experience/9cff8892-9b85-4d58-8911-fab274839743",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "experience",
+                "9cff8892-9b85-4d58-8911-fab274839743"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create portfolio",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n  \"title\": \"TechCon 2026 Annual Summit\",\n  \"description\": \"Managed full-scale production, stage design, and vendor coordination for a 3-day hybrid conference with over 1,500 attendees.\",\n  \"eventType\": \"Conference\",\n  \"workDate\": \"2026-05-12\",\n  \"externalUrl\": \"https://example-events.com\"\n}\n",
+                  "type": "text"
+                },
+                {
+                  "key": "mediaFile",
+                  "type": "file",
+                  "src": "/C:/Users/sadhin/Downloads/Telegram Desktop/photo_2025-10-23_12-45-4418.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/portfolio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "portfolio"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get my portfolio",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/me/portfolio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "me",
+                "portfolio"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update portfolio",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": " {\n    \"title\": \"Elegance Waterfront Wedding\",\n    \"description\": \"Coordinated timeline, floral arrangements, and day-of management for a luxury 200-guest wedding.\",\n    \"eventType\": \"Wedding\",\n    \"workDate\": \"2026-06-14\",\n    \"externalUrl\": \"https://example-events.com\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/portfolio/0caaede6-f825-4474-beca-ddb36f036bfe",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "portfolio",
+                "0caaede6-f825-4474-beca-ddb36f036bfe"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete portfolio",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/professional/portfolio/560609a6-ee1b-4851-88a4-e0dba7e2acfe",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "professional",
+                "portfolio",
+                "560609a6-ee1b-4851-88a4-e0dba7e2acfe"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "client",
+      "item": [
+        {
+          "name": "update client profile",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Organizing my sister's wedding reception. Looking for the best photographers, decorators, and sound professionals in Dhaka.\",\n  \"phone\": \"+8801977989963\",\n  \"address\": \"House 12, Road 5, Banani\",\n  \"city\": \"Dhaka\",\n  \"country\": \"Bangladesh\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/client/my-profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "client",
+                "my-profile"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "event",
+      "item": [
+        {
+          "name": "create event",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Wedding Reception of Rifat's Sister\",\n  \"description\": \"A grand wedding reception at Radisson Blu Water Garden Dhaka. 500+ guests expected. Need photography, videography, decoration, and DJ services.\",\n  \"eventType\": \"Wedding Reception\",\n  \"city\": \"Dhaka\",\n  \"country\": \"Bangladesh\",\n  \"address\": \"Radisson Blu Water Garden, Airport Road, Dhaka\",\n  \"startAt\": \"2026-10-15T16:00:00.000Z\",\n  \"endAt\": \"2026-10-16T23:00:00.000Z\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create event service",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serviceName\": \"Wedding videoman\",\n  \"description\": \"Need a professional lightman for full-day coverage including pre-event portraits, ceremony, and reception candid shots.\",\n  \"budget\": 20000,\n  \"currency\": \"BDT\",\n  \"startAt\": \"2026-10-15T16:00:00.000Z\",\n  \"endAt\": \"2026-10-16T23:00:00.000Z\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/services/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "services",
+                "3b815ba9-c1a0-4291-886a-82e76ee19f3e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all published events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/all-events?searchTerm=&clientId=&email=&status=&page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "all-events"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "",
+                  "description": "Search events by title, description, city, country, address, or client name/email"
+                },
+                {
+                  "key": "clientId",
+                  "value": "",
+                  "description": "Filter by client id"
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "description": "Filter by client email"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filter by service requirement status (OPEN, PARTIALLY_FILLED, FILLED, IN_PROGRESS, COMPLETED, CANCELLED)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "Sort order (asc or desc)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get event by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "3b815ba9-c1a0-4291-886a-82e76ee19f3e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update event",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Wedding Reception of Rifat's Sister (Updated)\",\n  \"description\": \"A grand wedding reception at Radisson Blu Water Garden. 600+ guests. Added DJ requirement.\",\n  \"eventType\": \"Wedding Reception\",\n  \"city\": \"Dhaka\",\n  \"country\": \"Bangladesh\",\n  \"startAt\": \"2026-09-19T16:00:00.000Z\",\n  \"endAt\": \"2026-09-20T23:30:00.000Z\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/update/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "update",
+                "3b815ba9-c1a0-4291-886a-82e76ee19f3e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "publish event",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/publish-event/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "publish-event",
+                "3b815ba9-c1a0-4291-886a-82e76ee19f3e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get event required services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "3b815ba9-c1a0-4291-886a-82e76ee19f3e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update event service",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serviceName\": \"Wedding videoman\",\n  \"description\": \"Need a professional lightman for full-day coverage including pre-event portraits, ceremony, and reception candid shots.\",\n  \"budget\": 20000,\n  \"currency\": \"BDT\",\n  \"startAt\": \"2026-09-19T16:00:00.000Z\",\n        \"endAt\": \"2026-09-20T23:30:00.000Z\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/update/3b815ba9-c1a0-4291-886a-82e76ee19f3e/services/98188634-fe60-41a7-8395-afa7b0b6a79c",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "update",
+                "3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+                "services",
+                "98188634-fe60-41a7-8395-afa7b0b6a79c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete event service",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/550e8400-e29b-41d4-a716-446655440000/services/660e8400-e29b-41d4-a716-446655440001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "550e8400-e29b-41d4-a716-446655440000",
+                "services",
+                "660e8400-e29b-41d4-a716-446655440001"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete event",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/87432758-98bb-4c5f-ba0e-b18524b7c21e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "87432758-98bb-4c5f-ba0e-b18524b7c21e"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "proposal",
+      "item": [
+        {
+          "name": "create proposal",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Hi Rifat, I would love to cover your sister's wedding reception! I have 8 years of experience shooting weddings at 5-star venues in Dhaka. I'll bring 2 assistant photographers and all professional gear including studio lights.\",\n  \"items\": [\n    {\n      \"eventServiceRequirementId\": \"98188634-fe60-41a7-8395-afa7b0b6a79c\",\n      \"professionalServiceId\": \"43072e0f-0ed1-4602-9066-65af96b2c392\",\n      \"proposedAmount\": 22000,\n      \"currency\": \"BDT\",\n      \"proposedStartAt\": \"2026-09-19T14:00:00.000Z\",\n      \"proposedEndAt\": \"2026-09-20T23:00:00.000Z\"\n    }\n  ]\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/proposal/events/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "proposal",
+                "events",
+                "3b815ba9-c1a0-4291-886a-82e76ee19f3e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get proposals by requirement",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/proposal/requirements/550e8400-e29b-41d4-a716-446655440000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "proposal",
+                "requirements",
+                "550e8400-e29b-41d4-a716-446655440000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get proposal details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/proposal/f6a5be95-d8c5-4f23-967a-2c3bd83f53c5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "proposal",
+                "f6a5be95-d8c5-4f23-967a-2c3bd83f53c5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "accept proposal",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/proposal/f6a5be95-d8c5-4f23-967a-2c3bd83f53c5/accept",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "proposal",
+                "f6a5be95-d8c5-4f23-967a-2c3bd83f53c5",
+                "accept"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reject proposal",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/proposal/550e8400-e29b-41d4-a716-446655440000/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "proposal",
+                "550e8400-e29b-41d4-a716-446655440000",
+                "reject"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "withdraw proposal",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/proposal/550e8400-e29b-41d4-a716-446655440000/withdraw",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "proposal",
+                "550e8400-e29b-41d4-a716-446655440000",
+                "withdraw"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "contract",
+      "item": [
+        {
+          "name": "list contracts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contract",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contract"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get contract details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contract/084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contract",
+                "084961bf-7f6c-41e6-9155-5a28e9d8b6dd"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cancel contract",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Event venue changed to a different city, need to find a local photographer instead.\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contracts/550e8400-e29b-41d4-a716-446655440000/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contracts",
+                "550e8400-e29b-41d4-a716-446655440000",
+                "cancel"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "attach deliverable",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Wedding Reception Photos & Album\",\n  \"description\": \"800+ edited photos from the reception and a 20-page premium album design.\",\n  \"externalUrl\": [\"https://drive.google.com/wedding-photos-sakib-nusrat\", \"https://tanvirevents.com/albums/sakib-nusrat\"]\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contract/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/deliverable",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contract",
+                "084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
+                "deliverable"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get deliverable",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contract/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/deliverable",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contract",
+                "084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
+                "deliverable"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "complete contract",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contract/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/complete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "contract",
+                "084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
+                "complete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "review",
+      "item": [
+        {
+          "name": "create review",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rating\": 5,\n    \"comment\": \"Tanvir was absolutely amazing at our wedding reception! The photos turned out stunning, especially the candid shots during the ceremony. He arrived early, stayed late, and captured every moment perfectly. Highly recommend!\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/review/contracts/084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "review",
+                "contracts",
+                "084961bf-7f6c-41e6-9155-5a28e9d8b6dd"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get professional reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/review/professionals?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "review",
+                "professionals"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get client reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/review/clients?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "review",
+                "clients"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "payment",
+      "item": [
+        {
+          "name": "initiate initial payment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payment/contracts/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/initial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "contracts",
+                "084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
+                "initial"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "initiate final payment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payment/contracts/084961bf-7f6c-41e6-9155-5a28e9d8b6dd/final",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "contracts",
+                "084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
+                "final"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "bkash payment callback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payment/bkash/callback?paymentID=BKASHWEDDING789&status=success",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "bkash",
+                "callback"
+              ],
+              "query": [
+                {
+                  "key": "paymentID",
+                  "value": "BKASHWEDDING789",
+                  "description": "bKash transaction payment ID returned to the redirect callback"
+                },
+                {
+                  "key": "status",
+                  "value": "success",
+                  "description": "Callback status (success, failure, or cancel)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get contract payments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/payment/contracts/084961bf-7f6c-41e6-9155-5a28e9d8b6dd",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "contracts",
+                "084961bf-7f6c-41e6-9155-5a28e9d8b6dd"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "notification",
+      "item": [
+        {
+          "name": "list notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notification?isRead=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notification"
+              ],
+              "query": [
+                {
+                  "key": "isRead",
+                  "value": "false",
+                  "description": "Filter by read status (true or false)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "mark all as read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notification/read-all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notification",
+                "read-all"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "mark as read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/notification/550e8400-e29b-41d4-a716-446655440000/read",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notification",
+                "550e8400-e29b-41d4-a716-446655440000",
+                "read"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "dispute",
+      "item": [
+        {
+          "name": "raise dispute",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "reason",
+                  "value": "Photographer delivered only 200 photos instead of the agreed 800+ edited photos.",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "The contract specified 800+ edited photos and a premium album. Only 200 low-quality photos were delivered via Google Drive. The album was not provided.",
+                  "type": "text"
+                },
+                {
+                  "key": "evidence",
+                  "type": "file",
+                  "src": "/C:/Users/sadhin/Downloads/sadhin (2).jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dispute/contracts/550e8400-e29b-41d4-a716-446655440000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "dispute",
+                "contracts",
+                "550e8400-e29b-41d4-a716-446655440000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "list disputes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dispute?status=OPEN",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "dispute"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "OPEN",
+                  "description": "Filter by dispute status (OPEN, UNDER_REVIEW, RESOLVED, REJECTED, CLOSED)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get dispute details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dispute/550e8400-e29b-41d4-a716-446655440000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "dispute",
+                "550e8400-e29b-41d4-a716-446655440000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update dispute status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"UNDER_REVIEW\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dispute/550e8400-e29b-41d4-a716-446655440000/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "dispute",
+                "550e8400-e29b-41d4-a716-446655440000",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "resolve dispute",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resolution\": \"After reviewing the contract and evidence, the professional must deliver the remaining 600 photos and the premium album within 7 days. A partial refund of 30% will be issued if deliverables are not met.\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/dispute/550e8400-e29b-41d4-a716-446655440000/resolve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "dispute",
+                "550e8400-e29b-41d4-a716-446655440000",
+                "resolve"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "list users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users?role=CLIENT&status=ACTIVE&search=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "CLIENT",
+                  "description": "Filter by role (CLIENT, PROFESSIONAL, ADMIN)"
+                },
+                {
+                  "key": "status",
+                  "value": "ACTIVE",
+                  "description": "Filter by status (ACTIVE, DELETED, SUSPENDED, BLOCKED)"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by name or email"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "list events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/events?status=PUBLISHED",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "events"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PUBLISHED",
+                  "description": "Filter by event status (DRAFT, PUBLISHED, IN_PROGRESS, COMPLETED, CANCELLED)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "list contracts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/contracts?status=CONFIRMED",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "contracts"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "CONFIRMED",
+                  "description": "Filter by contract status (PENDING, CONFIRMED, IN_PROGRESS, DELIVERED, COMPLETED, CANCELLED, DISPUTED, RESOLVED)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "list payments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/payments?status=PENDING&stage=INITIAL",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "payments"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PENDING",
+                  "description": "Filter by payment status (PENDING, PROCESSING, PARTIALLY_COMPLETED, COMPLETED, FAILED, CANCELLED, REFUNDED)"
+                },
+                {
+                  "key": "stage",
+                  "value": "INITIAL",
+                  "description": "Filter by payment stage (INITIAL, FINAL)"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update user status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"SUSPENDED\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://ayojan-pro.vercel.app/api/v1/admin/users/550e8400-e29b-41d4-a716-446655440000/status",
+              "protocol": "https",
+              "host": [
+                "ayojan-pro",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "users",
+                "550e8400-e29b-41d4-a716-446655440000",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "analytics",
+      "item": [
+        {
+          "name": "get client analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/client-analytics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "client-analytics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get professional analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/professional-analytics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "professional-analytics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get admin analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/admin-analytics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "admin-analytics"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "supabase_service_role_api_key_0ehr",
+      "value": ""
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://ayojan-pro.vercel.app"
+    }
+  ]
 }
