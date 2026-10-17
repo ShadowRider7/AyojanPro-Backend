@@ -102,17 +102,8 @@
           "request": {
             "method": "POST",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"sadhinvut7@gmail.com\",\n  \"password\": \"WeddingPlanner123!\"\n}\n",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "raw": "{{baseUrl}}/api/v1/auth/logout",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -120,7 +111,7 @@
                 "api",
                 "v1",
                 "auth",
-                "login"
+                "logout"
               ]
             }
           },
@@ -1286,7 +1277,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/event/3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+              "raw": "{{baseUrl}}/api/v1/event/3b815ba9-c1a0-4291-886a-82e76ee19f3e/required-services",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -1294,7 +1285,8 @@
                 "api",
                 "v1",
                 "event",
-                "3b815ba9-c1a0-4291-886a-82e76ee19f3e"
+                "3b815ba9-c1a0-4291-886a-82e76ee19f3e",
+                "required-services"
               ]
             }
           },
@@ -1572,14 +1564,14 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/api/v1/contracts/550e8400-e29b-41d4-a716-446655440000/cancel",
+              "raw": "{{baseUrl}}/api/v1/contract/550e8400-e29b-41d4-a716-446655440000/cancel",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "v1",
-                "contracts",
+                "contract",
                 "550e8400-e29b-41d4-a716-446655440000",
                 "cancel"
               ]

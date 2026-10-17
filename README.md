@@ -95,11 +95,12 @@ Base path: `/api/v1`
 |---|---|---|
 | POST | `/auth/register` | Client registration |
 | POST | `/auth/verify-email` | Verify client email with OTP |
-| POST | `/auth/login` | Credential login |
+| POST | `/auth/login` | Credential login (Client / Professional / Admin) |
+| POST | `/auth/logout` | Logout (clear session) |
 | POST | `/auth/google` | Google OAuth login |
 | POST | `/auth/refresh-token` | Refresh access token |
-| POST | `/auth/forgot-password` | Request password reset |
-| POST | `/auth/reset-password` | Reset password with token |
+| POST | `/auth/forgot-password` | Request password reset (OTP to email) |
+| POST | `/auth/reset-password` | Reset password with OTP (`email`, `otp`, `newPassword`, `confirmPassword`) |
 | GET | `/auth/me` | Get current authenticated user |
 
 ### Professionals (profile + application in one)
@@ -236,7 +237,7 @@ All list endpoints share the global `IQuery` interface: `page`, `limit`, `sortBy
 | `GET /admin/events` | `status` = `DRAFT` \| `PUBLISHED` \| `IN_PROGRESS` \| `COMPLETED` \| `CANCELLED` |
 | `GET /admin/contracts` | `status` = `PENDING` \| `CONFIRMED` \| `IN_PROGRESS` \| `DELIVERED` \| `COMPLETED` \| `CANCELLED` \| `DISPUTED` \| `RESOLVED` |
 | `GET /admin/payments` | `status` = `PENDING` \| `PROCESSING` \| `PARTIALLY_COMPLETED` \| `COMPLETED` \| `FAILED` \| `CANCELLED` \| `REFUNDED`, `stage` = `INITIAL` \| `FINAL` |
-| `GET /event/all-events` | `searchTerm`, `clientId`, `email`, `status` |
+| `GET /event/all-events` | `searchTerm`, `clientId`, `email`, `status` = `OPEN` \| `PARTIALLY_FILLED` \| `FILLED` \| `IN_PROGRESS` \| `COMPLETED` \| `CANCELLED` |
 | `GET /professional/all-professionals` (Admin) | `searchTerm`, `professionalTitle`, `city`, `country`, `minExperience`, `maxExperience`, `minRating`, `acceptingBookings`, `status` |
 | `GET /professional/public/all-Professionals` | `searchTerm`, `professionalTitle` |
 | `GET /review/professionals` / `GET /review/clients` | `page`, `limit` |
