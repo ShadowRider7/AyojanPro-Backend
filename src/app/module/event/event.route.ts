@@ -27,6 +27,8 @@ router.get(
 	eventController.getAllPublishedEvents,
 );
 
+router.get("/my-events", auth(Role.CLIENT), eventController.getMyEvents);
+
 router.patch(
 	"/update/:eventId",
 	auth(Role.CLIENT),

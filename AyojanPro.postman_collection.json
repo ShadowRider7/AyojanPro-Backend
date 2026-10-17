@@ -1201,6 +1201,26 @@
           "response": []
         },
         {
+          "name": "get my events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/event/my-events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "my-events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "get event by id",
           "request": {
             "method": "GET",
@@ -1396,6 +1416,26 @@
                 "proposal",
                 "events",
                 "3b815ba9-c1a0-4291-886a-82e76ee19f3e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get my proposals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/proposal/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "proposal",
+                "me"
               ]
             }
           },

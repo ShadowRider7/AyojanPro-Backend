@@ -186,6 +186,37 @@ const getProposals = async (requirementId: string, user: RequestUser) => {
 	return proposals;
 };
 
+const getMyProposals = async (user: RequestUser) => {
+	const existingProfessional = await prisma.professional.findUnique({
+		where: { userId: user.userId },
+	});
+
+	if (!existingProfessional) {
+		throw new AppError(httpStatus.NOT_FOUND, "Professional Profile Not Found");
+	}
+
+	const myProposals = await prisma.proposal.findMany({
+		where: {
+			professionalId: existingProfessional.id,
+		},
+		include: {
+			professional: true,
+			event: true,
+			items: {
+				include: {
+					eventServiceRequirement: true,
+					professionalService: true,
+				},
+			},
+		},
+		orderBy: {
+			submittedAt: "desc",
+		},
+	});
+
+	return myProposals;
+};
+
 const getProposalDetails = async (proposalId: string) => {
 	const proposal = await prisma.proposal.findUnique({
 		where: { id: proposalId },
@@ -631,6 +662,7 @@ const withdrawProposal = async (proposalId: string, user: RequestUser) => {
 export const proposalService = {
 	createProposal,
 	getProposals,
+	getMyProposals,
 	getProposalDetails,
 	acceptProposal,
 	rejectProposal,

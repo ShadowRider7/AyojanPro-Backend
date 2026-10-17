@@ -138,6 +138,7 @@ Base path: `/api/v1`
 | POST | `/event` | Create event (Client) |
 | POST | `/event/services/:eventId` | Add service requirement |
 | GET | `/event/all-events` | Browse published events (Professional/Admin) |
+| GET | `/event/my-events` | List own events, all statuses (Client) |
 | PATCH | `/event/update/:eventId` | Update event (Client) |
 | GET | `/event/:eventId/required-services` | List service requirements for event |
 | PATCH | `/event/update/:eventId/services/:serviceId` | Update service requirement |
@@ -158,6 +159,7 @@ Base path: `/api/v1`
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/proposal/events/:eventId` | Submit proposal (Professional) |
+| GET | `/proposal/me` | List own proposals (Professional) |
 | GET | `/proposal/requirements/:requirementId` | List proposals (Client/Admin) |
 | GET | `/proposal/:id` | Get proposal detail |
 | PATCH | `/proposal/:id/accept` | Accept proposal → creates Contract (Client) |

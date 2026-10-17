@@ -32,6 +32,17 @@ const getProposals = catchAsync(async (req, res) => {
 	});
 });
 
+const getMyProposals = catchAsync(async (req, res) => {
+	const proposals = await proposalService.getMyProposals(req.user!);
+
+	sendResponse(res, {
+		statusCode: httpStatus.OK,
+		success: true,
+		message: "Proposals retrieved successfully",
+		data: proposals,
+	});
+});
+
 const getProposalDetails = catchAsync(async (req, res) => {
 	const proposal = await proposalService.getProposalDetails(
 		req.params.id as string,
@@ -92,6 +103,7 @@ const withdrawProposal = catchAsync(async (req, res) => {
 export const proposalController = {
 	createProposal,
 	getProposals,
+	getMyProposals,
 	getProposalDetails,
 	acceptProposal,
 	rejectProposal,

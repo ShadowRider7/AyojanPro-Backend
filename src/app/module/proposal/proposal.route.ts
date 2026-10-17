@@ -20,6 +20,8 @@ router.get(
 	proposalController.getProposals,
 );
 
+router.get("/me", auth(Role.PROFESSIONAL), proposalController.getMyProposals);
+
 router.get(
 	"/:id",
 	auth(Role.CLIENT, Role.PROFESSIONAL, Role.ADMIN),

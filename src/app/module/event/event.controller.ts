@@ -47,6 +47,18 @@ const getAllPublishedEvents = catchAsync(
 	},
 );
 
+const getMyEvents = catchAsync(async (req: Request, res: Response) => {
+	const user = req.user!;
+
+	const result = await eventService.getMyEvents(user);
+	sendResponse(res, {
+		statusCode: httpStatus.OK,
+		success: true,
+		message: "Events Retrieved Successfully",
+		data: result,
+	});
+});
+
 const getEventById = catchAsync(async (req: Request, res: Response) => {
 	const eventId = req.params.eventId as string;
 
@@ -156,6 +168,7 @@ export const eventController = {
 	deleteEvent,
 	publishEvent,
 	getEventById,
+	getMyEvents,
 	updateEvent,
 	deleteEventService,
 	getEventRequiredServices,

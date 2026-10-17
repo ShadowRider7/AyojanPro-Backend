@@ -206,6 +206,31 @@ const getAllPublishedEvents = async (query: getEvent) => {
 		},
 	};
 };
+const getMyEvents = async (user: RequestUser) => {
+	const existingClient = await prisma.client.findUnique({
+		where: { userId: user.userId },
+	});
+
+	if (!existingClient) {
+		throw new AppError(httpStatus.NOT_FOUND, "Client Profile Not Found");
+	}
+
+	const myEvents = await prisma.event.findMany({
+		where: {
+			clientId: existingClient.id,
+			isDeleted: false,
+		},
+		include: {
+			serviceRequirements: true,
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+	});
+
+	return myEvents;
+};
+
 const getEventById = async (eventId: string) => {
 	const event = await prisma.event.findUnique({
 		where: { id: eventId },
@@ -563,6 +588,7 @@ export const eventService = {
 	createEvent,
 	createEventService,
 	getEventById,
+	getMyEvents,
 	updateEvent,
 	updateEventService,
 	publishEvent,
