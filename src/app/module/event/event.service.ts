@@ -577,7 +577,7 @@ const getEventRequiredServices = async (eventId: string) => {
 		include: {
 			contracts: true,
 			event: true,
-			proposals: true,
+			proposalItems: true,
 		},
 	});
 
