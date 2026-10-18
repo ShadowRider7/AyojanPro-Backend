@@ -526,6 +526,7 @@ const getAllProfessionalListPublic = async (query: IQuery) => {
 				select: {
 					skill: {
 						select: {
+							id: true,
 							name: true,
 						},
 					},
@@ -573,6 +574,7 @@ const getSingleProfessionalPublicProfile = async (professionalId: string) => {
 				select: {
 					skill: {
 						select: {
+							id: true,
 							name: true,
 						},
 					},
