@@ -30,6 +30,22 @@ enum EventStatus {
   CANCELLED
 }
 
+// The kind of event an Event row describes. A closed set so the marketing
+// site, the header and every filter can offer the same list of options.
+enum EventType {
+  WEDDING
+  WEDDING_RECEPTION
+  BIRTHDAY
+  ANNIVERSARY
+  CORPORATE
+  CONFERENCE
+  CONCERT
+  FESTIVAL
+  EXHIBITION
+  SPORTS
+  OTHER
+}
+
 enum ServiceRequirementStatus {
   OPEN
   PARTIALLY_FILLED
@@ -67,10 +83,25 @@ enum PaymentStatus {
   PENDING
   PROCESSING
   PARTIALLY_COMPLETED
+  // The money is collected and held by the platform (escrow). It is released
+  // to the professional when the contract is completed, or returned to the
+  // client when the contract is cancelled.
+  ESCROWED
   COMPLETED
   FAILED
   CANCELLED
   REFUNDED
+}
+
+enum RefundStatus {
+  // The refund is recorded and waiting to be settled back to the client.
+  PENDING
+  // The refund was handed over to the payment provider.
+  PROCESSING
+  // The money is back with the client.
+  COMPLETED
+  // The settlement failed and needs a manual retry.
+  FAILED
 }
 
 enum PaymentMethod {

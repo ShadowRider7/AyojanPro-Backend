@@ -50,6 +50,9 @@ const resolveDisputeZodSchema = z.object({
 			.string()
 			.min(10, "Please provide a resolution summary")
 			.max(5000, "Resolution cannot exceed 5000 characters"),
+		// The platform holds the client's money in escrow. When the dispute is
+		// resolved in the client's favour the escrow goes back to them.
+		refundClient: z.boolean().optional(),
 	}),
 });
 

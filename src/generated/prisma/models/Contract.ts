@@ -28,10 +28,12 @@ export type AggregateContract = {
 
 export type ContractAvgAggregateOutputType = {
   agreedAmount: runtime.Decimal | null
+  refundAmount: runtime.Decimal | null
 }
 
 export type ContractSumAggregateOutputType = {
   agreedAmount: runtime.Decimal | null
+  refundAmount: runtime.Decimal | null
 }
 
 export type ContractMinAggregateOutputType = {
@@ -53,6 +55,10 @@ export type ContractMinAggregateOutputType = {
   completedAt: Date | null
   cancelledAt: Date | null
   cancellationReason: string | null
+  cancelledByUserId: string | null
+  cancelledByRole: $Enums.Role | null
+  refundIssuedAt: Date | null
+  refundAmount: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -76,6 +82,10 @@ export type ContractMaxAggregateOutputType = {
   completedAt: Date | null
   cancelledAt: Date | null
   cancellationReason: string | null
+  cancelledByUserId: string | null
+  cancelledByRole: $Enums.Role | null
+  refundIssuedAt: Date | null
+  refundAmount: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -99,6 +109,10 @@ export type ContractCountAggregateOutputType = {
   completedAt: number
   cancelledAt: number
   cancellationReason: number
+  cancelledByUserId: number
+  cancelledByRole: number
+  refundIssuedAt: number
+  refundAmount: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -107,10 +121,12 @@ export type ContractCountAggregateOutputType = {
 
 export type ContractAvgAggregateInputType = {
   agreedAmount?: true
+  refundAmount?: true
 }
 
 export type ContractSumAggregateInputType = {
   agreedAmount?: true
+  refundAmount?: true
 }
 
 export type ContractMinAggregateInputType = {
@@ -132,6 +148,10 @@ export type ContractMinAggregateInputType = {
   completedAt?: true
   cancelledAt?: true
   cancellationReason?: true
+  cancelledByUserId?: true
+  cancelledByRole?: true
+  refundIssuedAt?: true
+  refundAmount?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -155,6 +175,10 @@ export type ContractMaxAggregateInputType = {
   completedAt?: true
   cancelledAt?: true
   cancellationReason?: true
+  cancelledByUserId?: true
+  cancelledByRole?: true
+  refundIssuedAt?: true
+  refundAmount?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -178,6 +202,10 @@ export type ContractCountAggregateInputType = {
   completedAt?: true
   cancelledAt?: true
   cancellationReason?: true
+  cancelledByUserId?: true
+  cancelledByRole?: true
+  refundIssuedAt?: true
+  refundAmount?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -288,6 +316,10 @@ export type ContractGroupByOutputType = {
   completedAt: Date | null
   cancelledAt: Date | null
   cancellationReason: string | null
+  cancelledByUserId: string | null
+  cancelledByRole: $Enums.Role | null
+  refundIssuedAt: Date | null
+  refundAmount: runtime.Decimal | null
   createdAt: Date
   updatedAt: Date
   _count: ContractCountAggregateOutputType | null
@@ -334,6 +366,10 @@ export type ContractWhereInput = {
   completedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   cancellationReason?: Prisma.StringNullableFilter<"Contract"> | string | null
+  cancelledByUserId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  cancelledByRole?: Prisma.EnumRoleNullableFilter<"Contract"> | $Enums.Role | null
+  refundIssuedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
+  refundAmount?: Prisma.DecimalNullableFilter<"Contract"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
@@ -342,10 +378,12 @@ export type ContractWhereInput = {
   eventServiceRequirement?: Prisma.XOR<Prisma.EventServiceRequirementScalarRelationFilter, Prisma.EventServiceRequirementWhereInput>
   professionalService?: Prisma.XOR<Prisma.ProfessionalServiceScalarRelationFilter, Prisma.ProfessionalServiceWhereInput>
   proposalItem?: Prisma.XOR<Prisma.ProposalItemScalarRelationFilter, Prisma.ProposalItemWhereInput>
+  cancelledBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   payments?: Prisma.PaymentListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   disputes?: Prisma.DisputeListRelationFilter
   deliverables?: Prisma.XOR<Prisma.DeliverableNullableScalarRelationFilter, Prisma.DeliverableWhereInput> | null
+  refunds?: Prisma.RefundListRelationFilter
 }
 
 export type ContractOrderByWithRelationInput = {
@@ -367,6 +405,10 @@ export type ContractOrderByWithRelationInput = {
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancellationReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelledByUserId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelledByRole?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundIssuedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   client?: Prisma.ClientOrderByWithRelationInput
@@ -375,10 +417,12 @@ export type ContractOrderByWithRelationInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementOrderByWithRelationInput
   professionalService?: Prisma.ProfessionalServiceOrderByWithRelationInput
   proposalItem?: Prisma.ProposalItemOrderByWithRelationInput
+  cancelledBy?: Prisma.UserOrderByWithRelationInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   disputes?: Prisma.DisputeOrderByRelationAggregateInput
   deliverables?: Prisma.DeliverableOrderByWithRelationInput
+  refunds?: Prisma.RefundOrderByRelationAggregateInput
 }
 
 export type ContractWhereUniqueInput = Prisma.AtLeast<{
@@ -403,6 +447,10 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   completedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   cancellationReason?: Prisma.StringNullableFilter<"Contract"> | string | null
+  cancelledByUserId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  cancelledByRole?: Prisma.EnumRoleNullableFilter<"Contract"> | $Enums.Role | null
+  refundIssuedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
+  refundAmount?: Prisma.DecimalNullableFilter<"Contract"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
@@ -411,10 +459,12 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   eventServiceRequirement?: Prisma.XOR<Prisma.EventServiceRequirementScalarRelationFilter, Prisma.EventServiceRequirementWhereInput>
   professionalService?: Prisma.XOR<Prisma.ProfessionalServiceScalarRelationFilter, Prisma.ProfessionalServiceWhereInput>
   proposalItem?: Prisma.XOR<Prisma.ProposalItemScalarRelationFilter, Prisma.ProposalItemWhereInput>
+  cancelledBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   payments?: Prisma.PaymentListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   disputes?: Prisma.DisputeListRelationFilter
   deliverables?: Prisma.XOR<Prisma.DeliverableNullableScalarRelationFilter, Prisma.DeliverableWhereInput> | null
+  refunds?: Prisma.RefundListRelationFilter
 }, "id" | "proposalItemId">
 
 export type ContractOrderByWithAggregationInput = {
@@ -436,6 +486,10 @@ export type ContractOrderByWithAggregationInput = {
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancellationReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelledByUserId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelledByRole?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundIssuedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ContractCountOrderByAggregateInput
@@ -467,6 +521,10 @@ export type ContractScalarWhereWithAggregatesInput = {
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   cancellationReason?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
+  cancelledByUserId?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
+  cancelledByRole?: Prisma.EnumRoleNullableWithAggregatesFilter<"Contract"> | $Enums.Role | null
+  refundIssuedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
+  refundAmount?: Prisma.DecimalNullableWithAggregatesFilter<"Contract"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Contract"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Contract"> | Date | string
 }
@@ -484,6 +542,9 @@ export type ContractCreateInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -492,10 +553,12 @@ export type ContractCreateInput = {
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateInput = {
@@ -517,12 +580,17 @@ export type ContractUncheckedCreateInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractUpdateInput = {
@@ -538,6 +606,9 @@ export type ContractUpdateInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -546,10 +617,12 @@ export type ContractUpdateInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateInput = {
@@ -571,12 +644,17 @@ export type ContractUncheckedUpdateInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateManyInput = {
@@ -598,6 +676,10 @@ export type ContractCreateManyInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -615,6 +697,9 @@ export type ContractUpdateManyMutationInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -638,6 +723,10 @@ export type ContractUncheckedUpdateManyInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -671,12 +760,17 @@ export type ContractCountOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   cancellationReason?: Prisma.SortOrder
+  cancelledByUserId?: Prisma.SortOrder
+  cancelledByRole?: Prisma.SortOrder
+  refundIssuedAt?: Prisma.SortOrder
+  refundAmount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ContractAvgOrderByAggregateInput = {
   agreedAmount?: Prisma.SortOrder
+  refundAmount?: Prisma.SortOrder
 }
 
 export type ContractMaxOrderByAggregateInput = {
@@ -698,6 +792,10 @@ export type ContractMaxOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   cancellationReason?: Prisma.SortOrder
+  cancelledByUserId?: Prisma.SortOrder
+  cancelledByRole?: Prisma.SortOrder
+  refundIssuedAt?: Prisma.SortOrder
+  refundAmount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -721,12 +819,17 @@ export type ContractMinOrderByAggregateInput = {
   completedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   cancellationReason?: Prisma.SortOrder
+  cancelledByUserId?: Prisma.SortOrder
+  cancelledByRole?: Prisma.SortOrder
+  refundIssuedAt?: Prisma.SortOrder
+  refundAmount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ContractSumOrderByAggregateInput = {
   agreedAmount?: Prisma.SortOrder
+  refundAmount?: Prisma.SortOrder
 }
 
 export type ContractScalarRelationFilter = {
@@ -795,6 +898,18 @@ export type EnumContractStatusFieldUpdateOperationsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type NullableEnumRoleFieldUpdateOperationsInput = {
+  set?: $Enums.Role | null
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type ContractCreateNestedOneWithoutDeliverablesInput = {
@@ -1039,6 +1154,20 @@ export type ContractUncheckedUpdateOneWithoutProposalItemNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutProposalItemInput, Prisma.ContractUpdateWithoutProposalItemInput>, Prisma.ContractUncheckedUpdateWithoutProposalItemInput>
 }
 
+export type ContractCreateNestedOneWithoutRefundsInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutRefundsInput, Prisma.ContractUncheckedCreateWithoutRefundsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutRefundsInput
+  connect?: Prisma.ContractWhereUniqueInput
+}
+
+export type ContractUpdateOneRequiredWithoutRefundsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutRefundsInput, Prisma.ContractUncheckedCreateWithoutRefundsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutRefundsInput
+  upsert?: Prisma.ContractUpsertWithoutRefundsInput
+  connect?: Prisma.ContractWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutRefundsInput, Prisma.ContractUpdateWithoutRefundsInput>, Prisma.ContractUncheckedUpdateWithoutRefundsInput>
+}
+
 export type ContractCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.ContractCreateWithoutReviewsInput, Prisma.ContractUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.ContractCreateOrConnectWithoutReviewsInput
@@ -1051,6 +1180,48 @@ export type ContractUpdateOneRequiredWithoutReviewsNestedInput = {
   upsert?: Prisma.ContractUpsertWithoutReviewsInput
   connect?: Prisma.ContractWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutReviewsInput, Prisma.ContractUpdateWithoutReviewsInput>, Prisma.ContractUncheckedUpdateWithoutReviewsInput>
+}
+
+export type ContractCreateNestedManyWithoutCancelledByInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutCancelledByInput, Prisma.ContractUncheckedCreateWithoutCancelledByInput> | Prisma.ContractCreateWithoutCancelledByInput[] | Prisma.ContractUncheckedCreateWithoutCancelledByInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutCancelledByInput | Prisma.ContractCreateOrConnectWithoutCancelledByInput[]
+  createMany?: Prisma.ContractCreateManyCancelledByInputEnvelope
+  connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+}
+
+export type ContractUncheckedCreateNestedManyWithoutCancelledByInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutCancelledByInput, Prisma.ContractUncheckedCreateWithoutCancelledByInput> | Prisma.ContractCreateWithoutCancelledByInput[] | Prisma.ContractUncheckedCreateWithoutCancelledByInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutCancelledByInput | Prisma.ContractCreateOrConnectWithoutCancelledByInput[]
+  createMany?: Prisma.ContractCreateManyCancelledByInputEnvelope
+  connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+}
+
+export type ContractUpdateManyWithoutCancelledByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutCancelledByInput, Prisma.ContractUncheckedCreateWithoutCancelledByInput> | Prisma.ContractCreateWithoutCancelledByInput[] | Prisma.ContractUncheckedCreateWithoutCancelledByInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutCancelledByInput | Prisma.ContractCreateOrConnectWithoutCancelledByInput[]
+  upsert?: Prisma.ContractUpsertWithWhereUniqueWithoutCancelledByInput | Prisma.ContractUpsertWithWhereUniqueWithoutCancelledByInput[]
+  createMany?: Prisma.ContractCreateManyCancelledByInputEnvelope
+  set?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  disconnect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  delete?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  update?: Prisma.ContractUpdateWithWhereUniqueWithoutCancelledByInput | Prisma.ContractUpdateWithWhereUniqueWithoutCancelledByInput[]
+  updateMany?: Prisma.ContractUpdateManyWithWhereWithoutCancelledByInput | Prisma.ContractUpdateManyWithWhereWithoutCancelledByInput[]
+  deleteMany?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
+}
+
+export type ContractUncheckedUpdateManyWithoutCancelledByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutCancelledByInput, Prisma.ContractUncheckedCreateWithoutCancelledByInput> | Prisma.ContractCreateWithoutCancelledByInput[] | Prisma.ContractUncheckedCreateWithoutCancelledByInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutCancelledByInput | Prisma.ContractCreateOrConnectWithoutCancelledByInput[]
+  upsert?: Prisma.ContractUpsertWithWhereUniqueWithoutCancelledByInput | Prisma.ContractUpsertWithWhereUniqueWithoutCancelledByInput[]
+  createMany?: Prisma.ContractCreateManyCancelledByInputEnvelope
+  set?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  disconnect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  delete?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  update?: Prisma.ContractUpdateWithWhereUniqueWithoutCancelledByInput | Prisma.ContractUpdateWithWhereUniqueWithoutCancelledByInput[]
+  updateMany?: Prisma.ContractUpdateManyWithWhereWithoutCancelledByInput | Prisma.ContractUpdateManyWithWhereWithoutCancelledByInput[]
+  deleteMany?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
 }
 
 export type ContractCreateWithoutClientInput = {
@@ -1066,6 +1237,9 @@ export type ContractCreateWithoutClientInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   professional: Prisma.ProfessionalCreateNestedOneWithoutContractsInput
@@ -1073,10 +1247,12 @@ export type ContractCreateWithoutClientInput = {
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutClientInput = {
@@ -1097,12 +1273,17 @@ export type ContractUncheckedCreateWithoutClientInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutClientInput = {
@@ -1153,6 +1334,10 @@ export type ContractScalarWhereInput = {
   completedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   cancellationReason?: Prisma.StringNullableFilter<"Contract"> | string | null
+  cancelledByUserId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  cancelledByRole?: Prisma.EnumRoleNullableFilter<"Contract"> | $Enums.Role | null
+  refundIssuedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
+  refundAmount?: Prisma.DecimalNullableFilter<"Contract"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
 }
@@ -1170,6 +1355,9 @@ export type ContractCreateWithoutDeliverablesInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1178,9 +1366,11 @@ export type ContractCreateWithoutDeliverablesInput = {
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutDeliverablesInput = {
@@ -1202,11 +1392,16 @@ export type ContractUncheckedCreateWithoutDeliverablesInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutDeliverablesInput = {
@@ -1238,6 +1433,9 @@ export type ContractUpdateWithoutDeliverablesInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -1246,9 +1444,11 @@ export type ContractUpdateWithoutDeliverablesInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutDeliverablesInput = {
@@ -1270,11 +1470,16 @@ export type ContractUncheckedUpdateWithoutDeliverablesInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateWithoutDisputesInput = {
@@ -1290,6 +1495,9 @@ export type ContractCreateWithoutDisputesInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1298,9 +1506,11 @@ export type ContractCreateWithoutDisputesInput = {
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutDisputesInput = {
@@ -1322,11 +1532,16 @@ export type ContractUncheckedCreateWithoutDisputesInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutDisputesInput = {
@@ -1358,6 +1573,9 @@ export type ContractUpdateWithoutDisputesInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -1366,9 +1584,11 @@ export type ContractUpdateWithoutDisputesInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutDisputesInput = {
@@ -1390,11 +1610,16 @@ export type ContractUncheckedUpdateWithoutDisputesInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateWithoutEventInput = {
@@ -1410,6 +1635,9 @@ export type ContractCreateWithoutEventInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1417,10 +1645,12 @@ export type ContractCreateWithoutEventInput = {
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutEventInput = {
@@ -1441,12 +1671,17 @@ export type ContractUncheckedCreateWithoutEventInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutEventInput = {
@@ -1488,6 +1723,9 @@ export type ContractCreateWithoutEventServiceRequirementInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1495,10 +1733,12 @@ export type ContractCreateWithoutEventServiceRequirementInput = {
   event: Prisma.EventCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutEventServiceRequirementInput = {
@@ -1519,12 +1759,17 @@ export type ContractUncheckedCreateWithoutEventServiceRequirementInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutEventServiceRequirementInput = {
@@ -1566,6 +1811,9 @@ export type ContractCreateWithoutPaymentsInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1574,9 +1822,11 @@ export type ContractCreateWithoutPaymentsInput = {
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutPaymentsInput = {
@@ -1598,11 +1848,16 @@ export type ContractUncheckedCreateWithoutPaymentsInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutPaymentsInput = {
@@ -1634,6 +1889,9 @@ export type ContractUpdateWithoutPaymentsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -1642,9 +1900,11 @@ export type ContractUpdateWithoutPaymentsInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutPaymentsInput = {
@@ -1666,11 +1926,16 @@ export type ContractUncheckedUpdateWithoutPaymentsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateWithoutProfessionalInput = {
@@ -1686,6 +1951,9 @@ export type ContractCreateWithoutProfessionalInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1693,10 +1961,12 @@ export type ContractCreateWithoutProfessionalInput = {
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutProfessionalInput = {
@@ -1717,12 +1987,17 @@ export type ContractUncheckedCreateWithoutProfessionalInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutProfessionalInput = {
@@ -1764,6 +2039,9 @@ export type ContractCreateWithoutProfessionalServiceInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1771,10 +2049,12 @@ export type ContractCreateWithoutProfessionalServiceInput = {
   event: Prisma.EventCreateNestedOneWithoutContractsInput
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutProfessionalServiceInput = {
@@ -1795,12 +2075,17 @@ export type ContractUncheckedCreateWithoutProfessionalServiceInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutProfessionalServiceInput = {
@@ -1842,6 +2127,9 @@ export type ContractCreateWithoutProposalItemInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1849,10 +2137,12 @@ export type ContractCreateWithoutProposalItemInput = {
   event: Prisma.EventCreateNestedOneWithoutContractsInput
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutProposalItemInput = {
@@ -1873,12 +2163,17 @@ export type ContractUncheckedCreateWithoutProposalItemInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutProposalItemInput = {
@@ -1910,6 +2205,9 @@ export type ContractUpdateWithoutProposalItemInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -1917,10 +2215,12 @@ export type ContractUpdateWithoutProposalItemInput = {
   event?: Prisma.EventUpdateOneRequiredWithoutContractsNestedInput
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutProposalItemInput = {
@@ -1941,6 +2241,151 @@ export type ContractUncheckedUpdateWithoutProposalItemInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
+  deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractCreateWithoutRefundsInput = {
+  id?: string
+  agreedAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  serviceStartAt: Date | string
+  serviceEndAt: Date | string
+  status?: $Enums.ContractStatus
+  terms?: string | null
+  confirmedAt?: Date | string | null
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  client: Prisma.ClientCreateNestedOneWithoutContractsInput
+  professional: Prisma.ProfessionalCreateNestedOneWithoutContractsInput
+  event: Prisma.EventCreateNestedOneWithoutContractsInput
+  eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
+  professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
+  proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
+  deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+}
+
+export type ContractUncheckedCreateWithoutRefundsInput = {
+  id?: string
+  clientId: string
+  professionalId: string
+  eventId: string
+  eventServiceRequirementId: string
+  professionalServiceId: string
+  proposalItemId: string
+  agreedAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  serviceStartAt: Date | string
+  serviceEndAt: Date | string
+  status?: $Enums.ContractStatus
+  terms?: string | null
+  confirmedAt?: Date | string | null
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
+  deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+}
+
+export type ContractCreateOrConnectWithoutRefundsInput = {
+  where: Prisma.ContractWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractCreateWithoutRefundsInput, Prisma.ContractUncheckedCreateWithoutRefundsInput>
+}
+
+export type ContractUpsertWithoutRefundsInput = {
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutRefundsInput, Prisma.ContractUncheckedUpdateWithoutRefundsInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutRefundsInput, Prisma.ContractUncheckedCreateWithoutRefundsInput>
+  where?: Prisma.ContractWhereInput
+}
+
+export type ContractUpdateToOneWithWhereWithoutRefundsInput = {
+  where?: Prisma.ContractWhereInput
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutRefundsInput, Prisma.ContractUncheckedUpdateWithoutRefundsInput>
+}
+
+export type ContractUpdateWithoutRefundsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  agreedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceStartAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceEndAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  terms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
+  professional?: Prisma.ProfessionalUpdateOneRequiredWithoutContractsNestedInput
+  event?: Prisma.EventUpdateOneRequiredWithoutContractsNestedInput
+  eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
+  professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
+  proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
+  deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateWithoutRefundsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalId?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  eventServiceRequirementId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalServiceId?: Prisma.StringFieldUpdateOperationsInput | string
+  proposalItemId?: Prisma.StringFieldUpdateOperationsInput | string
+  agreedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceStartAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceEndAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  terms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
@@ -1962,6 +2407,9 @@ export type ContractCreateWithoutReviewsInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutContractsInput
@@ -1970,9 +2418,11 @@ export type ContractCreateWithoutReviewsInput = {
   eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
   professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
   proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  cancelledBy?: Prisma.UserCreateNestedOneWithoutCancelledContractsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutReviewsInput = {
@@ -1994,11 +2444,16 @@ export type ContractUncheckedCreateWithoutReviewsInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
   deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutReviewsInput = {
@@ -2030,6 +2485,9 @@ export type ContractUpdateWithoutReviewsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -2038,9 +2496,11 @@ export type ContractUpdateWithoutReviewsInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutReviewsInput = {
@@ -2062,11 +2522,104 @@ export type ContractUncheckedUpdateWithoutReviewsInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractCreateWithoutCancelledByInput = {
+  id?: string
+  agreedAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  serviceStartAt: Date | string
+  serviceEndAt: Date | string
+  status?: $Enums.ContractStatus
+  terms?: string | null
+  confirmedAt?: Date | string | null
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  client: Prisma.ClientCreateNestedOneWithoutContractsInput
+  professional: Prisma.ProfessionalCreateNestedOneWithoutContractsInput
+  event: Prisma.EventCreateNestedOneWithoutContractsInput
+  eventServiceRequirement: Prisma.EventServiceRequirementCreateNestedOneWithoutContractsInput
+  professionalService: Prisma.ProfessionalServiceCreateNestedOneWithoutContractsInput
+  proposalItem: Prisma.ProposalItemCreateNestedOneWithoutContractInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutContractInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutContractInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutContractInput
+  deliverables?: Prisma.DeliverableCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutContractInput
+}
+
+export type ContractUncheckedCreateWithoutCancelledByInput = {
+  id?: string
+  clientId: string
+  professionalId: string
+  eventId: string
+  eventServiceRequirementId: string
+  professionalServiceId: string
+  proposalItemId: string
+  agreedAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  serviceStartAt: Date | string
+  serviceEndAt: Date | string
+  status?: $Enums.ContractStatus
+  terms?: string | null
+  confirmedAt?: Date | string | null
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutContractInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutContractInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutContractInput
+  deliverables?: Prisma.DeliverableUncheckedCreateNestedOneWithoutContractInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutContractInput
+}
+
+export type ContractCreateOrConnectWithoutCancelledByInput = {
+  where: Prisma.ContractWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractCreateWithoutCancelledByInput, Prisma.ContractUncheckedCreateWithoutCancelledByInput>
+}
+
+export type ContractCreateManyCancelledByInputEnvelope = {
+  data: Prisma.ContractCreateManyCancelledByInput | Prisma.ContractCreateManyCancelledByInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContractUpsertWithWhereUniqueWithoutCancelledByInput = {
+  where: Prisma.ContractWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutCancelledByInput, Prisma.ContractUncheckedUpdateWithoutCancelledByInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutCancelledByInput, Prisma.ContractUncheckedCreateWithoutCancelledByInput>
+}
+
+export type ContractUpdateWithWhereUniqueWithoutCancelledByInput = {
+  where: Prisma.ContractWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutCancelledByInput, Prisma.ContractUncheckedUpdateWithoutCancelledByInput>
+}
+
+export type ContractUpdateManyWithWhereWithoutCancelledByInput = {
+  where: Prisma.ContractScalarWhereInput
+  data: Prisma.XOR<Prisma.ContractUpdateManyMutationInput, Prisma.ContractUncheckedUpdateManyWithoutCancelledByInput>
 }
 
 export type ContractCreateManyClientInput = {
@@ -2087,6 +2640,10 @@ export type ContractCreateManyClientInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2104,6 +2661,9 @@ export type ContractUpdateWithoutClientInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   professional?: Prisma.ProfessionalUpdateOneRequiredWithoutContractsNestedInput
@@ -2111,10 +2671,12 @@ export type ContractUpdateWithoutClientInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutClientInput = {
@@ -2135,12 +2697,17 @@ export type ContractUncheckedUpdateWithoutClientInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutClientInput = {
@@ -2161,6 +2728,10 @@ export type ContractUncheckedUpdateManyWithoutClientInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2183,6 +2754,10 @@ export type ContractCreateManyEventInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2200,6 +2775,9 @@ export type ContractUpdateWithoutEventInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -2207,10 +2785,12 @@ export type ContractUpdateWithoutEventInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutEventInput = {
@@ -2231,12 +2811,17 @@ export type ContractUncheckedUpdateWithoutEventInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutEventInput = {
@@ -2257,6 +2842,10 @@ export type ContractUncheckedUpdateManyWithoutEventInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2279,6 +2868,10 @@ export type ContractCreateManyEventServiceRequirementInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2296,6 +2889,9 @@ export type ContractUpdateWithoutEventServiceRequirementInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -2303,10 +2899,12 @@ export type ContractUpdateWithoutEventServiceRequirementInput = {
   event?: Prisma.EventUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutEventServiceRequirementInput = {
@@ -2327,12 +2925,17 @@ export type ContractUncheckedUpdateWithoutEventServiceRequirementInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutEventServiceRequirementInput = {
@@ -2353,6 +2956,10 @@ export type ContractUncheckedUpdateManyWithoutEventServiceRequirementInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2375,6 +2982,10 @@ export type ContractCreateManyProfessionalInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2392,6 +3003,9 @@ export type ContractUpdateWithoutProfessionalInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -2399,10 +3013,12 @@ export type ContractUpdateWithoutProfessionalInput = {
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutProfessionalInput = {
@@ -2423,12 +3039,17 @@ export type ContractUncheckedUpdateWithoutProfessionalInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutProfessionalInput = {
@@ -2449,6 +3070,10 @@ export type ContractUncheckedUpdateManyWithoutProfessionalInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2471,6 +3096,10 @@ export type ContractCreateManyProfessionalServiceInput = {
   completedAt?: Date | string | null
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelledByUserId?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2488,6 +3117,9 @@ export type ContractUpdateWithoutProfessionalServiceInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
@@ -2495,10 +3127,12 @@ export type ContractUpdateWithoutProfessionalServiceInput = {
   event?: Prisma.EventUpdateOneRequiredWithoutContractsNestedInput
   eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
   proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  cancelledBy?: Prisma.UserUpdateOneWithoutCancelledContractsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutProfessionalServiceInput = {
@@ -2519,12 +3153,17 @@ export type ContractUncheckedUpdateWithoutProfessionalServiceInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
   deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutProfessionalServiceInput = {
@@ -2545,6 +3184,124 @@ export type ContractUncheckedUpdateManyWithoutProfessionalServiceInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContractCreateManyCancelledByInput = {
+  id?: string
+  clientId: string
+  professionalId: string
+  eventId: string
+  eventServiceRequirementId: string
+  professionalServiceId: string
+  proposalItemId: string
+  agreedAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  serviceStartAt: Date | string
+  serviceEndAt: Date | string
+  status?: $Enums.ContractStatus
+  terms?: string | null
+  confirmedAt?: Date | string | null
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  cancellationReason?: string | null
+  cancelledByRole?: $Enums.Role | null
+  refundIssuedAt?: Date | string | null
+  refundAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContractUpdateWithoutCancelledByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  agreedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceStartAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceEndAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  terms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  client?: Prisma.ClientUpdateOneRequiredWithoutContractsNestedInput
+  professional?: Prisma.ProfessionalUpdateOneRequiredWithoutContractsNestedInput
+  event?: Prisma.EventUpdateOneRequiredWithoutContractsNestedInput
+  eventServiceRequirement?: Prisma.EventServiceRequirementUpdateOneRequiredWithoutContractsNestedInput
+  professionalService?: Prisma.ProfessionalServiceUpdateOneRequiredWithoutContractsNestedInput
+  proposalItem?: Prisma.ProposalItemUpdateOneRequiredWithoutContractNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutContractNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutContractNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutContractNestedInput
+  deliverables?: Prisma.DeliverableUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateWithoutCancelledByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalId?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  eventServiceRequirementId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalServiceId?: Prisma.StringFieldUpdateOperationsInput | string
+  proposalItemId?: Prisma.StringFieldUpdateOperationsInput | string
+  agreedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceStartAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceEndAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  terms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutContractNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutContractNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutContractNestedInput
+  deliverables?: Prisma.DeliverableUncheckedUpdateOneWithoutContractNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateManyWithoutCancelledByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalId?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  eventServiceRequirementId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalServiceId?: Prisma.StringFieldUpdateOperationsInput | string
+  proposalItemId?: Prisma.StringFieldUpdateOperationsInput | string
+  agreedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceStartAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  serviceEndAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  terms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelledByRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  refundIssuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  refundAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2558,12 +3315,14 @@ export type ContractCountOutputType = {
   payments: number
   reviews: number
   disputes: number
+  refunds: number
 }
 
 export type ContractCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payments?: boolean | ContractCountOutputTypeCountPaymentsArgs
   reviews?: boolean | ContractCountOutputTypeCountReviewsArgs
   disputes?: boolean | ContractCountOutputTypeCountDisputesArgs
+  refunds?: boolean | ContractCountOutputTypeCountRefundsArgs
 }
 
 /**
@@ -2597,6 +3356,13 @@ export type ContractCountOutputTypeCountDisputesArgs<ExtArgs extends runtime.Typ
   where?: Prisma.DisputeWhereInput
 }
 
+/**
+ * ContractCountOutputType without action
+ */
+export type ContractCountOutputTypeCountRefundsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefundWhereInput
+}
+
 
 export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2617,6 +3383,10 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   completedAt?: boolean
   cancelledAt?: boolean
   cancellationReason?: boolean
+  cancelledByUserId?: boolean
+  cancelledByRole?: boolean
+  refundIssuedAt?: boolean
+  refundAmount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
@@ -2625,10 +3395,12 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   eventServiceRequirement?: boolean | Prisma.EventServiceRequirementDefaultArgs<ExtArgs>
   professionalService?: boolean | Prisma.ProfessionalServiceDefaultArgs<ExtArgs>
   proposalItem?: boolean | Prisma.ProposalItemDefaultArgs<ExtArgs>
+  cancelledBy?: boolean | Prisma.Contract$cancelledByArgs<ExtArgs>
   payments?: boolean | Prisma.Contract$paymentsArgs<ExtArgs>
   reviews?: boolean | Prisma.Contract$reviewsArgs<ExtArgs>
   disputes?: boolean | Prisma.Contract$disputesArgs<ExtArgs>
   deliverables?: boolean | Prisma.Contract$deliverablesArgs<ExtArgs>
+  refunds?: boolean | Prisma.Contract$refundsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contract"]>
 
@@ -2651,6 +3423,10 @@ export type ContractSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   completedAt?: boolean
   cancelledAt?: boolean
   cancellationReason?: boolean
+  cancelledByUserId?: boolean
+  cancelledByRole?: boolean
+  refundIssuedAt?: boolean
+  refundAmount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
@@ -2659,6 +3435,7 @@ export type ContractSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   eventServiceRequirement?: boolean | Prisma.EventServiceRequirementDefaultArgs<ExtArgs>
   professionalService?: boolean | Prisma.ProfessionalServiceDefaultArgs<ExtArgs>
   proposalItem?: boolean | Prisma.ProposalItemDefaultArgs<ExtArgs>
+  cancelledBy?: boolean | Prisma.Contract$cancelledByArgs<ExtArgs>
 }, ExtArgs["result"]["contract"]>
 
 export type ContractSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2680,6 +3457,10 @@ export type ContractSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   completedAt?: boolean
   cancelledAt?: boolean
   cancellationReason?: boolean
+  cancelledByUserId?: boolean
+  cancelledByRole?: boolean
+  refundIssuedAt?: boolean
+  refundAmount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
@@ -2688,6 +3469,7 @@ export type ContractSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   eventServiceRequirement?: boolean | Prisma.EventServiceRequirementDefaultArgs<ExtArgs>
   professionalService?: boolean | Prisma.ProfessionalServiceDefaultArgs<ExtArgs>
   proposalItem?: boolean | Prisma.ProposalItemDefaultArgs<ExtArgs>
+  cancelledBy?: boolean | Prisma.Contract$cancelledByArgs<ExtArgs>
 }, ExtArgs["result"]["contract"]>
 
 export type ContractSelectScalar = {
@@ -2709,11 +3491,15 @@ export type ContractSelectScalar = {
   completedAt?: boolean
   cancelledAt?: boolean
   cancellationReason?: boolean
+  cancelledByUserId?: boolean
+  cancelledByRole?: boolean
+  refundIssuedAt?: boolean
+  refundAmount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "professionalId" | "eventId" | "eventServiceRequirementId" | "professionalServiceId" | "proposalItemId" | "agreedAmount" | "currency" | "serviceStartAt" | "serviceEndAt" | "status" | "terms" | "confirmedAt" | "startedAt" | "completedAt" | "cancelledAt" | "cancellationReason" | "createdAt" | "updatedAt", ExtArgs["result"]["contract"]>
+export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "professionalId" | "eventId" | "eventServiceRequirementId" | "professionalServiceId" | "proposalItemId" | "agreedAmount" | "currency" | "serviceStartAt" | "serviceEndAt" | "status" | "terms" | "confirmedAt" | "startedAt" | "completedAt" | "cancelledAt" | "cancellationReason" | "cancelledByUserId" | "cancelledByRole" | "refundIssuedAt" | "refundAmount" | "createdAt" | "updatedAt", ExtArgs["result"]["contract"]>
 export type ContractInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   professional?: boolean | Prisma.ProfessionalDefaultArgs<ExtArgs>
@@ -2721,10 +3507,12 @@ export type ContractInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   eventServiceRequirement?: boolean | Prisma.EventServiceRequirementDefaultArgs<ExtArgs>
   professionalService?: boolean | Prisma.ProfessionalServiceDefaultArgs<ExtArgs>
   proposalItem?: boolean | Prisma.ProposalItemDefaultArgs<ExtArgs>
+  cancelledBy?: boolean | Prisma.Contract$cancelledByArgs<ExtArgs>
   payments?: boolean | Prisma.Contract$paymentsArgs<ExtArgs>
   reviews?: boolean | Prisma.Contract$reviewsArgs<ExtArgs>
   disputes?: boolean | Prisma.Contract$disputesArgs<ExtArgs>
   deliverables?: boolean | Prisma.Contract$deliverablesArgs<ExtArgs>
+  refunds?: boolean | Prisma.Contract$refundsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ContractIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2734,6 +3522,7 @@ export type ContractIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   eventServiceRequirement?: boolean | Prisma.EventServiceRequirementDefaultArgs<ExtArgs>
   professionalService?: boolean | Prisma.ProfessionalServiceDefaultArgs<ExtArgs>
   proposalItem?: boolean | Prisma.ProposalItemDefaultArgs<ExtArgs>
+  cancelledBy?: boolean | Prisma.Contract$cancelledByArgs<ExtArgs>
 }
 export type ContractIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
@@ -2742,6 +3531,7 @@ export type ContractIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   eventServiceRequirement?: boolean | Prisma.EventServiceRequirementDefaultArgs<ExtArgs>
   professionalService?: boolean | Prisma.ProfessionalServiceDefaultArgs<ExtArgs>
   proposalItem?: boolean | Prisma.ProposalItemDefaultArgs<ExtArgs>
+  cancelledBy?: boolean | Prisma.Contract$cancelledByArgs<ExtArgs>
 }
 
 export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2753,10 +3543,12 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     eventServiceRequirement: Prisma.$EventServiceRequirementPayload<ExtArgs>
     professionalService: Prisma.$ProfessionalServicePayload<ExtArgs>
     proposalItem: Prisma.$ProposalItemPayload<ExtArgs>
+    cancelledBy: Prisma.$UserPayload<ExtArgs> | null
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     disputes: Prisma.$DisputePayload<ExtArgs>[]
     deliverables: Prisma.$DeliverablePayload<ExtArgs> | null
+    refunds: Prisma.$RefundPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2777,6 +3569,10 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     completedAt: Date | null
     cancelledAt: Date | null
     cancellationReason: string | null
+    cancelledByUserId: string | null
+    cancelledByRole: $Enums.Role | null
+    refundIssuedAt: Date | null
+    refundAmount: runtime.Decimal | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["contract"]>
@@ -3179,10 +3975,12 @@ export interface Prisma__ContractClient<T, Null = never, ExtArgs extends runtime
   eventServiceRequirement<T extends Prisma.EventServiceRequirementDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventServiceRequirementDefaultArgs<ExtArgs>>): Prisma.Prisma__EventServiceRequirementClient<runtime.Types.Result.GetResult<Prisma.$EventServiceRequirementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   professionalService<T extends Prisma.ProfessionalServiceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalServiceDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfessionalServiceClient<runtime.Types.Result.GetResult<Prisma.$ProfessionalServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   proposalItem<T extends Prisma.ProposalItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProposalItemDefaultArgs<ExtArgs>>): Prisma.Prisma__ProposalItemClient<runtime.Types.Result.GetResult<Prisma.$ProposalItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  cancelledBy<T extends Prisma.Contract$cancelledByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$cancelledByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   payments<T extends Prisma.Contract$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Contract$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   disputes<T extends Prisma.Contract$disputesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$disputesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DisputePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deliverables<T extends Prisma.Contract$deliverablesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$deliverablesArgs<ExtArgs>>): Prisma.Prisma__DeliverableClient<runtime.Types.Result.GetResult<Prisma.$DeliverablePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  refunds<T extends Prisma.Contract$refundsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$refundsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3230,6 +4028,10 @@ export interface ContractFieldRefs {
   readonly completedAt: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly cancelledAt: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly cancellationReason: Prisma.FieldRef<"Contract", 'String'>
+  readonly cancelledByUserId: Prisma.FieldRef<"Contract", 'String'>
+  readonly cancelledByRole: Prisma.FieldRef<"Contract", 'Role'>
+  readonly refundIssuedAt: Prisma.FieldRef<"Contract", 'DateTime'>
+  readonly refundAmount: Prisma.FieldRef<"Contract", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Contract", 'DateTime'>
 }
@@ -3633,6 +4435,25 @@ export type ContractDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * Contract.cancelledBy
+ */
+export type Contract$cancelledByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * Contract.payments
  */
 export type Contract$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3721,6 +4542,30 @@ export type Contract$deliverablesArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.DeliverableInclude<ExtArgs> | null
   where?: Prisma.DeliverableWhereInput
+}
+
+/**
+ * Contract.refunds
+ */
+export type Contract$refundsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Refund
+   */
+  select?: Prisma.RefundSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Refund
+   */
+  omit?: Prisma.RefundOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefundInclude<ExtArgs> | null
+  where?: Prisma.RefundWhereInput
+  orderBy?: Prisma.RefundOrderByWithRelationInput | Prisma.RefundOrderByWithRelationInput[]
+  cursor?: Prisma.RefundWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefundScalarFieldEnum | Prisma.RefundScalarFieldEnum[]
 }
 
 /**

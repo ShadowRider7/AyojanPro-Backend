@@ -6,6 +6,7 @@ import {
 	EventStatus,
 	PaymentStatus,
 	ProposalStatus,
+	RefundStatus,
 } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/checkAuth";
@@ -56,8 +57,19 @@ const getAdminAnalytics = async () => {
 	});
 
 	// revenue
+	// Gross is every taka that came in: money that was released to the
+	// professionals, money the platform still holds in escrow and money that
+	// was refunded. The net revenue is what was actually released.
 	const totalRevenueResult = await prisma.payment.aggregate({
-		where: { status: PaymentStatus.COMPLETED },
+		where: {
+			status: {
+				in: [
+					PaymentStatus.ESCROWED,
+					PaymentStatus.COMPLETED,
+					PaymentStatus.REFUNDED,
+				],
+			},
+		},
 		_sum: { amount: true },
 	});
 
@@ -70,7 +82,26 @@ const getAdminAnalytics = async () => {
 
 	const totalRefunded = totalRefundedResult._sum.amount?.toNumber() || 0;
 
-	const netRevenue = totalRevenue - totalRefunded;
+	// money the platform holds until the contract is completed
+	const totalEscrowedResult = await prisma.payment.aggregate({
+		where: { status: PaymentStatus.ESCROWED },
+		_sum: { amount: true },
+	});
+
+	const totalEscrowed = totalEscrowedResult._sum.amount?.toNumber() || 0;
+
+	const netRevenue = totalRevenue - totalRefunded - totalEscrowed;
+
+	// refunds that are recorded but not settled yet
+	const totalPendingRefundsResult = await prisma.refund.aggregate({
+		where: {
+			status: { in: [RefundStatus.PENDING, RefundStatus.PROCESSING] },
+		},
+		_sum: { amount: true },
+	});
+
+	const totalPendingRefunds =
+		totalPendingRefundsResult._sum.amount?.toNumber() || 0;
 
 	return {
 		totalClients,
@@ -86,6 +117,8 @@ const getAdminAnalytics = async () => {
 		totalOpenDisputes,
 		totalRevenue,
 		totalRefunded,
+		totalEscrowed,
+		totalPendingRefunds,
 		netRevenue,
 	};
 };
@@ -138,8 +171,13 @@ const getClientAnalytics = async (user: RequestUser) => {
 		where: { clientId: client.id, status: ContractStatus.CANCELLED },
 	});
 
+	// what the client paid: money that was released plus money the platform
+	// still holds in escrow
 	const totalAmountSpentResult = await prisma.payment.aggregate({
-		where: { clientId: client.id, status: PaymentStatus.COMPLETED },
+		where: {
+			clientId: client.id,
+			status: { in: [PaymentStatus.ESCROWED, PaymentStatus.COMPLETED] },
+		},
 		_sum: { amount: true },
 	});
 
@@ -151,6 +189,24 @@ const getClientAnalytics = async (user: RequestUser) => {
 	});
 
 	const totalRefunded = totalRefundedResult._sum.amount?.toNumber() || 0;
+
+	const totalInEscrowResult = await prisma.payment.aggregate({
+		where: { clientId: client.id, status: PaymentStatus.ESCROWED },
+		_sum: { amount: true },
+	});
+
+	const totalInEscrow = totalInEscrowResult._sum.amount?.toNumber() || 0;
+
+	const totalPendingRefundsResult = await prisma.refund.aggregate({
+		where: {
+			clientId: client.id,
+			status: { in: [RefundStatus.PENDING, RefundStatus.PROCESSING] },
+		},
+		_sum: { amount: true },
+	});
+
+	const totalPendingRefunds =
+		totalPendingRefundsResult._sum.amount?.toNumber() || 0;
 
 	const totalDisputesRaised = await prisma.dispute.count({
 		where: { raisedById: user.userId },
@@ -170,6 +226,8 @@ const getClientAnalytics = async (user: RequestUser) => {
 		cancelledContracts,
 		totalAmountSpent,
 		totalRefunded,
+		totalInEscrow,
+		totalPendingRefunds,
 		totalDisputesRaised,
 		totalReviewsGiven,
 	};
@@ -248,6 +306,30 @@ const getProfessionalAnalytics = async (user: RequestUser) => {
 
 	const totalRefunded = totalRefundedResult._sum.amount?.toNumber() || 0;
 
+	const totalPendingRefundsResult = await prisma.refund.aggregate({
+		where: {
+			contract: { professionalId: professional.id },
+			status: { in: [RefundStatus.PENDING, RefundStatus.PROCESSING] },
+		},
+		_sum: { amount: true },
+	});
+
+	const totalPendingRefunds =
+		totalPendingRefundsResult._sum.amount?.toNumber() || 0;
+
+	// money the platform holds for the professional until the contract is
+	// completed
+	const totalPendingPayoutResult = await prisma.payment.aggregate({
+		where: {
+			contract: { professionalId: professional.id },
+			status: PaymentStatus.ESCROWED,
+		},
+		_sum: { amount: true },
+	});
+
+	const totalPendingPayout =
+		totalPendingPayoutResult._sum.amount?.toNumber() || 0;
+
 	const totalDisputesRaised = await prisma.dispute.count({
 		where: { raisedById: user.userId },
 	});
@@ -263,6 +345,8 @@ const getProfessionalAnalytics = async (user: RequestUser) => {
 		cancelledContracts,
 		totalEarnings,
 		totalRefunded,
+		totalPendingPayout,
+		totalPendingRefunds,
 		averageRating: professional.averageRating?.toNumber() || 0,
 		totalReviews: professional.totalReviews,
 		totalDisputesRaised,

@@ -27,6 +27,8 @@ model User {
   disputesRaised   Dispute[] @relation("DisputeRaisedBy")
   disputesResolved Dispute[] @relation("DisputeResolvedBy")
 
+  cancelledContracts Contract[] @relation("ContractCancelledBy")
+
   @@index([role])
   @@index([status])
   @@index([createdAt])

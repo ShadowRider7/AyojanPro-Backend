@@ -3,6 +3,91 @@ import config from "../config";
 import { AppError } from "../utils/AppError";
 import { redisClient } from "./redis";
 
+export type BkashRefundResult =
+	| { status: "completed"; reference: string | null }
+	| { status: "pending"; reference: null; message: string }
+	| { status: "failed"; reference: null; message: string };
+
+/**
+ * Refunds a captured bKash payment back to the client.
+ *
+ * The bKash tokenized checkout API only creates and executes payments — it
+ * does not expose a public refund endpoint. When the merchant configures
+ * BKASH_REFUND_URL the refund is forwarded to that endpoint, otherwise the
+ * refund is queued for manual settlement (an admin settles it from the admin
+ * panel) so the client is still recorded as owed the money.
+ */
+export const requestBkashRefund = async (input: {
+	transactionId: string | null;
+	amount: string;
+	currency: string;
+	reason: string;
+	merchantInvoiceNumber?: string | null;
+}): Promise<BkashRefundResult> => {
+	if (!config.bkash_refund_url) {
+		return {
+			status: "pending",
+			reference: null,
+			message:
+				"No bKash refund endpoint is configured — the refund is queued for manual settlement.",
+		};
+	}
+
+	try {
+		const bkashIdToken = await getBkashIdToken();
+
+		if (!bkashIdToken) {
+			return {
+				status: "failed",
+				reference: null,
+				message: "No Bkash Access Token Found!",
+			};
+		}
+
+		const response = await fetch(config.bkash_refund_url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+				Authorization: bkashIdToken,
+				"X-App-Key": config.bkash_app_key,
+			},
+			body: JSON.stringify({
+				trxID: input.transactionId,
+				amount: input.amount,
+				currency: input.currency,
+				reason: input.reason,
+				merchantInvoiceNumber: input.merchantInvoiceNumber,
+			}),
+		});
+
+		const result = await response.json().catch(() => ({}));
+
+		if (!response.ok) {
+			return {
+				status: "failed",
+				reference: null,
+				message:
+					result?.statusMessage ??
+					result?.message ??
+					`The bKash refund request failed with status ${response.status}`,
+			};
+		}
+
+		return {
+			status: "completed",
+			reference:
+				result?.refundTrxId ?? result?.trxID ?? result?.transactionId ?? null,
+		};
+	} catch (error: any) {
+		return {
+			status: "failed",
+			reference: null,
+			message: error?.message ?? "The bKash refund request failed",
+		};
+	}
+};
+
 export const getBkashIdToken = async () => {
 	try {
 		const IdTokenKey = "bkash:idToken";

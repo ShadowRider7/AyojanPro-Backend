@@ -18,6 +18,16 @@ model Payment {
   transactionTime DateTime?
   paidAt          DateTime?
 
+  // Set when the money is released from the platform escrow to the
+  // professional — that happens when the contract is completed.
+  releasedAt DateTime?
+
+  // Set when a cancelled contract is refunded back to the client.
+  refundedAt      DateTime?
+  refundAmount    Decimal? @db.Decimal(12, 2)
+  refundReason    String? @db.Text
+  refundReference String? @db.VarChar(255)
+
   failureReason String? @db.Text
   metadata      Json?
 
@@ -26,6 +36,7 @@ model Payment {
 
   contract Contract @relation(fields: [contractId], references: [id], onDelete: Restrict)
   client Client @relation(fields: [clientId],references: [id])
+  refund Refund?
 
   @@unique([contractId])
   @@index([status])

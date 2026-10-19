@@ -78,6 +78,7 @@ const resolveDispute = catchAsync(async (req, res) => {
 		req.params.id as string,
 		req.body.resolution,
 		req.user!,
+		req.body.refundClient === true,
 	);
 
 	sendResponse(res, {

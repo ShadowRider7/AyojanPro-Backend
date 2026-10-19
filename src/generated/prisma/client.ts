@@ -115,6 +115,11 @@ export type Proposal = Prisma.ProposalModel
  */
 export type ProposalItem = Prisma.ProposalItemModel
 /**
+ * Model Refund
+ * 
+ */
+export type Refund = Prisma.RefundModel
+/**
  * Model Review
  * 
  */

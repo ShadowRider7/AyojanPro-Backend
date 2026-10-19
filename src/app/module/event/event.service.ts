@@ -460,6 +460,20 @@ const publishEvent = async (eventId: string, user: RequestUser) => {
 		throw new AppError(httpStatus.CONFLICT, "event Is Already Published");
 	}
 
+	const activeRequirementCount = await prisma.eventServiceRequirement.count({
+		where: {
+			eventId: event.id,
+			isDeleted: false,
+		},
+	});
+
+	if (activeRequirementCount < 1) {
+		throw new AppError(
+			httpStatus.CONFLICT,
+			"Add at least one service requirement before publishing this event",
+		);
+	}
+
 	const publishedEvent = await prisma.event.update({
 		where: { id: event.id },
 		data: { status: EventStatus.PUBLISHED },

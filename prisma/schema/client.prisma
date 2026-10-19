@@ -17,6 +17,7 @@ model Client {
   contracts Contract[]
   payments  Payment[]
   reviews Review[]
+  refunds Refund[]
 
   @@index([city])
 }

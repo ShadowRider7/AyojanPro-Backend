@@ -66,6 +66,7 @@ export const ModelName = {
   ProfessionalSkill: 'ProfessionalSkill',
   Proposal: 'Proposal',
   ProposalItem: 'ProposalItem',
+  Refund: 'Refund',
   Review: 'Review',
   Skill: 'Skill',
   User: 'User'
@@ -121,6 +122,10 @@ export const ContractScalarFieldEnum = {
   completedAt: 'completedAt',
   cancelledAt: 'cancelledAt',
   cancellationReason: 'cancellationReason',
+  cancelledByUserId: 'cancelledByUserId',
+  cancelledByRole: 'cancelledByRole',
+  refundIssuedAt: 'refundIssuedAt',
+  refundAmount: 'refundAmount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -243,6 +248,11 @@ export const PaymentScalarFieldEnum = {
   merchantInvoiceNumber: 'merchantInvoiceNumber',
   transactionTime: 'transactionTime',
   paidAt: 'paidAt',
+  releasedAt: 'releasedAt',
+  refundedAt: 'refundedAt',
+  refundAmount: 'refundAmount',
+  refundReason: 'refundReason',
+  refundReference: 'refundReference',
   failureReason: 'failureReason',
   metadata: 'metadata',
   createdAt: 'createdAt',
@@ -354,6 +364,26 @@ export const ProposalItemScalarFieldEnum = {
 } as const
 
 export type ProposalItemScalarFieldEnum = (typeof ProposalItemScalarFieldEnum)[keyof typeof ProposalItemScalarFieldEnum]
+
+
+export const RefundScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  paymentId: 'paymentId',
+  clientId: 'clientId',
+  amount: 'amount',
+  currency: 'currency',
+  reason: 'reason',
+  status: 'status',
+  originalStatus: 'originalStatus',
+  reference: 'reference',
+  note: 'note',
+  settledAt: 'settledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RefundScalarFieldEnum = (typeof RefundScalarFieldEnum)[keyof typeof RefundScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {

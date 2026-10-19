@@ -11,7 +11,8 @@ import type { IQuery } from "../../interfaces";
 import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/checkAuth";
 import { AppError } from "../../utils/AppError";
-import type { IUpdateUserStatus } from "./admin.interface";
+import { RefundService } from "../payment/refund.service";
+import type { IUpdateRefundStatus, IUpdateUserStatus } from "./admin.interface";
 
 const searchFilter = (search: string) => ({
 	OR: [
@@ -76,9 +77,17 @@ const listPayments = async (query: IQuery) => {
 			...(status ? { status: status as PaymentStatus } : {}),
 			...(stage ? { stage: stage as PaymentStage } : {}),
 		},
-		include: { contract: true, client: true },
+		include: { contract: true, client: true, refund: true },
 		orderBy: { createdAt: "desc" },
 	});
+};
+
+const listRefunds = async (query: IQuery) => {
+	return RefundService.listRefunds({ status: query.status });
+};
+
+const settleRefund = async (refundId: string, payload: IUpdateRefundStatus) => {
+	return RefundService.settleRefund(refundId, payload);
 };
 
 const updateUserStatus = async (
@@ -119,5 +128,7 @@ export const adminService = {
 	listEvents,
 	listContracts,
 	listPayments,
+	listRefunds,
+	settleRefund,
 	updateUserStatus,
 };

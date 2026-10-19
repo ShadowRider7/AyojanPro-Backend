@@ -412,6 +412,7 @@ export const ModelName = {
   ProfessionalSkill: 'ProfessionalSkill',
   Proposal: 'Proposal',
   ProposalItem: 'ProposalItem',
+  Refund: 'Refund',
   Review: 'Review',
   Skill: 'Skill',
   User: 'User'
@@ -430,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "client" | "contract" | "deliverable" | "dispute" | "event" | "eventServiceRequirement" | "experience" | "notification" | "payment" | "portfolioItem" | "professional" | "professionalService" | "professionalSkill" | "proposal" | "proposalItem" | "review" | "skill" | "user"
+    modelProps: "client" | "contract" | "deliverable" | "dispute" | "event" | "eventServiceRequirement" | "experience" | "notification" | "payment" | "portfolioItem" | "professional" | "professionalService" | "professionalSkill" | "proposal" | "proposalItem" | "refund" | "review" | "skill" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1544,6 +1545,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Refund: {
+      payload: Prisma.$RefundPayload<ExtArgs>
+      fields: Prisma.RefundFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RefundFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RefundFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>
+        }
+        findFirst: {
+          args: Prisma.RefundFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RefundFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>
+        }
+        findMany: {
+          args: Prisma.RefundFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>[]
+        }
+        create: {
+          args: Prisma.RefundCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>
+        }
+        createMany: {
+          args: Prisma.RefundCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RefundCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>[]
+        }
+        delete: {
+          args: Prisma.RefundDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>
+        }
+        update: {
+          args: Prisma.RefundUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>
+        }
+        deleteMany: {
+          args: Prisma.RefundDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RefundUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RefundUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>[]
+        }
+        upsert: {
+          args: Prisma.RefundUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RefundPayload>
+        }
+        aggregate: {
+          args: Prisma.RefundAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRefund>
+        }
+        groupBy: {
+          args: Prisma.RefundGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RefundGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RefundCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RefundCountAggregateOutputType> | number
+        }
+      }
+    }
     Review: {
       payload: Prisma.$ReviewPayload<ExtArgs>
       fields: Prisma.ReviewFieldRefs
@@ -1839,6 +1914,10 @@ export const ContractScalarFieldEnum = {
   completedAt: 'completedAt',
   cancelledAt: 'cancelledAt',
   cancellationReason: 'cancellationReason',
+  cancelledByUserId: 'cancelledByUserId',
+  cancelledByRole: 'cancelledByRole',
+  refundIssuedAt: 'refundIssuedAt',
+  refundAmount: 'refundAmount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1961,6 +2040,11 @@ export const PaymentScalarFieldEnum = {
   merchantInvoiceNumber: 'merchantInvoiceNumber',
   transactionTime: 'transactionTime',
   paidAt: 'paidAt',
+  releasedAt: 'releasedAt',
+  refundedAt: 'refundedAt',
+  refundAmount: 'refundAmount',
+  refundReason: 'refundReason',
+  refundReference: 'refundReference',
   failureReason: 'failureReason',
   metadata: 'metadata',
   createdAt: 'createdAt',
@@ -2072,6 +2156,26 @@ export const ProposalItemScalarFieldEnum = {
 } as const
 
 export type ProposalItemScalarFieldEnum = (typeof ProposalItemScalarFieldEnum)[keyof typeof ProposalItemScalarFieldEnum]
+
+
+export const RefundScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  paymentId: 'paymentId',
+  clientId: 'clientId',
+  amount: 'amount',
+  currency: 'currency',
+  reason: 'reason',
+  status: 'status',
+  originalStatus: 'originalStatus',
+  reference: 'reference',
+  note: 'note',
+  settledAt: 'settledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RefundScalarFieldEnum = (typeof RefundScalarFieldEnum)[keyof typeof RefundScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {
@@ -2229,6 +2333,20 @@ export type EnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'ContractStatus[]'
  */
 export type ListEnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Role'
+ */
+export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+/**
+ * Reference to a field of type 'Role[]'
+ */
+export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
     
 
 
@@ -2408,16 +2526,16 @@ export type ListEnumProposalStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
- * Reference to a field of type 'Role'
+ * Reference to a field of type 'RefundStatus'
  */
-export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+export type EnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundStatus'>
     
 
 
 /**
- * Reference to a field of type 'Role[]'
+ * Reference to a field of type 'RefundStatus[]'
  */
-export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+export type ListEnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundStatus[]'>
     
 
 
@@ -2628,6 +2746,7 @@ export type GlobalOmitConfig = {
   professionalSkill?: Prisma.ProfessionalSkillOmit
   proposal?: Prisma.ProposalOmit
   proposalItem?: Prisma.ProposalItemOmit
+  refund?: Prisma.RefundOmit
   review?: Prisma.ReviewOmit
   skill?: Prisma.SkillOmit
   user?: Prisma.UserOmit

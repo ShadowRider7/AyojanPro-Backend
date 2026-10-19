@@ -24,6 +24,15 @@ model Contract {
   cancelledAt        DateTime?
   cancellationReason String? @db.Text
 
+  // Who ended the contract. A contract cancelled by the professional (or by
+  // an admin) refunds the client, a client cancellation does not.
+  cancelledByUserId String?
+  cancelledByRole   Role?
+
+  // Set when a refund was issued for this contract.
+  refundIssuedAt DateTime?
+  refundAmount   Decimal? @db.Decimal(12, 2)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -33,11 +42,13 @@ model Contract {
   eventServiceRequirement EventServiceRequirement @relation(fields: [eventServiceRequirementId], references: [id], onDelete: Restrict)
   professionalService     ProfessionalService     @relation(fields: [professionalServiceId], references: [id], onDelete: Restrict)
   proposalItem            ProposalItem            @relation(fields: [proposalItemId], references: [id], onDelete: Restrict)
+  cancelledBy             User?                   @relation("ContractCancelledBy", fields: [cancelledByUserId], references: [id], onDelete: SetNull)
 
   payments     Payment[]
   reviews      Review[]
   disputes     Dispute[]
   deliverables Deliverable?
+  refunds      Refund[]
 
   @@index([clientId])
   @@index([professionalId])

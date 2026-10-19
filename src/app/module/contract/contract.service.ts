@@ -2,13 +2,25 @@ import httpStatus from "http-status";
 import {
 	ContractStatus,
 	NotificationType,
+	ProposalStatus,
 	Role,
 } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/checkAuth";
 import { AppError } from "../../utils/AppError";
 import { createNotifications } from "../../utils/notifications";
+import { releaseEscrowedPayments } from "../payment/escrow.service";
+import {
+	createContractRefund,
+	dispatchRefund,
+	isRefundablePayment,
+} from "../payment/refund.service";
 import type { IAttachDeliverable } from "./contract.interface";
+import {
+	isProfessionalCancellationWindowOpen,
+	PROFESSIONAL_CANCEL_NOTICE_MESSAGE,
+	shouldRefundClient,
+} from "./contract.policy";
 
 const CONTRACT_INCLUDE = {
 	client: true,
@@ -19,6 +31,7 @@ const CONTRACT_INCLUDE = {
 	proposalItem: true,
 	payments: true,
 	deliverables: true,
+	refunds: true,
 } as const;
 
 const getAuthorizedContract = async (contractId: string, user: RequestUser) => {
@@ -97,6 +110,12 @@ const getContractDetails = async (contractId: string, user: RequestUser) => {
 
 const CANCELLABLE_STATUSES = new Set(["PENDING", "CONFIRMED", "IN_PROGRESS"]);
 
+const CANCELLER_LABEL: Record<Role, string> = {
+	[Role.CLIENT]: "the client",
+	[Role.PROFESSIONAL]: "the professional",
+	[Role.ADMIN]: "an admin",
+};
+
 const cancelContract = async (
 	contractId: string,
 	reason: string | undefined,
@@ -111,13 +130,34 @@ const cancelContract = async (
 		);
 	}
 
-	const updated = await prisma.$transaction(async (tx) => {
+	// A professional may only drop a booked slot while it is still at least
+	// 48 hours away — inside that window the client raises a dispute instead.
+	if (
+		user.role === Role.PROFESSIONAL &&
+		!isProfessionalCancellationWindowOpen(contract.serviceStartAt)
+	) {
+		throw new AppError(
+			httpStatus.BAD_REQUEST,
+			PROFESSIONAL_CANCEL_NOTICE_MESSAGE,
+		);
+	}
+
+	// The client is refunded when the contract is cancelled by the professional
+	// (or by an admin): they did nothing wrong, so the money goes back to them.
+	// A client that cancels their own contract is not refunded.
+	const refundablePayment = shouldRefundClient(user.role)
+		? contract.payments.find((payment) => isRefundablePayment(payment))
+		: undefined;
+
+	const { refund } = await prisma.$transaction(async (tx) => {
 		const cancelled = await tx.contract.update({
 			where: { id: contractId },
 			data: {
 				status: ContractStatus.CANCELLED,
 				cancelledAt: new Date(),
 				cancellationReason: reason,
+				cancelledByUserId: user.userId,
+				cancelledByRole: user.role,
 			},
 		});
 
@@ -128,9 +168,49 @@ const cancelContract = async (
 			data: { status: "OPEN" },
 		});
 
-		const cancelMessage = `The contract for "${contract.event.title}" has been cancelled${
-			reason ? `: ${reason}` : "."
-		}`;
+		// The acceptance behind the contract is undone as well: a professional
+		// that cancels withdraws their own offer, a client (or admin)
+		// cancellation rejects it. Either way the item stops being an active
+		// proposal, so the professional can propose for the re-opened
+		// requirement again.
+		const proposalStatus =
+			user.role === Role.PROFESSIONAL
+				? ProposalStatus.WITHDRAWN
+				: ProposalStatus.REJECTED;
+
+		await tx.proposalItem.updateMany({
+			where: {
+				id: contract.proposalItemId,
+				status: ProposalStatus.ACCEPTED,
+			},
+			data: {
+				status: proposalStatus,
+				respondedAt: new Date(),
+			},
+		});
+
+		let createdRefund = null;
+
+		if (refundablePayment) {
+			createdRefund = await createContractRefund(tx, {
+				contractId,
+				clientId: contract.clientId,
+				payment: refundablePayment,
+				reason:
+					reason?.trim() ||
+					`The contract was cancelled by ${CANCELLER_LABEL[user.role]}.`,
+			});
+		}
+
+		const cancelMessage = `The contract for "${contract.event.title}" has been cancelled by ${CANCELLER_LABEL[user.role]}${reason ? `: ${reason}` : "."}`;
+
+		const refundMessage = createdRefund
+			? ` A refund of ${createdRefund.amount.toFixed(2)} ${createdRefund.currency} has been issued to your bKash account.`
+			: "";
+
+		// The proposal behind the contract moves with it — the professional
+		// hears about their own proposal, the client about theirs.
+		const proposalState = proposalStatus.toLowerCase();
 
 		const notifications = [];
 		if (user.role !== Role.PROFESSIONAL) {
@@ -138,7 +218,7 @@ const cancelContract = async (
 				userId: contract.professional.userId,
 				title: "Contract Cancelled",
 				type: NotificationType.CONTRACT,
-				message: cancelMessage,
+				message: `${cancelMessage} Your proposal is now marked ${proposalState}.`,
 			});
 		}
 		if (user.role !== Role.CLIENT) {
@@ -146,16 +226,30 @@ const cancelContract = async (
 				userId: contract.client.userId,
 				title: "Contract Cancelled",
 				type: NotificationType.CONTRACT,
-				message: cancelMessage,
+				message: `${cancelMessage}${refundMessage} The professional's proposal is now marked ${proposalState}.`,
 			});
 		}
 
 		await createNotifications(tx, notifications);
 
-		return cancelled;
+		return { refund: createdRefund, cancelled };
 	});
 
-	return updated;
+	// The refund is handed over to the payment provider outside of the
+	// transaction — the cancellation itself is already committed, so a failing
+	// provider call must not fail the whole request.
+	if (refund) {
+		try {
+			await dispatchRefund(refund.id);
+		} catch (error) {
+			console.error("Refund dispatch failed", error);
+		}
+	}
+
+	return prisma.contract.findUnique({
+		where: { id: contractId },
+		include: CONTRACT_INCLUDE,
+	});
 };
 
 const attachDeliverable = async (
@@ -250,6 +344,10 @@ const markContractCompleted = async (contractId: string) => {
 			data: { status: "COMPLETED" },
 		});
 
+		// The contract is completed, so the money the platform held in escrow
+		// is released to the professional.
+		await releaseEscrowedPayments(tx, contractId);
+
 		await createNotifications(tx, [
 			{
 				userId: contract.client.userId,
@@ -261,7 +359,7 @@ const markContractCompleted = async (contractId: string) => {
 				userId: contract.professional.userId,
 				title: "Contract Completed",
 				type: NotificationType.CONTRACT,
-				message: `The contract for "${contract.event.title}" has been completed successfully.`,
+				message: `The contract for "${contract.event.title}" has been completed successfully. The escrowed amount is released to you.`,
 			},
 		]);
 
@@ -279,14 +377,18 @@ const completeContract = async (contractId: string, user: RequestUser) => {
 		);
 	}
 
-	const finalPaymentCompleted = contract.payments.some(
-		(p) => p.stage === "FINAL" && p.status === "COMPLETED",
+	// The final payment is settled but still held by the platform (escrow) —
+	// completing the contract releases it to the professional.
+	const finalPaymentSettled = contract.payments.some(
+		(p) =>
+			p.stage === "FINAL" &&
+			(p.status === "ESCROWED" || p.status === "COMPLETED"),
 	);
 
-	if (!finalPaymentCompleted) {
+	if (!finalPaymentSettled) {
 		throw new AppError(
 			httpStatus.BAD_REQUEST,
-			"Final payment must be completed before the contract can be marked completed",
+			"Final payment must be settled before the contract can be marked completed",
 		);
 	}
 

@@ -40,4 +40,8 @@ export default {
 	bkash_app_key: process.env.BKASH_APP_KEY!,
 	bkash_app_secret: process.env.BKASH_APP_SECRET!,
 	bkash_callback_url: process.env.BKASH_CALLBACK_URL!,
+	// Optional. bKash tokenized checkout has no public refund endpoint, so a
+	// refund is only sent to the provider when this URL is configured. Without
+	// it refunds are queued for manual settlement by an admin.
+	bkash_refund_url: process.env.BKASH_REFUND_URL,
 };

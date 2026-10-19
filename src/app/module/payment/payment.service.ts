@@ -14,6 +14,7 @@ import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/checkAuth";
 import { AppError } from "../../utils/AppError";
 import { createNotifications } from "../../utils/notifications";
+import { releaseEscrowedPayments } from "./escrow.service";
 import type {
 	IBkashCallbackResult,
 	IContractPaymentsResult,
@@ -93,13 +94,17 @@ const initiatePayment = async (
 				where: { contractId },
 			});
 
-			if (
-				!existingPayment ||
-				existingPayment.status !== PaymentStatus.PARTIALLY_COMPLETED
-			) {
+			// The advance is held by the platform (escrow) until the contract
+			// is completed — it still has to be settled before the final
+			// payment can be started.
+			const advanceSettled =
+				existingPayment?.status === PaymentStatus.ESCROWED ||
+				existingPayment?.status === PaymentStatus.PARTIALLY_COMPLETED;
+
+			if (!existingPayment || !advanceSettled) {
 				throw new AppError(
 					httpStatus.BAD_REQUEST,
-					"Initial Payment Must Be Completed Before The Final Payment",
+					"Initial Payment Must Be Settled Before The Final Payment",
 				);
 			}
 		}
@@ -108,7 +113,15 @@ const initiatePayment = async (
 			where: { contractId },
 		});
 
-		if (existingPayment?.status === PaymentStatus.COMPLETED) {
+		// The payment row is reused for both stages, so only a payment that is
+		// already settled for THIS stage blocks a new attempt. The advance
+		// sits in the platform escrow (stage INITIAL) while the client pays
+		// the final 70% (stage FINAL).
+		const alreadySettled =
+			existingPayment?.status === PaymentStatus.COMPLETED ||
+			existingPayment?.status === PaymentStatus.ESCROWED;
+
+		if (alreadySettled && existingPayment?.stage === stage) {
 			throw new AppError(
 				httpStatus.BAD_REQUEST,
 				"The Payment Has Already Been Completed For This Contract",
@@ -289,9 +302,11 @@ const bkashPaymentCallback = async (
 				await tx.payment.update({
 					where: { id: payment.id },
 					data: {
-						status: isInitialStage
-							? PaymentStatus.PARTIALLY_COMPLETED
-							: PaymentStatus.COMPLETED,
+						// The money is held by the platform (escrow). It is
+						// released to the professional when the contract is
+						// completed — the final payment completes the contract
+						// right away, the advance waits for that moment.
+						status: PaymentStatus.ESCROWED,
 						amount: updatedAmount,
 						bkashTransactionId: executedPaymentResult?.trxID ?? null,
 						transactionTime: parseBkashDate(
@@ -317,6 +332,12 @@ const bkashPaymentCallback = async (
 					},
 				});
 
+				if (!isInitialStage) {
+					// The contract is completed, so the escrow is released to
+					// the professional.
+					await releaseEscrowedPayments(tx, payment.contractId);
+				}
+
 				const contractName = contract.event?.title
 					? `"${contract.event.title}"`
 					: `#${payment.contractId.slice(0, 8)}`;
@@ -329,11 +350,18 @@ const bkashPaymentCallback = async (
 							: "Final Payment Received",
 						type: NotificationType.PAYMENT,
 						message: isInitialStage
-							? `An initial payment of ${updatedAmount} ${payment.currency} has been received for contract ${contractName}. Your contract is now confirmed.`
-							: `The final payment of ${updatedAmount} ${payment.currency} has been received for contract ${contractName}.`,
+							? `An initial payment of ${updatedAmount} ${payment.currency} has been received for contract ${contractName}. The platform holds it until the contract is completed, then it is released to you. Your contract is now confirmed.`
+							: `The final payment of ${updatedAmount} ${payment.currency} has been received for contract ${contractName}. The escrowed amount is released to you.`,
 					},
 					...(isInitialStage
-						? []
+						? [
+								{
+									userId: contract.client.userId,
+									title: "Payment Held by the Platform",
+									type: NotificationType.PAYMENT,
+									message: `Your initial payment of ${updatedAmount} ${payment.currency} for contract ${contractName} is held by the platform. It is released to the professional once the contract is completed, and returned to you if the contract is cancelled.`,
+								},
+							]
 						: [
 								{
 									userId: contract.professional.userId,
@@ -376,7 +404,7 @@ const bkashPaymentCallback = async (
 						INITIAL_PAYMENT_PERCENTAGE
 					).toFixed(2);
 
-					revertData.status = PaymentStatus.PARTIALLY_COMPLETED;
+					revertData.status = PaymentStatus.ESCROWED;
 					revertData.stage = PaymentStage.INITIAL;
 					revertData.amount = initialAmount;
 				} else {
@@ -430,7 +458,7 @@ const bkashPaymentCallback = async (
 						INITIAL_PAYMENT_PERCENTAGE
 					).toFixed(2);
 
-					revertData.status = PaymentStatus.PARTIALLY_COMPLETED;
+					revertData.status = PaymentStatus.ESCROWED;
 					revertData.stage = PaymentStage.INITIAL;
 					revertData.amount = initialAmount;
 				} else {
@@ -504,6 +532,7 @@ const getContractPayments = async (
 
 	const payments = await prisma.payment.findMany({
 		where: { contractId },
+		include: { refund: true },
 		orderBy: { createdAt: "asc" },
 	});
 

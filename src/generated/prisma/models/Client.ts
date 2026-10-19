@@ -219,6 +219,7 @@ export type ClientWhereInput = {
   contracts?: Prisma.ContractListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  refunds?: Prisma.RefundListRelationFilter
 }
 
 export type ClientOrderByWithRelationInput = {
@@ -236,6 +237,7 @@ export type ClientOrderByWithRelationInput = {
   contracts?: Prisma.ContractOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  refunds?: Prisma.RefundOrderByRelationAggregateInput
 }
 
 export type ClientWhereUniqueInput = Prisma.AtLeast<{
@@ -256,6 +258,7 @@ export type ClientWhereUniqueInput = Prisma.AtLeast<{
   contracts?: Prisma.ContractListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  refunds?: Prisma.RefundListRelationFilter
 }, "id" | "userId">
 
 export type ClientOrderByWithAggregationInput = {
@@ -302,6 +305,7 @@ export type ClientCreateInput = {
   contracts?: Prisma.ContractCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutClientInput
 }
 
 export type ClientUncheckedCreateInput = {
@@ -318,6 +322,7 @@ export type ClientUncheckedCreateInput = {
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutClientInput
 }
 
 export type ClientUpdateInput = {
@@ -334,6 +339,7 @@ export type ClientUpdateInput = {
   contracts?: Prisma.ContractUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutClientNestedInput
 }
 
 export type ClientUncheckedUpdateInput = {
@@ -350,6 +356,7 @@ export type ClientUncheckedUpdateInput = {
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutClientNestedInput
 }
 
 export type ClientCreateManyInput = {
@@ -487,6 +494,20 @@ export type ClientUpdateOneRequiredWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ClientUpdateToOneWithWhereWithoutPaymentsInput, Prisma.ClientUpdateWithoutPaymentsInput>, Prisma.ClientUncheckedUpdateWithoutPaymentsInput>
 }
 
+export type ClientCreateNestedOneWithoutRefundsInput = {
+  create?: Prisma.XOR<Prisma.ClientCreateWithoutRefundsInput, Prisma.ClientUncheckedCreateWithoutRefundsInput>
+  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutRefundsInput
+  connect?: Prisma.ClientWhereUniqueInput
+}
+
+export type ClientUpdateOneRequiredWithoutRefundsNestedInput = {
+  create?: Prisma.XOR<Prisma.ClientCreateWithoutRefundsInput, Prisma.ClientUncheckedCreateWithoutRefundsInput>
+  connectOrCreate?: Prisma.ClientCreateOrConnectWithoutRefundsInput
+  upsert?: Prisma.ClientUpsertWithoutRefundsInput
+  connect?: Prisma.ClientWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClientUpdateToOneWithWhereWithoutRefundsInput, Prisma.ClientUpdateWithoutRefundsInput>, Prisma.ClientUncheckedUpdateWithoutRefundsInput>
+}
+
 export type ClientCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.ClientCreateWithoutReviewsInput, Prisma.ClientUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.ClientCreateOrConnectWithoutReviewsInput
@@ -546,6 +567,7 @@ export type ClientCreateWithoutContractsInput = {
   events?: Prisma.EventCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutClientInput
 }
 
 export type ClientUncheckedCreateWithoutContractsInput = {
@@ -561,6 +583,7 @@ export type ClientUncheckedCreateWithoutContractsInput = {
   events?: Prisma.EventUncheckedCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutClientInput
 }
 
 export type ClientCreateOrConnectWithoutContractsInput = {
@@ -592,6 +615,7 @@ export type ClientUpdateWithoutContractsInput = {
   events?: Prisma.EventUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutClientNestedInput
 }
 
 export type ClientUncheckedUpdateWithoutContractsInput = {
@@ -607,6 +631,7 @@ export type ClientUncheckedUpdateWithoutContractsInput = {
   events?: Prisma.EventUncheckedUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutClientNestedInput
 }
 
 export type ClientCreateWithoutEventsInput = {
@@ -622,6 +647,7 @@ export type ClientCreateWithoutEventsInput = {
   contracts?: Prisma.ContractCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutClientInput
 }
 
 export type ClientUncheckedCreateWithoutEventsInput = {
@@ -637,6 +663,7 @@ export type ClientUncheckedCreateWithoutEventsInput = {
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutClientInput
 }
 
 export type ClientCreateOrConnectWithoutEventsInput = {
@@ -668,6 +695,7 @@ export type ClientUpdateWithoutEventsInput = {
   contracts?: Prisma.ContractUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutClientNestedInput
 }
 
 export type ClientUncheckedUpdateWithoutEventsInput = {
@@ -683,6 +711,7 @@ export type ClientUncheckedUpdateWithoutEventsInput = {
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutClientNestedInput
 }
 
 export type ClientCreateWithoutPaymentsInput = {
@@ -698,6 +727,7 @@ export type ClientCreateWithoutPaymentsInput = {
   events?: Prisma.EventCreateNestedManyWithoutClientInput
   contracts?: Prisma.ContractCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutClientInput
 }
 
 export type ClientUncheckedCreateWithoutPaymentsInput = {
@@ -713,6 +743,7 @@ export type ClientUncheckedCreateWithoutPaymentsInput = {
   events?: Prisma.EventUncheckedCreateNestedManyWithoutClientInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutClientInput
 }
 
 export type ClientCreateOrConnectWithoutPaymentsInput = {
@@ -744,6 +775,7 @@ export type ClientUpdateWithoutPaymentsInput = {
   events?: Prisma.EventUpdateManyWithoutClientNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutClientNestedInput
 }
 
 export type ClientUncheckedUpdateWithoutPaymentsInput = {
@@ -758,6 +790,87 @@ export type ClientUncheckedUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   events?: Prisma.EventUncheckedUpdateManyWithoutClientNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutClientNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutClientNestedInput
+}
+
+export type ClientCreateWithoutRefundsInput = {
+  id?: string
+  phone?: string | null
+  bio?: string | null
+  address?: string | null
+  city?: string | null
+  country?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutClientInput
+  events?: Prisma.EventCreateNestedManyWithoutClientInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutClientInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutClientInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutClientInput
+}
+
+export type ClientUncheckedCreateWithoutRefundsInput = {
+  id?: string
+  userId: string
+  phone?: string | null
+  bio?: string | null
+  address?: string | null
+  city?: string | null
+  country?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  events?: Prisma.EventUncheckedCreateNestedManyWithoutClientInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutClientInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutClientInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutClientInput
+}
+
+export type ClientCreateOrConnectWithoutRefundsInput = {
+  where: Prisma.ClientWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClientCreateWithoutRefundsInput, Prisma.ClientUncheckedCreateWithoutRefundsInput>
+}
+
+export type ClientUpsertWithoutRefundsInput = {
+  update: Prisma.XOR<Prisma.ClientUpdateWithoutRefundsInput, Prisma.ClientUncheckedUpdateWithoutRefundsInput>
+  create: Prisma.XOR<Prisma.ClientCreateWithoutRefundsInput, Prisma.ClientUncheckedCreateWithoutRefundsInput>
+  where?: Prisma.ClientWhereInput
+}
+
+export type ClientUpdateToOneWithWhereWithoutRefundsInput = {
+  where?: Prisma.ClientWhereInput
+  data: Prisma.XOR<Prisma.ClientUpdateWithoutRefundsInput, Prisma.ClientUncheckedUpdateWithoutRefundsInput>
+}
+
+export type ClientUpdateWithoutRefundsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutClientNestedInput
+  events?: Prisma.EventUpdateManyWithoutClientNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutClientNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutClientNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutClientNestedInput
+}
+
+export type ClientUncheckedUpdateWithoutRefundsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.EventUncheckedUpdateManyWithoutClientNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutClientNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutClientNestedInput
 }
 
@@ -774,6 +887,7 @@ export type ClientCreateWithoutReviewsInput = {
   events?: Prisma.EventCreateNestedManyWithoutClientInput
   contracts?: Prisma.ContractCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutClientInput
 }
 
 export type ClientUncheckedCreateWithoutReviewsInput = {
@@ -789,6 +903,7 @@ export type ClientUncheckedCreateWithoutReviewsInput = {
   events?: Prisma.EventUncheckedCreateNestedManyWithoutClientInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutClientInput
 }
 
 export type ClientCreateOrConnectWithoutReviewsInput = {
@@ -820,6 +935,7 @@ export type ClientUpdateWithoutReviewsInput = {
   events?: Prisma.EventUpdateManyWithoutClientNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutClientNestedInput
 }
 
 export type ClientUncheckedUpdateWithoutReviewsInput = {
@@ -835,6 +951,7 @@ export type ClientUncheckedUpdateWithoutReviewsInput = {
   events?: Prisma.EventUncheckedUpdateManyWithoutClientNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutClientNestedInput
 }
 
 export type ClientCreateWithoutUserInput = {
@@ -850,6 +967,7 @@ export type ClientCreateWithoutUserInput = {
   contracts?: Prisma.ContractCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundCreateNestedManyWithoutClientInput
 }
 
 export type ClientUncheckedCreateWithoutUserInput = {
@@ -865,6 +983,7 @@ export type ClientUncheckedCreateWithoutUserInput = {
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutClientInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutClientInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutClientInput
+  refunds?: Prisma.RefundUncheckedCreateNestedManyWithoutClientInput
 }
 
 export type ClientCreateOrConnectWithoutUserInput = {
@@ -896,6 +1015,7 @@ export type ClientUpdateWithoutUserInput = {
   contracts?: Prisma.ContractUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUpdateManyWithoutClientNestedInput
 }
 
 export type ClientUncheckedUpdateWithoutUserInput = {
@@ -911,6 +1031,7 @@ export type ClientUncheckedUpdateWithoutUserInput = {
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutClientNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutClientNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutClientNestedInput
+  refunds?: Prisma.RefundUncheckedUpdateManyWithoutClientNestedInput
 }
 
 
@@ -923,6 +1044,7 @@ export type ClientCountOutputType = {
   contracts: number
   payments: number
   reviews: number
+  refunds: number
 }
 
 export type ClientCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -930,6 +1052,7 @@ export type ClientCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   contracts?: boolean | ClientCountOutputTypeCountContractsArgs
   payments?: boolean | ClientCountOutputTypeCountPaymentsArgs
   reviews?: boolean | ClientCountOutputTypeCountReviewsArgs
+  refunds?: boolean | ClientCountOutputTypeCountRefundsArgs
 }
 
 /**
@@ -970,6 +1093,13 @@ export type ClientCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.ReviewWhereInput
 }
 
+/**
+ * ClientCountOutputType without action
+ */
+export type ClientCountOutputTypeCountRefundsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefundWhereInput
+}
+
 
 export type ClientSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -986,6 +1116,7 @@ export type ClientSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   contracts?: boolean | Prisma.Client$contractsArgs<ExtArgs>
   payments?: boolean | Prisma.Client$paymentsArgs<ExtArgs>
   reviews?: boolean | Prisma.Client$reviewsArgs<ExtArgs>
+  refunds?: boolean | Prisma.Client$refundsArgs<ExtArgs>
   _count?: boolean | Prisma.ClientCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["client"]>
 
@@ -1034,6 +1165,7 @@ export type ClientInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   contracts?: boolean | Prisma.Client$contractsArgs<ExtArgs>
   payments?: boolean | Prisma.Client$paymentsArgs<ExtArgs>
   reviews?: boolean | Prisma.Client$reviewsArgs<ExtArgs>
+  refunds?: boolean | Prisma.Client$refundsArgs<ExtArgs>
   _count?: boolean | Prisma.ClientCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClientIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1051,6 +1183,7 @@ export type $ClientPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     contracts: Prisma.$ContractPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    refunds: Prisma.$RefundPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1461,6 +1594,7 @@ export interface Prisma__ClientClient<T, Null = never, ExtArgs extends runtime.T
   contracts<T extends Prisma.Client$contractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.Client$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Client$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  refunds<T extends Prisma.Client$refundsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Client$refundsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1993,6 +2127,30 @@ export type Client$reviewsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * Client.refunds
+ */
+export type Client$refundsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Refund
+   */
+  select?: Prisma.RefundSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Refund
+   */
+  omit?: Prisma.RefundOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefundInclude<ExtArgs> | null
+  where?: Prisma.RefundWhereInput
+  orderBy?: Prisma.RefundOrderByWithRelationInput | Prisma.RefundOrderByWithRelationInput[]
+  cursor?: Prisma.RefundWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefundScalarFieldEnum | Prisma.RefundScalarFieldEnum[]
 }
 
 /**

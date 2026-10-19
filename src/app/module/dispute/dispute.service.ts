@@ -12,6 +12,11 @@ import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/checkAuth";
 import { AppError } from "../../utils/AppError";
 import { createNotifications } from "../../utils/notifications";
+import {
+	createContractRefund,
+	dispatchRefund,
+	isRefundablePayment,
+} from "../payment/refund.service";
 import type {
 	IEvidenceInput,
 	IRaiseDispute,
@@ -261,6 +266,7 @@ const resolveDispute = async (
 	disputeId: string,
 	resolution: string,
 	user: RequestUser,
+	refundClient = false,
 ) => {
 	if (user.role !== Role.ADMIN) {
 		throw new AppError(
@@ -282,7 +288,20 @@ const resolveDispute = async (
 		);
 	}
 
-	return prisma.$transaction(async (tx) => {
+	// The platform holds the client's money in escrow. When the dispute is
+	// resolved in the client's favour the escrow goes back to them.
+	const contractWithPayments = await prisma.contract.findUnique({
+		where: { id: dispute.contractId },
+		include: { payments: true },
+	});
+
+	const refundablePayment = refundClient
+		? contractWithPayments?.payments.find((payment) =>
+				isRefundablePayment(payment),
+			)
+		: undefined;
+
+	const { refund } = await prisma.$transaction(async (tx) => {
 		const resolved = await tx.dispute.update({
 			where: { id: disputeId },
 			data: {
@@ -298,6 +317,17 @@ const resolveDispute = async (
 			data: { status: ContractStatus.RESOLVED },
 		});
 
+		let createdRefund = null;
+
+		if (refundablePayment) {
+			createdRefund = await createContractRefund(tx, {
+				contractId: dispute.contractId,
+				clientId: contractWithPayments!.clientId,
+				payment: refundablePayment,
+				reason: `The dispute was resolved in the client's favour: ${resolution}`,
+			});
+		}
+
 		const contract = await tx.contract.findUnique({
 			where: { id: dispute.contractId },
 			include: { client: true, professional: true, event: true },
@@ -310,7 +340,11 @@ const resolveDispute = async (
 				type: NotificationType.DISPUTE,
 				message: `The dispute on the contract${
 					contract?.event?.title ? ` for "${contract.event.title}"` : ""
-				} has been resolved.`,
+				} has been resolved.${
+					createdRefund
+						? ` A refund of ${createdRefund.amount.toFixed(2)} ${createdRefund.currency} has been issued to your bKash account.`
+						: ""
+				}`,
 			},
 			{
 				userId: contract?.professional.userId ?? "",
@@ -322,8 +356,20 @@ const resolveDispute = async (
 			},
 		]);
 
-		return resolved;
+		return { refund: createdRefund, dispute: resolved };
 	});
+
+	// The refund is handed over to the payment provider outside of the
+	// transaction.
+	if (refund) {
+		try {
+			await dispatchRefund(refund.id);
+		} catch (error) {
+			console.error("Refund dispatch failed", error);
+		}
+	}
+
+	return prisma.dispute.findUnique({ where: { id: disputeId } });
 };
 
 export const disputeService = {

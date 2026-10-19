@@ -105,6 +105,7 @@ export const PaymentStatus = {
   PENDING: 'PENDING',
   PROCESSING: 'PROCESSING',
   PARTIALLY_COMPLETED: 'PARTIALLY_COMPLETED',
+  ESCROWED: 'ESCROWED',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
   CANCELLED: 'CANCELLED',
@@ -112,6 +113,16 @@ export const PaymentStatus = {
 } as const
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const RefundStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type RefundStatus = (typeof RefundStatus)[keyof typeof RefundStatus]
 
 
 export const PaymentMethod = {

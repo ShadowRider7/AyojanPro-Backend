@@ -230,6 +230,24 @@ PENDING → CONFIRMED → IN_PROGRESS → DELIVERED → COMPLETED
 
 Invalid state transitions must be rejected. The contract time must be validated again when created/confirmed.
 
+### 14.1 Cancellation Policy & Refunds
+
+A contract can be cancelled while it is `PENDING`, `CONFIRMED` or `IN_PROGRESS`. Who cancelled it decides what happens to the money:
+
+| Cancelled by | Notice required | Client refund |
+| --- | --- | --- |
+| Client | none — can cancel any time while the contract is cancellable | **No** — the client gave up the booking, the money stays in the platform escrow |
+| Professional | at least **5 days (120 hours)** before `serviceStartAt` | **Yes** — the money already captured is returned in full |
+| Admin | none | **Yes** — the client did nothing wrong |
+
+- A professional inside the 5 day window gets `400` and is told to raise a dispute instead, which an admin reviews. The notice window stops a professional from dropping a booked slot on the client at the last minute.
+- A professional cancellation of a contract that already captured a payment (30% advance or the full amount) creates a `Refund` record and returns the captured amount to the client's bKash account. A cancellation of an unpaid contract creates no refund.
+- The cancellation is recorded with who cancelled it (`cancelledByUserId`, `cancelledByRole`) so the reason and the money trail are auditable.
+- The proposal behind the contract moves with it: a professional cancellation marks the proposal item `WITHDRAWN` (the professional pulled out), a client or admin cancellation marks it `REJECTED`. The item is therefore no longer an active proposal, so the professional can propose for the re-opened requirement again.
+- The client is notified with the refund amount; the professional is notified that the contract is gone and the requirement re-opens for new proposals.
+
+Refund statuses: `PENDING` (recorded, waiting to be returned), `PROCESSING` (handed to the provider), `COMPLETED` (money back with the client), `FAILED` (settlement failed, needs a manual retry).
+
 ## 15. Payment System
 
 The payment provider is **bKash**. Payment status must be verified by the backend; the frontend must never be trusted to declare payment success.
@@ -248,7 +266,28 @@ The initial 30% is paid upfront to confirm the contract. The remaining 70% is pa
 Payment records support contract, client, payment stage, amount, currency, method, bKash transaction/reference information, status, transaction time, failure reason and metadata. Only one payment per (contract, stage) is permitted.
 
 Payment stages: `INITIAL`, `FINAL`.
-Payment statuses: `PENDING`, `PROCESSING`, `PARTIALLY_COMPLETED`, `COMPLETED`, `FAILED`, `CANCELLED`, `REFUNDED`.
+Payment statuses: `PENDING`, `PROCESSING`, `PARTIALLY_COMPLETED`, `ESCROWED`, `COMPLETED`, `FAILED`, `CANCELLED`, `REFUNDED`.
+
+### 15.1 Escrow — the platform holds the money
+
+The platform holds the money the client paid until the contract is completed:
+
+```text
+client pays → ESCROWED (platform holds it)
+contract COMPLETED → COMPLETED (released to the professional, releasedAt is set)
+contract cancelled → REFUNDED (returned to the client) or ESCROWED (client forfeit)
+```
+
+- A successful payment is `ESCROWED`, not `COMPLETED`. It only becomes `COMPLETED` when the contract reaches `COMPLETED` — the final payment completes the contract, the manual "mark as completed" does the same. Either way the escrow is released in the same transaction and `releasedAt` is stamped.
+- Because the platform holds the money, a professional cannot walk away with a booking they never delivered, and a client cannot lose a payment they already made.
+- A professional that cancels (with the 5 day notice) refunds the escrowed money to the client. A client that cancels keeps the money in the platform escrow — it is never released to the professional.
+- The professional sees the escrowed amount as "pending payout" until the contract is completed.
+
+### 15.1 Refunds
+
+A `Refund` record is the audit trail of money that goes back to a client. It is created when a contract is cancelled by the professional (or by an admin) after a payment was already captured. A refund carries contract, payment, client, amount, currency, reason, status, provider reference and settlement timestamp. Only one refund per payment is permitted.
+
+bKash tokenized checkout has no public refund endpoint. When `BKASH_REFUND_URL` is configured the refund is forwarded to it, otherwise the refund stays `PENDING` and an admin settles it through `PATCH /api/v1/admin/refunds/:id/settle`.
 
 ## 16. Service Delivery & Deliverables
 
@@ -321,6 +360,10 @@ Since AyojanPro is a local platform, location matters. Matching may consider: se
 13. **Dispute evidence:** disputes require sufficient supporting information/evidence; at least one piece of evidence is mandatory and stored as a JSON array on the `Dispute` record.
 14. **Transactional booking:** proposal acceptance and contract creation must protect against race conditions.
 15. **Date/time validation:** every relevant workflow transition validates timestamps and scheduling conflicts.
+16. **Cancellation notice window:** a professional may only cancel a contract at least 5 days before the service starts; inside that window a dispute is the route.
+17. **Refund on professional cancellation:** a contract cancelled by the professional (or by an admin) refunds the captured payment to the client; a contract cancelled by the client is not refunded.
+18. **Refund audit trail:** every refund is recorded as a `Refund` row with its own status so an outstanding refund is always visible.
+19. **Platform escrow:** a captured payment is `ESCROWED` and held by the platform until the contract is completed, then released to the professional; a cancelled contract returns the money to the client instead.
 
 ## 25. Time-Sensitive Workflow Validation
 
@@ -579,7 +622,9 @@ All list endpoints share a common query interface (`IQuery`): `page`, `limit`, `
 | `GET /api/v1/admin/users` | `role` = `CLIENT` \| `PROFESSIONAL` \| `ADMIN`, `status` = `ACTIVE` \| `DELETED` \| `SUSPENDED` \| `BLOCKED`, `search` |
 | `GET /api/v1/admin/events` | `status` = `DRAFT` \| `PUBLISHED` \| `IN_PROGRESS` \| `COMPLETED` \| `CANCELLED` |
 | `GET /api/v1/admin/contracts` | `status` = `PENDING` \| `CONFIRMED` \| `IN_PROGRESS` \| `DELIVERED` \| `COMPLETED` \| `CANCELLED` \| `DISPUTED` \| `RESOLVED` |
-| `GET /api/v1/admin/payments` | `status` = `PENDING` \| `PROCESSING` \| `PARTIALLY_COMPLETED` \| `COMPLETED` \| `FAILED` \| `CANCELLED` \| `REFUNDED`, `stage` = `INITIAL` \| `FINAL` |
+| `GET /api/v1/admin/payments` | `status` = `PENDING` \| `PROCESSING` \| `PARTIALLY_COMPLETED` \| `ESCROWED` \| `COMPLETED` \| `FAILED` \| `CANCELLED` \| `REFUNDED`, `stage` = `INITIAL` \| `FINAL` |
+| `GET /api/v1/admin/refunds` | `status` = `PENDING` \| `PROCESSING` \| `COMPLETED` \| `FAILED` |
+| `PATCH /api/v1/admin/refunds/:id/settle` | Settle a refund manually — body: `status` = `COMPLETED` \| `FAILED`, `note?`, `reference?` |
 | `GET /api/v1/event/all-events` | `searchTerm`, `clientId`, `email`, `status` |
 | `GET /api/v1/professional/all-professionals` (Admin) | `searchTerm`, `professionalTitle`, `city`, `country`, `minExperience`, `maxExperience`, `minRating`, `acceptingBookings`, `status` |
 | `GET /api/v1/professional/public/all-Professionals` | `searchTerm`, `professionalTitle` |

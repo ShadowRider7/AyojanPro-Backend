@@ -2,9 +2,9 @@ model Event {
   id       String @id @default(uuid())
   clientId String
 
-  title       String  @db.VarChar(255)
-  description String? @db.Text
-  eventType   String? @db.VarChar(150)
+  title       String    @db.VarChar(255)
+  description String?   @db.Text
+  eventType   EventType @default(OTHER)
 
   address String? @db.Text
   city    String? @db.VarChar(100)

@@ -522,6 +522,11 @@ const getAllProfessionalListPublic = async (query: IQuery) => {
 			averageRating: true,
 			totalReviews: true,
 			createdAt: true,
+			user: {
+				select: {
+					imageUrl: true,
+				},
+			},
 			skills: {
 				select: {
 					skill: {
@@ -570,6 +575,11 @@ const getSingleProfessionalPublicProfile = async (professionalId: string) => {
 			averageRating: true,
 			totalReviews: true,
 			createdAt: true,
+			user: {
+				select: {
+					imageUrl: true,
+				},
+			},
 			skills: {
 				select: {
 					skill: {

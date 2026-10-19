@@ -1,0 +1,45 @@
+// REFUND TRAIL
+// ──────────────────────────
+// Every refund the platform owes a client is recorded here. A refund is
+// created when a contract is cancelled by the professional (or by an admin)
+// while a payment was already captured — the client did nothing wrong, so the
+// money goes back to them.
+//
+// The refund row is the source of truth for the settlement state:
+//   PENDING   → recorded, waiting to be sent back to the client
+//   PROCESSING→ handed over to the payment provider
+//   COMPLETED → the money is back with the client
+//   FAILED    → the settlement failed and needs a manual retry
+model Refund {
+  id         String @id @default(uuid())
+  contractId String
+  paymentId  String @unique
+  clientId   String
+
+  amount   Decimal @db.Decimal(12, 2)
+  currency String  @default("BDT") @db.VarChar(10)
+
+  reason String      @db.Text
+  status RefundStatus @default(PENDING)
+
+  // The payment status before the refund was issued — used to put the
+  // payment back where it was when a refund fails.
+  originalStatus PaymentStatus @default(ESCROWED)
+
+  // Provider reference of the refund (e.g. the bKash refund transaction id).
+  reference String? @db.VarChar(255)
+  note      String? @db.Text
+
+  settledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Restrict)
+  payment  Payment  @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+  client   Client   @relation(fields: [clientId], references: [id])
+
+  @@index([status])
+  @@index([contractId])
+  @@index([clientId])
+}

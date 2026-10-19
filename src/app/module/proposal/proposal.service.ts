@@ -9,6 +9,7 @@ import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/checkAuth";
 import { AppError } from "../../utils/AppError";
 import { createNotifications } from "../../utils/notifications";
+import { serviceNamesMatch } from "../../utils/serviceMatch";
 import type { ICreateProposal } from "./proposal.interface";
 
 const createProposal = async (
@@ -39,6 +40,13 @@ const createProposal = async (
 		throw new AppError(
 			httpStatus.BAD_REQUEST,
 			"At least one proposal item is required",
+		);
+	}
+
+	if (items.length > 1) {
+		throw new AppError(
+			httpStatus.BAD_REQUEST,
+			"A proposal covers one service only — send one proposal per service",
 		);
 	}
 
@@ -90,6 +98,22 @@ const createProposal = async (
 		throw new AppError(
 			httpStatus.BAD_REQUEST,
 			"One or more services do not belong to you",
+		);
+	}
+
+	// A professional may only propose for requirements matching a service they
+	// actually offer.
+	const requirement = requirements[0];
+	const offeredService = ownedServices[0];
+
+	if (
+		!requirement ||
+		!offeredService ||
+		!serviceNamesMatch(requirement.serviceName, offeredService.name)
+	) {
+		throw new AppError(
+			httpStatus.BAD_REQUEST,
+			`"${requirement?.serviceName ?? "This service"}" does not match your service "${offeredService?.name ?? "—"}" — you can only propose for services you offer`,
 		);
 	}
 
