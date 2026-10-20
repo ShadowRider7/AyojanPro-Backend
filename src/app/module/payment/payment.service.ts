@@ -256,6 +256,16 @@ const bkashPaymentCallback = async (
 				throw new AppError(httpStatus.NOT_FOUND, "Payment Not Found!");
 			}
 
+			// The merchant invoice number of the row is `${contract.id}-${stage}`,
+			// so a callback that does not belong to this contract and stage
+			// must never settle this payment. The number is only enforced when
+			// the provider echoed one back — the bKash execute response stays
+			// the authoritative signal either way.
+			const expectedMerchantInvoiceNumber = `${payment.contractId}-${payment.stage}`;
+			const isInvoiceMismatch =
+				!!payment.merchantInvoiceNumber &&
+				payment.merchantInvoiceNumber !== expectedMerchantInvoiceNumber;
+
 			const bkashIdToken = await getBkashIdToken();
 
 			if (!bkashIdToken) {
@@ -283,7 +293,35 @@ const bkashPaymentCallback = async (
 
 			const executedPaymentResult = await executedPaymentResponse.json();
 
-			if (status === "success") {
+			// The bKash execute API is the only trustworthy source for the
+			// outcome of the payment — the `status` query parameter is
+			// supplied by the caller and can never confirm a payment on its
+			// own. bKash reports a successful execution with the status code
+			// "0000".
+			const isPaymentConfirmed =
+				executedPaymentResult?.statusCode === "0000" ||
+				executedPaymentResult?.status === "success";
+
+			// Anything that is not a confirmed execution is a failure — the
+			// caller may only tell a cancel apart from a failure. A callback
+			// whose invoice number does not belong to this payment can never
+			// settle it, whatever the provider answered.
+			const callbackStatus: string =
+				isInvoiceMismatch || !isPaymentConfirmed
+					? status === "cancel" && !isInvoiceMismatch
+						? "cancel"
+						: "failure"
+					: "success";
+
+			// A payment that is already settled must never be downgraded by a
+			// repeated callback — the bKash execute API only works once, so
+			// the second call of a genuine payment would report a failure.
+			const isPaymentSettled =
+				payment.status === PaymentStatus.ESCROWED ||
+				payment.status === PaymentStatus.COMPLETED ||
+				payment.status === PaymentStatus.PARTIALLY_COMPLETED;
+
+			if (callbackStatus === "success") {
 				const isInitialStage = payment.stage === PaymentStage.INITIAL;
 
 				const contract = await tx.contract.findUnique({
@@ -383,7 +421,13 @@ const bkashPaymentCallback = async (
 				};
 			}
 
-			if (status === "failure") {
+			if (callbackStatus === "failure") {
+				if (isPaymentSettled) {
+					return {
+						redirectUrl: `${config.frontend_url}/dashboard/contracts/${payment.contractId}?payment=success`,
+					};
+				}
+
 				const isFinalStage = payment.stage === PaymentStage.FINAL;
 
 				const revertData: Record<string, any> = {
@@ -439,7 +483,13 @@ const bkashPaymentCallback = async (
 				};
 			}
 
-			if (status === "cancel") {
+			if (callbackStatus === "cancel") {
+				if (isPaymentSettled) {
+					return {
+						redirectUrl: `${config.frontend_url}/dashboard/contracts/${payment.contractId}?payment=success`,
+					};
+				}
+
 				const isFinalStage = payment.stage === PaymentStage.FINAL;
 
 				const revertData: Record<string, any> = {

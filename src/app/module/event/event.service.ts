@@ -640,6 +640,19 @@ const updateEventService = async (
 		);
 	}
 
+	// The requirement has to belong to the event of the caller — otherwise
+	// a client could re-parent the requirement of somebody else.
+	const existingRequirement = await prisma.eventServiceRequirement.findUnique({
+		where: {
+			id: serviceId,
+			eventId,
+		},
+	});
+
+	if (!existingRequirement) {
+		throw new AppError(httpStatus.NOT_FOUND, "Service Requirement Not Found");
+	}
+
 	const updatedEventServices = await prisma.eventServiceRequirement.update({
 		where: {
 			id: serviceId,
@@ -730,6 +743,22 @@ const deleteEvent = async (eventId: string, user: RequestUser) => {
 		throw new AppError(httpStatus.NOT_FOUND, "Event Not Found");
 	}
 
+	// An admin may delete any event, a client only their own.
+	if (existingUser.role === Role.CLIENT) {
+		const client = await prisma.client.findUnique({
+			where: { userId: user.userId },
+			select: { id: true },
+		});
+
+		if (!client) {
+			throw new AppError(httpStatus.NOT_FOUND, "Client Profile Not Found");
+		}
+
+		if (event.clientId !== client.id) {
+			throw new AppError(httpStatus.FORBIDDEN, "You do not own this event");
+		}
+	}
+
 	if (event.status === EventStatus.PUBLISHED) {
 		const activeContractsCount = await prisma.contract.count({
 			where: {
@@ -778,6 +807,19 @@ const deleteEventService = async (
 
 	if (!event || event.isDeleted) {
 		throw new AppError(httpStatus.NOT_FOUND, "Event is already deleted");
+	}
+
+	// The requirement has to belong to the event of the caller — otherwise
+	// a client could delete the requirement of somebody else.
+	const existingRequirement = await prisma.eventServiceRequirement.findUnique({
+		where: {
+			id: serviceId,
+			eventId,
+		},
+	});
+
+	if (!existingRequirement) {
+		throw new AppError(httpStatus.NOT_FOUND, "Service Requirement Not Found");
 	}
 
 	const deleteEventService = await prisma.eventServiceRequirement.update({

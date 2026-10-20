@@ -27,8 +27,28 @@ const DISPUTE_INCLUDE = {
 	contract: {
 		include: { client: true, professional: true },
 	},
-	raisedBy: true,
-	resolvedBy: true,
+	// The user fields are selected explicitly so the password hash is never
+	// part of a response.
+	raisedBy: {
+		select: {
+			id: true,
+			name: true,
+			email: true,
+			imageUrl: true,
+			role: true,
+			createdAt: true,
+		},
+	},
+	resolvedBy: {
+		select: {
+			id: true,
+			name: true,
+			email: true,
+			imageUrl: true,
+			role: true,
+			createdAt: true,
+		},
+	},
 } as const;
 
 const TERMINAL_STATUSES = new Set<DisputeStatus>([

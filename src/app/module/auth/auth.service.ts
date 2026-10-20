@@ -225,12 +225,17 @@ const loginUser = async (payload: ILoginUserPayload) => {
 		throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
 	}
 
-	if (user.status === UserStatus.SUSPENDED) {
-		throw new AppError(httpStatus.FORBIDDEN, "User is suspended");
-	}
-
 	if (user.isDeleted || user.status === UserStatus.DELETED) {
 		throw new AppError(httpStatus.FORBIDDEN, "User is deleted");
+	}
+
+	// Only an active account may sign in — a suspended or blocked account is
+	// refused as well.
+	if (user.status !== UserStatus.ACTIVE) {
+		throw new AppError(
+			httpStatus.FORBIDDEN,
+			`User is ${user.status.toLowerCase()}`,
+		);
 	}
 
 	if (user.password === null && user.googleId !== null) {
@@ -316,10 +321,18 @@ const refreshToken = async (token: string) => {
 		where: { id: data.userId },
 	});
 
-	if (!user || user.isDeleted || user.status !== UserStatus.ACTIVE) {
+	if (!user) {
 		throw new AppError(
 			httpStatus.UNAUTHORIZED,
 			"User is inactive or not found",
+		);
+	}
+
+	// Only an active account may refresh its tokens.
+	if (user.isDeleted || user.status !== UserStatus.ACTIVE) {
+		throw new AppError(
+			httpStatus.UNAUTHORIZED,
+			`User is ${user.status.toLowerCase()}`,
 		);
 	}
 

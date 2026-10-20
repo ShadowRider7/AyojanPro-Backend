@@ -199,6 +199,35 @@ const getProposals = async (requirementId: string, user: RequestUser) => {
 		);
 	}
 
+	// The bids of a requirement belong to the client who owns the event it
+	// belongs to, an admin may read every bid.
+	if (existingUser.role === Role.CLIENT) {
+		const client = await prisma.client.findUnique({
+			where: { userId: user.userId },
+			select: { id: true },
+		});
+
+		if (!client) {
+			throw new AppError(httpStatus.NOT_FOUND, "Client Profile Not Found");
+		}
+
+		const requirement = await prisma.eventServiceRequirement.findUnique({
+			where: { id: requirementId },
+			select: { event: { select: { clientId: true } } },
+		});
+
+		if (!requirement) {
+			throw new AppError(httpStatus.NOT_FOUND, "Service Requirement Not Found");
+		}
+
+		if (requirement.event.clientId !== client.id) {
+			throw new AppError(
+				httpStatus.FORBIDDEN,
+				"You do not own the event this requirement belongs to",
+			);
+		}
+	}
+
 	const proposals = await prisma.proposal.findMany({
 		where: {
 			items: {
@@ -251,7 +280,7 @@ const getMyProposals = async (user: RequestUser) => {
 	return myProposals;
 };
 
-const getProposalDetails = async (proposalId: string) => {
+const getProposalDetails = async (proposalId: string, user: RequestUser) => {
 	const proposal = await prisma.proposal.findUnique({
 		where: { id: proposalId },
 		include: {
@@ -271,7 +300,56 @@ const getProposalDetails = async (proposalId: string) => {
 		throw new AppError(httpStatus.NOT_FOUND, "Proposal Not Found");
 	}
 
-	return proposal;
+	// A proposal is readable by the client who owns its event, by the
+	// professional who submitted it and by an admin — nobody else.
+	if (user.role === Role.ADMIN) {
+		return proposal;
+	}
+
+	if (user.role === Role.PROFESSIONAL) {
+		const professional = await prisma.professional.findUnique({
+			where: { userId: user.userId },
+			select: { id: true },
+		});
+
+		if (!professional) {
+			throw new AppError(
+				httpStatus.NOT_FOUND,
+				"Professional Profile Not Found",
+			);
+		}
+
+		if (proposal.professionalId !== professional.id) {
+			throw new AppError(httpStatus.FORBIDDEN, "You do not own this proposal");
+		}
+
+		return proposal;
+	}
+
+	if (user.role === Role.CLIENT) {
+		const client = await prisma.client.findUnique({
+			where: { userId: user.userId },
+			select: { id: true },
+		});
+
+		if (!client) {
+			throw new AppError(httpStatus.NOT_FOUND, "Client Profile Not Found");
+		}
+
+		if (proposal.event.clientId !== client.id) {
+			throw new AppError(
+				httpStatus.FORBIDDEN,
+				"You do not own the event this proposal belongs to",
+			);
+		}
+
+		return proposal;
+	}
+
+	throw new AppError(
+		httpStatus.FORBIDDEN,
+		"You do not have access to this proposal",
+	);
 };
 
 const getItemWithContext = async (itemId: string) => {

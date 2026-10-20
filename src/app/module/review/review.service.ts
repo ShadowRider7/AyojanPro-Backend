@@ -114,15 +114,26 @@ const createReview = async (
 	return transactionResult;
 };
 
-const getProfessionalReviews = async (
-	professionalId: string,
-	query: IQuery,
-) => {
+const getProfessionalReviews = async (user: RequestUser, query: IQuery) => {
 	const page = Number(query.page) > 0 ? Number(query.page) : 1;
 	const limit = Number(query.limit) > 0 ? Number(query.limit) : 10;
 	const skip = (page - 1) * limit;
 
-	const where = { professionalId, reviewByClient: true as const };
+	// The reviews belong to a professional profile, not to a user account, so
+	// the caller's profile is resolved first.
+	const professional = await prisma.professional.findUnique({
+		where: { userId: user.userId },
+		select: { id: true },
+	});
+
+	if (!professional) {
+		throw new AppError(httpStatus.NOT_FOUND, "Professional Profile Not Found");
+	}
+
+	const where = {
+		professionalId: professional.id,
+		reviewByClient: true as const,
+	};
 
 	const [data, total] = await Promise.all([
 		prisma.review.findMany({
@@ -149,12 +160,23 @@ const getProfessionalReviews = async (
 	};
 };
 
-const getClientReviews = async (clientId: string, query: IQuery) => {
+const getClientReviews = async (user: RequestUser, query: IQuery) => {
 	const page = Number(query.page) > 0 ? Number(query.page) : 1;
 	const limit = Number(query.limit) > 0 ? Number(query.limit) : 10;
 	const skip = (page - 1) * limit;
 
-	const where = { clientId, reviewByClient: false as const };
+	// The reviews belong to a client profile, not to a user account, so the
+	// caller's profile is resolved first.
+	const client = await prisma.client.findUnique({
+		where: { userId: user.userId },
+		select: { id: true },
+	});
+
+	if (!client) {
+		throw new AppError(httpStatus.NOT_FOUND, "Client Profile Not Found");
+	}
+
+	const where = { clientId: client.id, reviewByClient: false as const };
 
 	const [data, total] = await Promise.all([
 		prisma.review.findMany({

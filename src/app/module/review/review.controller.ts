@@ -25,12 +25,9 @@ const createReview = catchAsync(async (req: Request, res: Response) => {
 
 const getProfessionalReviews = catchAsync(
 	async (req: Request, res: Response) => {
-		const professionalId = req.user?.userId;
+		const user = req.user!;
 
-		const result = await ReviewServices.getProfessionalReviews(
-			professionalId as string,
-			req.query,
-		);
+		const result = await ReviewServices.getProfessionalReviews(user, req.query);
 
 		sendResponse(res, {
 			statusCode: httpStatus.OK,
@@ -42,12 +39,9 @@ const getProfessionalReviews = catchAsync(
 );
 
 const getClientReviews = catchAsync(async (req: Request, res: Response) => {
-	const clientId = req.user?.userId;
+	const user = req.user!;
 
-	const result = await ReviewServices.getClientReviews(
-		clientId as string,
-		req.query,
-	);
+	const result = await ReviewServices.getClientReviews(user, req.query);
 
 	sendResponse(res, {
 		statusCode: httpStatus.OK,

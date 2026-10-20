@@ -95,6 +95,9 @@ const applyAsProfessional = async (
 			},
 		},
 
+		omit: {
+			password: true,
+		},
 		include: {
 			professional: true,
 		},
@@ -249,7 +252,11 @@ const approveProfessional = async (
 			reviewedAt: new Date(),
 		},
 		include: {
-			user: true,
+			user: {
+				omit: {
+					password: true,
+				},
+			},
 		},
 	});
 

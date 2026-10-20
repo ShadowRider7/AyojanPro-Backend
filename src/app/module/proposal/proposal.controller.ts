@@ -46,6 +46,7 @@ const getMyProposals = catchAsync(async (req, res) => {
 const getProposalDetails = catchAsync(async (req, res) => {
 	const proposal = await proposalService.getProposalDetails(
 		req.params.id as string,
+		req.user!,
 	);
 
 	sendResponse(res, {

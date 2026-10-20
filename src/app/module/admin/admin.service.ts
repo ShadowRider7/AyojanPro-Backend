@@ -47,7 +47,18 @@ const listEvents = async (query: IQuery) => {
 			isDeleted: false,
 			...(status ? { status: status as EventStatus } : {}),
 		},
-		include: { client: { include: { user: true } }, serviceRequirements: true },
+		include: {
+			client: {
+				include: {
+					user: {
+						omit: {
+							password: true,
+						},
+					},
+				},
+			},
+			serviceRequirements: true,
+		},
 		orderBy: { createdAt: "desc" },
 	});
 };
@@ -131,6 +142,9 @@ const updateUserStatus = async (
 	return prisma.user.update({
 		where: { id: targetUserId },
 		data: { status: payload.status },
+		omit: {
+			password: true,
+		},
 	});
 };
 

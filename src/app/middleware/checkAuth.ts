@@ -69,10 +69,12 @@ export const auth = (...requiredRoles: Role[]) => {
 			);
 		}
 
-		if (user.status === UserStatus.SUSPENDED) {
+		// Only an active account may use the API — a suspended, blocked or
+		// deleted account is refused.
+		if (user.status !== UserStatus.ACTIVE) {
 			throw new AppError(
 				httpStatus.FORBIDDEN,
-				"Your account has been suspended. Please contact support.",
+				`Your account is ${user.status.toLowerCase()}. Please contact support.`,
 			);
 		}
 
