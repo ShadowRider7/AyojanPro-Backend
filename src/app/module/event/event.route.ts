@@ -27,6 +27,11 @@ router.get(
 	eventController.getAllPublishedEvents,
 );
 
+// The public events board. No auth — a professional can browse the work that
+// is available before their application is approved.
+router.get("/published-events", eventController.getPublishedEventsBoard);
+router.get("/published-events/:eventId", eventController.getPublishedEventById);
+
 router.get("/my-events", auth(Role.CLIENT), eventController.getMyEvents);
 
 router.patch(
@@ -38,6 +43,7 @@ router.patch(
 
 router.get(
 	"/:eventId/required-services",
+	auth(Role.CLIENT, Role.PROFESSIONAL, Role.ADMIN),
 	eventController.getEventRequiredServices,
 );
 router.patch(
@@ -52,7 +58,11 @@ router.delete(
 	auth(Role.CLIENT),
 	eventController.deleteEventService,
 );
-router.get("/:eventId", eventController.getEventById);
+router.get(
+	"/:eventId",
+	auth(Role.CLIENT, Role.PROFESSIONAL, Role.ADMIN),
+	eventController.getEventById,
+);
 
 router.patch(
 	"/publish-event/:eventId",

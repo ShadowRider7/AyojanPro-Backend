@@ -1,3 +1,5 @@
+import type { EventType } from "../../../generated/prisma/enums";
+
 export interface IEventServiceRequirementCreate {
 	serviceName: string;
 	description?: string;
@@ -19,7 +21,7 @@ export interface IEventUpdateServiceRequirement {
 export interface IEventCreate {
 	title: string;
 	description?: string;
-	eventType?: string;
+	eventType?: EventType;
 	city?: string;
 	country?: string;
 	address?: string;
@@ -29,7 +31,7 @@ export interface IEventCreate {
 export interface IUpdateEventPayload {
 	title?: string;
 	description?: string;
-	eventType?: string;
+	eventType?: EventType;
 	city?: string;
 	country?: string;
 	address?: string;

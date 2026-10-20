@@ -1,5 +1,6 @@
 import httpStatus from "http-status";
 import {
+	ApplicationStatus,
 	NotificationType,
 	ProposalStatus,
 	Role,
@@ -23,6 +24,15 @@ const createProposal = async (
 
 	if (!existingProfessional) {
 		throw new AppError(httpStatus.NOT_FOUND, "Professional Profile Not Found");
+	}
+
+	// Browsing the published events is open to every professional, but only an
+	// approved one may commit to a job by sending a proposal.
+	if (existingProfessional.status !== ApplicationStatus.APPROVED) {
+		throw new AppError(
+			httpStatus.FORBIDDEN,
+			"Your application must be approved before you can send proposals.",
+		);
 	}
 
 	const event = await prisma.event.findUnique({

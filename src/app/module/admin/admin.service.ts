@@ -58,7 +58,18 @@ const listContracts = async (query: IQuery) => {
 	return prisma.contract.findMany({
 		where: status ? { status: status as ContractStatus } : undefined,
 		include: {
-			client: true,
+			client: {
+				include: {
+					user: {
+						select: {
+							id: true,
+							name: true,
+							email: true,
+							imageUrl: true,
+						},
+					},
+				},
+			},
 			professional: true,
 			event: true,
 			eventServiceRequirement: true,

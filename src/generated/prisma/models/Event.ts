@@ -29,7 +29,7 @@ export type EventMinAggregateOutputType = {
   clientId: string | null
   title: string | null
   description: string | null
-  eventType: string | null
+  eventType: $Enums.EventType | null
   address: string | null
   city: string | null
   country: string | null
@@ -47,7 +47,7 @@ export type EventMaxAggregateOutputType = {
   clientId: string | null
   title: string | null
   description: string | null
-  eventType: string | null
+  eventType: $Enums.EventType | null
   address: string | null
   city: string | null
   country: string | null
@@ -212,7 +212,7 @@ export type EventGroupByOutputType = {
   clientId: string
   title: string
   description: string | null
-  eventType: string | null
+  eventType: $Enums.EventType
   address: string | null
   city: string | null
   country: string | null
@@ -251,7 +251,7 @@ export type EventWhereInput = {
   clientId?: Prisma.StringFilter<"Event"> | string
   title?: Prisma.StringFilter<"Event"> | string
   description?: Prisma.StringNullableFilter<"Event"> | string | null
-  eventType?: Prisma.StringNullableFilter<"Event"> | string | null
+  eventType?: Prisma.EnumEventTypeFilter<"Event"> | $Enums.EventType
   address?: Prisma.StringNullableFilter<"Event"> | string | null
   city?: Prisma.StringNullableFilter<"Event"> | string | null
   country?: Prisma.StringNullableFilter<"Event"> | string | null
@@ -273,7 +273,7 @@ export type EventOrderByWithRelationInput = {
   clientId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  eventType?: Prisma.SortOrderInput | Prisma.SortOrder
+  eventType?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -298,7 +298,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   clientId?: Prisma.StringFilter<"Event"> | string
   title?: Prisma.StringFilter<"Event"> | string
   description?: Prisma.StringNullableFilter<"Event"> | string | null
-  eventType?: Prisma.StringNullableFilter<"Event"> | string | null
+  eventType?: Prisma.EnumEventTypeFilter<"Event"> | $Enums.EventType
   address?: Prisma.StringNullableFilter<"Event"> | string | null
   city?: Prisma.StringNullableFilter<"Event"> | string | null
   country?: Prisma.StringNullableFilter<"Event"> | string | null
@@ -320,7 +320,7 @@ export type EventOrderByWithAggregationInput = {
   clientId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  eventType?: Prisma.SortOrderInput | Prisma.SortOrder
+  eventType?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -344,7 +344,7 @@ export type EventScalarWhereWithAggregatesInput = {
   clientId?: Prisma.StringWithAggregatesFilter<"Event"> | string
   title?: Prisma.StringWithAggregatesFilter<"Event"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
-  eventType?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
+  eventType?: Prisma.EnumEventTypeWithAggregatesFilter<"Event"> | $Enums.EventType
   address?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
   city?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null
@@ -361,7 +361,7 @@ export type EventCreateInput = {
   id?: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -383,7 +383,7 @@ export type EventUncheckedCreateInput = {
   clientId: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -403,7 +403,7 @@ export type EventUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -425,7 +425,7 @@ export type EventUncheckedUpdateInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -446,7 +446,7 @@ export type EventCreateManyInput = {
   clientId: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -463,7 +463,7 @@ export type EventUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -481,7 +481,7 @@ export type EventUncheckedUpdateManyInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -619,6 +619,10 @@ export type EventUpdateOneRequiredWithoutContractsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutContractsInput, Prisma.EventUpdateWithoutContractsInput>, Prisma.EventUncheckedUpdateWithoutContractsInput>
 }
 
+export type EnumEventTypeFieldUpdateOperationsInput = {
+  set?: $Enums.EventType
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -659,7 +663,7 @@ export type EventCreateWithoutClientInput = {
   id?: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -679,7 +683,7 @@ export type EventUncheckedCreateWithoutClientInput = {
   id?: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -729,7 +733,7 @@ export type EventScalarWhereInput = {
   clientId?: Prisma.StringFilter<"Event"> | string
   title?: Prisma.StringFilter<"Event"> | string
   description?: Prisma.StringNullableFilter<"Event"> | string | null
-  eventType?: Prisma.StringNullableFilter<"Event"> | string | null
+  eventType?: Prisma.EnumEventTypeFilter<"Event"> | $Enums.EventType
   address?: Prisma.StringNullableFilter<"Event"> | string | null
   city?: Prisma.StringNullableFilter<"Event"> | string | null
   country?: Prisma.StringNullableFilter<"Event"> | string | null
@@ -746,7 +750,7 @@ export type EventCreateWithoutContractsInput = {
   id?: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -767,7 +771,7 @@ export type EventUncheckedCreateWithoutContractsInput = {
   clientId: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -802,7 +806,7 @@ export type EventUpdateWithoutContractsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -823,7 +827,7 @@ export type EventUncheckedUpdateWithoutContractsInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -842,7 +846,7 @@ export type EventCreateWithoutServiceRequirementsInput = {
   id?: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -863,7 +867,7 @@ export type EventUncheckedCreateWithoutServiceRequirementsInput = {
   clientId: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -898,7 +902,7 @@ export type EventUpdateWithoutServiceRequirementsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -919,7 +923,7 @@ export type EventUncheckedUpdateWithoutServiceRequirementsInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -938,7 +942,7 @@ export type EventCreateWithoutProposalsInput = {
   id?: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -959,7 +963,7 @@ export type EventUncheckedCreateWithoutProposalsInput = {
   clientId: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -994,7 +998,7 @@ export type EventUpdateWithoutProposalsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1015,7 +1019,7 @@ export type EventUncheckedUpdateWithoutProposalsInput = {
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1034,7 +1038,7 @@ export type EventCreateManyClientInput = {
   id?: string
   title: string
   description?: string | null
-  eventType?: string | null
+  eventType?: $Enums.EventType
   address?: string | null
   city?: string | null
   country?: string | null
@@ -1051,7 +1055,7 @@ export type EventUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1071,7 +1075,7 @@ export type EventUncheckedUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1091,7 +1095,7 @@ export type EventUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  eventType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1260,7 +1264,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     clientId: string
     title: string
     description: string | null
-    eventType: string | null
+    eventType: $Enums.EventType
     address: string | null
     city: string | null
     country: string | null
@@ -1702,7 +1706,7 @@ export interface EventFieldRefs {
   readonly clientId: Prisma.FieldRef<"Event", 'String'>
   readonly title: Prisma.FieldRef<"Event", 'String'>
   readonly description: Prisma.FieldRef<"Event", 'String'>
-  readonly eventType: Prisma.FieldRef<"Event", 'String'>
+  readonly eventType: Prisma.FieldRef<"Event", 'EventType'>
   readonly address: Prisma.FieldRef<"Event", 'String'>
   readonly city: Prisma.FieldRef<"Event", 'String'>
   readonly country: Prisma.FieldRef<"Event", 'String'>

@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { EVENT_TYPE_VALUES } from "./event.constants";
 
 const eventServiceRequirementCreateSchema = z
 	.object({
@@ -28,7 +29,7 @@ const eventCreateSchema = z
 
 			description: z.string().optional(),
 
-			eventType: z.string().max(150).optional(),
+			eventType: z.enum(EVENT_TYPE_VALUES).optional(),
 
 			city: z.string().max(100).optional(),
 
@@ -51,7 +52,7 @@ const eventUpdateSchema = z
 		body: z.object({
 			title: z.string().min(1, "Title cannot be empty").max(255).optional(),
 			description: z.string().optional(),
-			eventType: z.string().max(150).optional(),
+			eventType: z.enum(EVENT_TYPE_VALUES).optional(),
 			city: z.string().max(100).optional(),
 			country: z.string().max(100).optional(),
 			address: z.string().optional(),

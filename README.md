@@ -310,6 +310,24 @@ REDIS_URL=          # optional
 
 ---
 
+## Demo data
+
+`scripts/seed-demo-data.ts` fills the database with a ready-made demo dataset: three client accounts, five professional accounts (applied, email verified and approved by the demo admin), their skills, services and experience, five published events with service requirements, and a proposal on every matching requirement.
+
+The script drives the real HTTP API — it boots the Express app on port `5098` — so every row passes the same validation and business rules as a real user. Only the two steps that would need a real inbox are assisted: the registration / application OTPs are read from Redis, and the demo admin is created directly with Prisma.
+
+```bash
+# Run from the repo root
+npx tsx scripts/seed-demo-data.ts
+
+# Write the credentials document somewhere else
+DEMO_DOC_PATH=../ayojanpro-frontend/docs/demo_accounts.md npx tsx scripts/seed-demo-data.ts
+```
+
+The accounts of a previous run are deleted first, so the script can be executed as often as needed. All seeded mailboxes are fake Gmail addresses and every account of a role shares one password — the full list is written to the generated markdown document.
+
+---
+
 ## Getting Started
 
 ```bash

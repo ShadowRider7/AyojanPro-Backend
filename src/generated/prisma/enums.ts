@@ -56,6 +56,23 @@ export const EventStatus = {
 export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
 
 
+export const EventType = {
+  WEDDING: 'WEDDING',
+  WEDDING_RECEPTION: 'WEDDING_RECEPTION',
+  BIRTHDAY: 'BIRTHDAY',
+  ANNIVERSARY: 'ANNIVERSARY',
+  CORPORATE: 'CORPORATE',
+  CONFERENCE: 'CONFERENCE',
+  CONCERT: 'CONCERT',
+  FESTIVAL: 'FESTIVAL',
+  EXHIBITION: 'EXHIBITION',
+  SPORTS: 'SPORTS',
+  OTHER: 'OTHER'
+} as const
+
+export type EventType = (typeof EventType)[keyof typeof EventType]
+
+
 export const ServiceRequirementStatus = {
   OPEN: 'OPEN',
   PARTIALLY_FILLED: 'PARTIALLY_FILLED',

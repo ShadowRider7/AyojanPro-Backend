@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import {
 	ContractStatus,
 	EventStatus,
+	type EventType,
 	Role,
 } from "../../../generated/prisma/enums";
 import type { EventWhereInput } from "../../../generated/prisma/models";
@@ -151,6 +152,12 @@ const getAllPublishedEvents = async (query: getEvent) => {
 		});
 	}
 
+	if (query.eventType) {
+		andConditions.push({
+			eventType: query.eventType as EventType,
+		});
+	}
+
 	if (query.searchTerm) {
 		andConditions.push({
 			OR: [
@@ -191,6 +198,17 @@ const getAllPublishedEvents = async (query: getEvent) => {
 					client: true,
 				},
 			},
+			client: {
+				include: {
+					user: {
+						select: {
+							id: true,
+							name: true,
+							imageUrl: true,
+						},
+					},
+				},
+			},
 		},
 	});
 
@@ -206,6 +224,170 @@ const getAllPublishedEvents = async (query: getEvent) => {
 		},
 	};
 };
+
+/**
+ * The public events board.
+ *
+ * Anyone can browse published events — a professional does not need an
+ * approved account to see what work is available. The client identity is
+ * included so a professional can see who posted the event, but only the
+ * display name and avatar are exposed, never the contact details.
+ */
+const getPublishedEventsBoard = async (query: getEvent) => {
+	const limit = query.limit ? Number(query.limit) : 12;
+	const page = query.page ? Number(query.page) : 1;
+	const skip = (page - 1) * limit;
+	const sortBy = query.sortBy ? query.sortBy : "createdAt";
+	const sortOrder = query.sortOrder ? query.sortOrder : "desc";
+
+	const andConditions: EventWhereInput[] = [
+		{
+			status: EventStatus.PUBLISHED,
+			isDeleted: false,
+		},
+	];
+
+	if (query.eventType) {
+		andConditions.push({
+			eventType: query.eventType as EventType,
+		});
+	}
+
+	if (query.city) {
+		andConditions.push({
+			city: { contains: query.city, mode: "insensitive" },
+		});
+	}
+
+	if (query.searchTerm) {
+		andConditions.push({
+			OR: [
+				{ title: { contains: query.searchTerm, mode: "insensitive" } },
+				{ description: { contains: query.searchTerm, mode: "insensitive" } },
+				{ city: { contains: query.searchTerm, mode: "insensitive" } },
+				{ country: { contains: query.searchTerm, mode: "insensitive" } },
+			],
+		});
+	}
+
+	const events = await prisma.event.findMany({
+		where: {
+			AND: andConditions,
+		},
+		take: limit,
+		skip,
+		orderBy: {
+			[sortBy]: sortOrder,
+		},
+		select: {
+			id: true,
+			title: true,
+			description: true,
+			eventType: true,
+			address: true,
+			city: true,
+			country: true,
+			startAt: true,
+			endAt: true,
+			status: true,
+			createdAt: true,
+			serviceRequirements: {
+				select: {
+					id: true,
+					serviceName: true,
+					description: true,
+					status: true,
+					startAt: true,
+					endAt: true,
+					budget: true,
+					currency: true,
+				},
+			},
+			client: {
+				select: {
+					id: true,
+					user: {
+						select: {
+							id: true,
+							name: true,
+							imageUrl: true,
+						},
+					},
+				},
+			},
+		},
+	});
+
+	const total = await prisma.event.count({ where: { AND: andConditions } });
+
+	return {
+		data: events,
+		meta: {
+			page,
+			limit,
+			total,
+			totalPages: Math.ceil(total / limit),
+		},
+	};
+};
+
+/**
+ * One published event for the public board. Drafts are never exposed, and
+ * the client is reduced to a display name and avatar.
+ */
+const getPublishedEventById = async (eventId: string) => {
+	const event = await prisma.event.findFirst({
+		where: {
+			id: eventId,
+			status: EventStatus.PUBLISHED,
+			isDeleted: false,
+		},
+		select: {
+			id: true,
+			title: true,
+			description: true,
+			eventType: true,
+			address: true,
+			city: true,
+			country: true,
+			startAt: true,
+			endAt: true,
+			status: true,
+			createdAt: true,
+			serviceRequirements: {
+				select: {
+					id: true,
+					serviceName: true,
+					description: true,
+					status: true,
+					startAt: true,
+					endAt: true,
+					budget: true,
+					currency: true,
+				},
+			},
+			client: {
+				select: {
+					id: true,
+					user: {
+						select: {
+							id: true,
+							name: true,
+							imageUrl: true,
+						},
+					},
+				},
+			},
+		},
+	});
+
+	if (!event) {
+		throw new AppError(httpStatus.NOT_FOUND, "Event Not Found");
+	}
+
+	return event;
+};
+
 const getMyEvents = async (user: RequestUser) => {
 	const existingClient = await prisma.client.findUnique({
 		where: { userId: user.userId },
@@ -231,7 +413,15 @@ const getMyEvents = async (user: RequestUser) => {
 	return myEvents;
 };
 
-const getEventById = async (eventId: string) => {
+/**
+ * One event, scoped to what the requester is allowed to see.
+ *
+ * A client may read their own event in any state. A professional may read a
+ * published event — that is the event they would bid on. An admin may read
+ * any event. The public board uses `getPublishedEventById` instead, which
+ * never exposes the client's contact details.
+ */
+const getEventById = async (eventId: string, user: RequestUser) => {
 	const event = await prisma.event.findUnique({
 		where: { id: eventId },
 		include: {
@@ -242,6 +432,13 @@ const getEventById = async (eventId: string) => {
 					city: true,
 					country: true,
 					phone: true,
+					user: {
+						select: {
+							id: true,
+							name: true,
+							imageUrl: true,
+						},
+					},
 				},
 			},
 			serviceRequirements: {
@@ -260,6 +457,34 @@ const getEventById = async (eventId: string) => {
 
 	if (!event || event.isDeleted) {
 		throw new AppError(httpStatus.NOT_FOUND, "event Not Found");
+	}
+
+	if (user.role === Role.ADMIN) {
+		return event;
+	}
+
+	if (user.role === Role.CLIENT) {
+		const client = await prisma.client.findUnique({
+			where: { userId: user.userId },
+			select: { id: true },
+		});
+
+		if (!client || event.clientId !== client.id) {
+			throw new AppError(
+				httpStatus.FORBIDDEN,
+				"You do not have access to this event",
+			);
+		}
+
+		return event;
+	}
+
+	// A professional only sees the events that are open for proposals.
+	if (event.status !== EventStatus.PUBLISHED) {
+		throw new AppError(
+			httpStatus.FORBIDDEN,
+			"You do not have access to this event",
+		);
 	}
 
 	return event;
@@ -568,7 +793,14 @@ const deleteEventService = async (
 	return deleteEventService;
 };
 
-const getEventRequiredServices = async (eventId: string) => {
+/**
+ * The service requirements of an event, scoped like `getEventById`.
+ *
+ * The proposal items and contracts of a requirement are the other
+ * professionals' bids, so they are only returned to the client who owns the
+ * event and to an admin. A professional sees the requirements themselves.
+ */
+const getEventRequiredServices = async (eventId: string, user: RequestUser) => {
 	const event = await prisma.event.findUnique({
 		where: { id: eventId },
 	});
@@ -584,14 +816,40 @@ const getEventRequiredServices = async (eventId: string) => {
 		throw new AppError(httpStatus.FORBIDDEN, "Event has been canceled");
 	}
 
+	const isAdmin = user.role === Role.ADMIN;
+
+	let ownsEvent = false;
+
+	if (user.role === Role.CLIENT) {
+		const client = await prisma.client.findUnique({
+			where: { userId: user.userId },
+			select: { id: true },
+		});
+
+		ownsEvent = client?.id === event.clientId;
+
+		if (!ownsEvent) {
+			throw new AppError(
+				httpStatus.FORBIDDEN,
+				"You do not have access to this event",
+			);
+		}
+	} else if (user.role === Role.PROFESSIONAL && !isAdmin) {
+		if (event.status !== EventStatus.PUBLISHED) {
+			throw new AppError(
+				httpStatus.FORBIDDEN,
+				"You do not have access to this event",
+			);
+		}
+	}
+
 	const eventRequiredServices = await prisma.eventServiceRequirement.findMany({
 		where: {
 			eventId,
 		},
 		include: {
-			contracts: true,
+			...(ownsEvent || isAdmin ? { contracts: true, proposalItems: true } : {}),
 			event: true,
-			proposalItems: true,
 		},
 	});
 
@@ -608,6 +866,8 @@ export const eventService = {
 	publishEvent,
 	deleteEvent,
 	getAllPublishedEvents,
+	getPublishedEventById,
+	getPublishedEventsBoard,
 	deleteEventService,
 	getEventRequiredServices,
 };

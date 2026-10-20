@@ -1,4 +1,7 @@
-import type { ServiceRequirementStatus } from "../../generated/prisma/enums";
+import type {
+	EventType,
+	ServiceRequirementStatus,
+} from "../../generated/prisma/enums";
 
 export interface IQuery {
 	searchTerm?: string;
@@ -12,4 +15,5 @@ export interface IQuery {
 }
 export interface getEvent extends IQuery {
 	status?: ServiceRequirementStatus;
+	eventType?: EventType;
 }

@@ -22,8 +22,27 @@ import {
 	shouldRefundClient,
 } from "./contract.policy";
 
+/**
+ * The relations every contract read carries.
+ *
+ * The client and the professional are the two parties of a contract, so a
+ * contract read has to expose who they are: `client.user.name` is what the
+ * screens show. The user fields are selected explicitly so the password hash
+ * is never part of a response.
+ */
 const CONTRACT_INCLUDE = {
-	client: true,
+	client: {
+		include: {
+			user: {
+				select: {
+					id: true,
+					name: true,
+					email: true,
+					imageUrl: true,
+				},
+			},
+		},
+	},
 	professional: true,
 	event: true,
 	eventServiceRequirement: true,
