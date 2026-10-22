@@ -164,11 +164,15 @@ const cancelContract = async (
 	// The client is refunded when the contract is cancelled by the professional
 	// (or by an admin): they did nothing wrong, so the money goes back to them.
 	// A client that cancels their own contract is not refunded.
-	const refundablePayment = shouldRefundClient(user.role)
-		? contract.payments.find((payment) => isRefundablePayment(payment))
-		: undefined;
+	//
+	// Every payment of the contract that carries money is refunded — the 30%
+	// advance and the 70% final payment are separate payments and both of them
+	// can sit in the platform escrow.
+	const refundablePayments = shouldRefundClient(user.role)
+		? contract.payments.filter((payment) => isRefundablePayment(payment))
+		: [];
 
-	const { refund } = await prisma.$transaction(async (tx) => {
+	const { refunds } = await prisma.$transaction(async (tx) => {
 		const cancelled = await tx.contract.update({
 			where: { id: contractId },
 			data: {
@@ -208,23 +212,28 @@ const cancelContract = async (
 			},
 		});
 
-		let createdRefund = null;
+		let createdRefunds: Awaited<ReturnType<typeof createContractRefund>> = [];
 
-		if (refundablePayment) {
-			createdRefund = await createContractRefund(tx, {
+		if (refundablePayments.length > 0) {
+			createdRefunds = await createContractRefund(tx, {
 				contractId,
 				clientId: contract.clientId,
-				payment: refundablePayment,
+				payments: refundablePayments,
 				reason:
 					reason?.trim() ||
 					`The contract was cancelled by ${CANCELLER_LABEL[user.role]}.`,
 			});
 		}
 
+		const refundTotal = createdRefunds.reduce(
+			(sum, refund) => sum + Number(refund.amount),
+			0,
+		);
+
 		const cancelMessage = `The contract for "${contract.event.title}" has been cancelled by ${CANCELLER_LABEL[user.role]}${reason ? `: ${reason}` : "."}`;
 
-		const refundMessage = createdRefund
-			? ` A refund of ${createdRefund.amount.toFixed(2)} ${createdRefund.currency} has been issued to your bKash account.`
+		const refundMessage = refundTotal
+			? ` A refund of ${refundTotal.toFixed(2)} ${contract.currency} has been issued to your bKash account.`
 			: "";
 
 		// The proposal behind the contract moves with it — the professional
@@ -251,13 +260,13 @@ const cancelContract = async (
 
 		await createNotifications(tx, notifications);
 
-		return { refund: createdRefund, cancelled };
+		return { refunds: createdRefunds, cancelled };
 	});
 
-	// The refund is handed over to the payment provider outside of the
+	// The refunds are handed over to the payment provider outside of the
 	// transaction — the cancellation itself is already committed, so a failing
 	// provider call must not fail the whole request.
-	if (refund) {
+	for (const refund of refunds) {
 		try {
 			await dispatchRefund(refund.id);
 		} catch (error) {

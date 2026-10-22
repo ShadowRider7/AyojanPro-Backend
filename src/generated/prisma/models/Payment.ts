@@ -396,13 +396,14 @@ export type PaymentOrderByWithRelationInput = {
 
 export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  contractId?: string
   bkashPaymentId?: string
   bkashTransactionId?: string
   merchantInvoiceNumber?: string
+  contractId_stage?: Prisma.PaymentContractIdStageCompoundUniqueInput
   AND?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
+  contractId?: Prisma.StringFilter<"Payment"> | string
   clientId?: Prisma.StringFilter<"Payment"> | string
   stage?: Prisma.EnumPaymentStageFilter<"Payment"> | $Enums.PaymentStage
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
@@ -424,7 +425,7 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
   client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   refund?: Prisma.XOR<Prisma.RefundNullableScalarRelationFilter, Prisma.RefundWhereInput> | null
-}, "id" | "bkashPaymentId" | "bkashTransactionId" | "merchantInvoiceNumber" | "contractId">
+}, "id" | "bkashPaymentId" | "bkashTransactionId" | "merchantInvoiceNumber" | "contractId_stage">
 
 export type PaymentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -678,6 +679,11 @@ export type PaymentListRelationFilter = {
 
 export type PaymentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type PaymentContractIdStageCompoundUniqueInput = {
+  contractId: string
+  stage: $Enums.PaymentStage
 }
 
 export type PaymentCountOrderByAggregateInput = {

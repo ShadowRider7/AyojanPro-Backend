@@ -1,4 +1,5 @@
 import httpStatus from "http-status";
+import { randomBytes } from "node:crypto";
 import {
 	ContractStatus,
 	NotificationType,
@@ -23,6 +24,33 @@ import type {
 
 const INITIAL_PAYMENT_PERCENTAGE = 0.3;
 const FINAL_PAYMENT_PERCENTAGE = 0.7;
+
+/**
+ * A payment that carries money for the client:
+ *   ESCROWED           → the platform holds the money until the contract is
+ *                        completed (the advance) or released (the final
+ *                        payment completes the contract)
+ *   COMPLETED          → the money was released to the professional
+ *   PARTIALLY_COMPLETED→ part of the money was already paid out
+ */
+const SETTLED_STATUSES = new Set<PaymentStatus>([
+	PaymentStatus.ESCROWED,
+	PaymentStatus.COMPLETED,
+	PaymentStatus.PARTIALLY_COMPLETED,
+]);
+
+/**
+ * The merchant invoice number of a payment attempt.
+ *
+ * bKash rejects a duplicate merchant invoice number (2029/2031), so every
+ * attempt carries its own number — a client that has to retry a payment must
+ * not be blocked by the invoice number of the failed attempt.
+ *
+ * The number starts with `${contractId}-${stage}` so a callback can still be
+ * matched against the payment it belongs to.
+ */
+const buildMerchantInvoiceNumber = (contractId: string, stage: PaymentStage) =>
+	`${contractId}-${stage}-${randomBytes(6).toString("hex")}`;
 
 const parseBkashDate = (value: unknown): Date | null => {
 	if (value === null || value === undefined) {
@@ -51,140 +79,164 @@ const parseBkashDate = (value: unknown): Date | null => {
 	return date;
 };
 
+/**
+ * STARTS A PAYMENT
+ * ──────────────────────────
+ * A contract is paid in two stages: the 30% advance (INITIAL) confirms the
+ * contract, the 70% final payment (FINAL) completes it. Both are separate
+ * payments with their own row — one payment per (contract, stage).
+ *
+ * The platform holds both of them in escrow: the money is only released to
+ * the professional when the contract is completed.
+ */
 const initiatePayment = async (
 	contractId: string,
 	stage: PaymentStage,
 	user: RequestUser,
 ): Promise<IInitiatePaymentResult> => {
-	const transactionResult = await prisma.$transaction(async (tx) => {
-		const contract = await tx.contract.findUnique({
-			where: { id: contractId },
-			include: { client: true },
-		});
+	const contract = await prisma.contract.findUnique({
+		where: { id: contractId },
+		include: { client: true, payments: true },
+	});
 
-		if (!contract) {
-			throw new AppError(httpStatus.NOT_FOUND, "Contract Not Found");
-		}
+	if (!contract) {
+		throw new AppError(httpStatus.NOT_FOUND, "Contract Not Found");
+	}
 
-		if (contract.client.userId !== user.userId) {
-			throw new AppError(
-				httpStatus.FORBIDDEN,
-				"You Are Not Authorized To Pay For This Contract",
-			);
-		}
+	if (contract.client.userId !== user.userId) {
+		throw new AppError(
+			httpStatus.FORBIDDEN,
+			"You Are Not Authorized To Pay For This Contract",
+		);
+	}
 
-		if (stage === PaymentStage.INITIAL) {
-			if (contract.status !== ContractStatus.PENDING) {
-				throw new AppError(
-					httpStatus.BAD_REQUEST,
-					"Initial Payment Can Only Be Made For A Pending Contract",
-				);
-			}
-		}
+	// The payment of THIS stage. The advance and the final payment are two
+	// different payments, so they never share a row.
+	const stagePayment = contract.payments.find(
+		(payment) => payment.stage === stage,
+	);
 
-		if (stage === PaymentStage.FINAL) {
-			if (contract.status !== ContractStatus.DELIVERED) {
-				throw new AppError(
-					httpStatus.BAD_REQUEST,
-					"Final Payment Can Only Be Made After The Contract Is Delivered",
-				);
-			}
-
-			const existingPayment = await tx.payment.findUnique({
-				where: { contractId },
-			});
-
-			// The advance is held by the platform (escrow) until the contract
-			// is completed — it still has to be settled before the final
-			// payment can be started.
-			const advanceSettled =
-				existingPayment?.status === PaymentStatus.ESCROWED ||
-				existingPayment?.status === PaymentStatus.PARTIALLY_COMPLETED;
-
-			if (!existingPayment || !advanceSettled) {
-				throw new AppError(
-					httpStatus.BAD_REQUEST,
-					"Initial Payment Must Be Settled Before The Final Payment",
-				);
-			}
-		}
-
-		const existingPayment = await tx.payment.findUnique({
-			where: { contractId },
-		});
-
-		// The payment row is reused for both stages, so only a payment that is
-		// already settled for THIS stage blocks a new attempt. The advance
-		// sits in the platform escrow (stage INITIAL) while the client pays
-		// the final 70% (stage FINAL).
-		const alreadySettled =
-			existingPayment?.status === PaymentStatus.COMPLETED ||
-			existingPayment?.status === PaymentStatus.ESCROWED;
-
-		if (alreadySettled && existingPayment?.stage === stage) {
+	if (stage === PaymentStage.INITIAL) {
+		if (contract.status !== ContractStatus.PENDING) {
 			throw new AppError(
 				httpStatus.BAD_REQUEST,
-				"The Payment Has Already Been Completed For This Contract",
+				"Initial Payment Can Only Be Made For A Pending Contract",
 			);
 		}
-
-		const fullAmount = Number(contract.agreedAmount);
-
-		const percentage =
-			stage === PaymentStage.INITIAL
-				? INITIAL_PAYMENT_PERCENTAGE
-				: FINAL_PAYMENT_PERCENTAGE;
-
-		const chargeAmount = (fullAmount * percentage).toFixed(2);
-
-		const bkashIdToken = await getBkashIdToken();
-
-		if (!bkashIdToken) {
+	} else {
+		if (contract.status !== ContractStatus.DELIVERED) {
 			throw new AppError(
-				httpStatus.BAD_GATEWAY,
-				"No Bkash Access Token Found!",
+				httpStatus.BAD_REQUEST,
+				"Final Payment Can Only Be Made After The Contract Is Delivered",
 			);
 		}
 
-		const merchantInvoiceNumber = `${contract.id}-${stage}`;
-
-		const bkashCreatePaymentResponse = await fetch(
-			`${config.bkash_base_url}/tokenized/checkout/create`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-					Authorization: bkashIdToken,
-					"X-App-Key": config.bkash_app_key,
-				},
-				body: JSON.stringify({
-					mode: "0011",
-					payerReference: user.email,
-					callbackURL: `${config.bkash_callback_url}/payment/bkash/callback`,
-					amount: chargeAmount,
-					currency: "BDT",
-					intent: "sale",
-					merchantInvoiceNumber,
-				}),
-			},
+		// The advance is held by the platform (escrow) until the contract is
+		// completed — it has to be captured before the final payment starts.
+		const advance = contract.payments.find(
+			(payment) => payment.stage === PaymentStage.INITIAL,
 		);
 
-		const bkashCreatePaymentResult = await bkashCreatePaymentResponse.json();
+		const advanceSettled = !!advance && SETTLED_STATUSES.has(advance.status);
+
+		if (!advanceSettled) {
+			throw new AppError(
+				httpStatus.BAD_REQUEST,
+				"Initial Payment Must Be Settled Before The Final Payment",
+			);
+		}
+	}
+
+	// A stage that already carries money cannot be paid a second time.
+	if (stagePayment && SETTLED_STATUSES.has(stagePayment.status)) {
+		throw new AppError(
+			httpStatus.BAD_REQUEST,
+			stage === PaymentStage.INITIAL
+				? "The Initial Payment Has Already Been Completed For This Contract"
+				: "The Final Payment Has Already Been Completed For This Contract",
+		);
+	}
+
+	const fullAmount = Number(contract.agreedAmount);
+
+	const percentage =
+		stage === PaymentStage.INITIAL
+			? INITIAL_PAYMENT_PERCENTAGE
+			: FINAL_PAYMENT_PERCENTAGE;
+
+	const chargeAmount = (fullAmount * percentage).toFixed(2);
+
+	const bkashIdToken = await getBkashIdToken();
+
+	if (!bkashIdToken) {
+		throw new AppError(httpStatus.BAD_GATEWAY, "No Bkash Access Token Found!");
+	}
+
+	const merchantInvoiceNumber = buildMerchantInvoiceNumber(contractId, stage);
+
+	const bkashCreatePaymentResponse = await fetch(
+		`${config.bkash_base_url}/tokenized/checkout/create`,
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+				Authorization: bkashIdToken,
+				"X-App-Key": config.bkash_app_key,
+			},
+			body: JSON.stringify({
+				mode: "0011",
+				payerReference: user.email,
+				callbackURL: `${config.bkash_callback_url}/payment/bkash/callback`,
+				amount: chargeAmount,
+				currency: "BDT",
+				intent: "sale",
+				merchantInvoiceNumber,
+			}),
+		},
+	);
+
+	const bkashCreatePaymentResult = await bkashCreatePaymentResponse
+		.json()
+		.catch(() => ({}));
+
+	// bKash answers with an error envelope (statusCode/statusMessage) instead
+	// of a checkout URL when it refuses the request — a duplicate merchant
+	// invoice number for example. Without a checkout session there is nothing
+	// to pay, so the payment must not be marked as pending.
+	const isCheckoutSessionCreated =
+		bkashCreatePaymentResponse.ok &&
+		!!bkashCreatePaymentResult?.bkashURL &&
+		!!bkashCreatePaymentResult?.paymentID &&
+		(!bkashCreatePaymentResult?.statusCode ||
+			bkashCreatePaymentResult.statusCode === "0000");
+
+	if (!isCheckoutSessionCreated) {
+		throw new AppError(
+			httpStatus.BAD_GATEWAY,
+			bkashCreatePaymentResult?.statusMessage ??
+				bkashCreatePaymentResult?.errorMessage ??
+				"The bKash payment session could not be created. Please try again.",
+		);
+	}
+
+	// The session exists — the payment of this stage is now waiting for the
+	// client. A failed attempt is simply restarted: the row of this stage is
+	// reused and points at the new checkout session.
+	await prisma.$transaction(async (tx) => {
+		const existingPayment = await tx.payment.findFirst({
+			where: { contractId, stage },
+		});
 
 		if (existingPayment) {
-			const updatedAmount =
-				stage === PaymentStage.FINAL ? fullAmount.toFixed(2) : chargeAmount;
-
 			await tx.payment.update({
 				where: { id: existingPayment.id },
 				data: {
-					stage,
 					status: PaymentStatus.PENDING,
 					method: PaymentMethod.BKASH,
-					amount: updatedAmount,
+					amount: chargeAmount,
 					currency: contract.currency,
-					merchantInvoiceNumber: bkashCreatePaymentResult.merchantInvoiceNumber,
+					merchantInvoiceNumber,
 					bkashPaymentId: bkashCreatePaymentResult.paymentID,
 					payerReference: user.email,
 					failureReason: null,
@@ -201,20 +253,18 @@ const initiatePayment = async (
 					method: PaymentMethod.BKASH,
 					amount: chargeAmount,
 					currency: contract.currency,
-					merchantInvoiceNumber: bkashCreatePaymentResult.merchantInvoiceNumber,
+					merchantInvoiceNumber,
 					bkashPaymentId: bkashCreatePaymentResult.paymentID,
 					payerReference: user.email,
 					metadata: bkashCreatePaymentResult,
 				},
 			});
 		}
-
-		return {
-			paymentUrl: bkashCreatePaymentResult.bkashURL,
-		};
 	});
 
-	return transactionResult;
+	return {
+		paymentUrl: bkashCreatePaymentResult.bkashURL,
+	};
 };
 
 const initiateInitialPayment = async (
@@ -231,40 +281,66 @@ const initiateFinalPayment = async (
 	return initiatePayment(contractId, PaymentStage.FINAL, user);
 };
 
+/**
+ * THE bKASH CALLBACK
+ * ──────────────────────────
+ * The callback is the only place where a payment is verified — the status
+ * query parameter comes from the browser and can never confirm a payment on
+ * its own. The bKash execute API is the authoritative source.
+ *
+ * The callback only ever touches the payment row of its own stage: a failed
+ * final payment leaves the escrowed advance untouched, so the client can
+ * simply retry the payment.
+ */
 const bkashPaymentCallback = async (
 	query: IQuery,
 ): Promise<IBkashCallbackResult> => {
+	const paymentId = query.paymentID;
+
+	if (!paymentId) {
+		throw new AppError(httpStatus.BAD_REQUEST, "Payment Id Missing");
+	}
+
+	const status = query.status;
+
+	if (!status) {
+		throw new AppError(httpStatus.BAD_REQUEST, "Payment Status is Missing");
+	}
+
+	const knownPayment = await prisma.payment.findUnique({
+		where: { bkashPaymentId: paymentId },
+	});
+
+	if (!knownPayment) {
+		// The callback belongs to a checkout session that is not the current
+		// one — an attempt the client already retried, for example. There is
+		// nothing to settle, so the client is sent back to the contracts.
+		return {
+			redirectUrl: `${config.frontend_url}/dashboard/contracts?payment=error`,
+		};
+	}
+
 	const transactionResult = await prisma.$transaction(
 		async (tx) => {
-			const paymentId = query.paymentID;
-
-			if (!paymentId) {
-				throw new AppError(httpStatus.BAD_REQUEST, "Payment Id Missing");
-			}
-
-			const status = query.status;
-
-			if (!status) {
-				throw new AppError(httpStatus.BAD_REQUEST, "Payment Status is Missing");
-			}
-
 			const payment = await tx.payment.findUnique({
 				where: { bkashPaymentId: paymentId },
 			});
 
 			if (!payment) {
-				throw new AppError(httpStatus.NOT_FOUND, "Payment Not Found!");
+				return {
+					redirectUrl: `${config.frontend_url}/dashboard/contracts?payment=error`,
+				};
 			}
 
-			// The merchant invoice number of the row is `${contract.id}-${stage}`,
-			// so a callback that does not belong to this contract and stage
-			// must never settle this payment. The number is only enforced when
-			// the provider echoed one back — the bKash execute response stays
-			// the authoritative signal either way.
-			const expectedMerchantInvoiceNumber = `${payment.contractId}-${payment.stage}`;
+			// The merchant invoice number of a row starts with
+			// `${contractId}-${stage}`, so a callback that does not belong to
+			// this contract and stage must never settle this payment. The
+			// number is only enforced when the provider echoed one back — the
+			// bKash execute response stays the authoritative signal either way.
+			const expectedInvoicePrefix = `${payment.contractId}-${payment.stage}-`;
 			const isInvoiceMismatch =
 				!!payment.merchantInvoiceNumber &&
-				payment.merchantInvoiceNumber !== expectedMerchantInvoiceNumber;
+				!payment.merchantInvoiceNumber.startsWith(expectedInvoicePrefix);
 
 			const bkashIdToken = await getBkashIdToken();
 
@@ -291,7 +367,9 @@ const bkashPaymentCallback = async (
 				},
 			);
 
-			const executedPaymentResult = await executedPaymentResponse.json();
+			const executedPaymentResult = await executedPaymentResponse
+				.json()
+				.catch(() => ({}));
 
 			// The bKash execute API is the only trustworthy source for the
 			// outcome of the payment — the `status` query parameter is
@@ -316,10 +394,7 @@ const bkashPaymentCallback = async (
 			// A payment that is already settled must never be downgraded by a
 			// repeated callback — the bKash execute API only works once, so
 			// the second call of a genuine payment would report a failure.
-			const isPaymentSettled =
-				payment.status === PaymentStatus.ESCROWED ||
-				payment.status === PaymentStatus.COMPLETED ||
-				payment.status === PaymentStatus.PARTIALLY_COMPLETED;
+			const isPaymentSettled = SETTLED_STATUSES.has(payment.status);
 
 			if (callbackStatus === "success") {
 				const isInitialStage = payment.stage === PaymentStage.INITIAL;
@@ -333,10 +408,6 @@ const bkashPaymentCallback = async (
 					throw new AppError(httpStatus.NOT_FOUND, "Contract Not Found!");
 				}
 
-				const updatedAmount = isInitialStage
-					? payment.amount
-					: Number(contract.agreedAmount ?? payment.amount).toFixed(2);
-
 				await tx.payment.update({
 					where: { id: payment.id },
 					data: {
@@ -345,7 +416,6 @@ const bkashPaymentCallback = async (
 						// completed — the final payment completes the contract
 						// right away, the advance waits for that moment.
 						status: PaymentStatus.ESCROWED,
-						amount: updatedAmount,
 						bkashTransactionId: executedPaymentResult?.trxID ?? null,
 						transactionTime: parseBkashDate(
 							executedPaymentResult?.paymentExecuteTime,
@@ -372,7 +442,8 @@ const bkashPaymentCallback = async (
 
 				if (!isInitialStage) {
 					// The contract is completed, so the escrow is released to
-					// the professional.
+					// the professional — the advance the platform held and
+					// the final payment are both released.
 					await releaseEscrowedPayments(tx, payment.contractId);
 				}
 
@@ -388,8 +459,8 @@ const bkashPaymentCallback = async (
 							: "Final Payment Received",
 						type: NotificationType.PAYMENT,
 						message: isInitialStage
-							? `An initial payment of ${updatedAmount} ${payment.currency} has been received for contract ${contractName}. The platform holds it until the contract is completed, then it is released to you. Your contract is now confirmed.`
-							: `The final payment of ${updatedAmount} ${payment.currency} has been received for contract ${contractName}. The escrowed amount is released to you.`,
+							? `An initial payment of ${payment.amount.toFixed(2)} ${payment.currency} has been received for contract ${contractName}. The platform holds it until the contract is completed, then it is released to you. Your contract is now confirmed.`
+							: `The final payment of ${payment.amount.toFixed(2)} ${payment.currency} has been received for contract ${contractName}. The escrowed amount is released to you.`,
 					},
 					...(isInitialStage
 						? [
@@ -397,7 +468,7 @@ const bkashPaymentCallback = async (
 									userId: contract.client.userId,
 									title: "Payment Held by the Platform",
 									type: NotificationType.PAYMENT,
-									message: `Your initial payment of ${updatedAmount} ${payment.currency} for contract ${contractName} is held by the platform. It is released to the professional once the contract is completed, and returned to you if the contract is cancelled.`,
+									message: `Your initial payment of ${payment.amount.toFixed(2)} ${payment.currency} for contract ${contractName} is held by the platform. It is released to the professional once the contract is completed, and returned to you if the contract is cancelled.`,
 								},
 							]
 						: [
@@ -421,7 +492,7 @@ const bkashPaymentCallback = async (
 				};
 			}
 
-			if (callbackStatus === "failure") {
+			if (callbackStatus === "failure" || callbackStatus === "cancel") {
 				if (isPaymentSettled) {
 					return {
 						redirectUrl: `${config.frontend_url}/dashboard/contracts/${payment.contractId}?payment=success`,
@@ -430,116 +501,57 @@ const bkashPaymentCallback = async (
 
 				const isFinalStage = payment.stage === PaymentStage.FINAL;
 
-				const revertData: Record<string, any> = {
-					failureReason:
-						executedPaymentResult?.statusMessage ?? "Payment Failed",
-					metadata: executedPaymentResult ?? {
-						status: "failure",
-					},
-				};
-
-				if (isFinalStage) {
-					const contract = await tx.contract.findUnique({
-						where: { id: payment.contractId },
-					});
-
-					const initialAmount = (
-						Number(contract?.agreedAmount ?? payment.amount) *
-						INITIAL_PAYMENT_PERCENTAGE
-					).toFixed(2);
-
-					revertData.status = PaymentStatus.ESCROWED;
-					revertData.stage = PaymentStage.INITIAL;
-					revertData.amount = initialAmount;
-				} else {
-					revertData.status = PaymentStatus.FAILED;
-				}
-
+				// Only the payment of this stage is touched: a failed final
+				// payment never touches the advance the platform holds, so the
+				// client can simply retry the payment.
 				await tx.payment.update({
 					where: { id: payment.id },
-					data: revertData,
+					data: {
+						status:
+							callbackStatus === "cancel"
+								? PaymentStatus.CANCELLED
+								: PaymentStatus.FAILED,
+						failureReason:
+							callbackStatus === "cancel"
+								? "The client cancelled the payment"
+								: (executedPaymentResult?.statusMessage ?? "Payment Failed"),
+						metadata: executedPaymentResult ?? {
+							status: callbackStatus,
+						},
+					},
 				});
 
-				const failedContract = await tx.contract.findUnique({
+				const affectedContract = await tx.contract.findUnique({
 					where: { id: payment.contractId },
 					include: { client: true, event: true },
 				});
 
 				await createNotifications(tx, [
 					{
-						userId: failedContract?.client.userId ?? payment.clientId,
-						title: `${isFinalStage ? "Final" : "Initial"} Payment Failed`,
+						userId: affectedContract?.client.userId ?? payment.clientId,
+						title: `${
+							isFinalStage ? "Final" : "Initial"
+						} Payment ${callbackStatus === "cancel" ? "Cancelled" : "Failed"}`,
 						type: NotificationType.PAYMENT,
-						message: `Your ${isFinalStage ? "final" : "initial"} payment for contract ${
-							failedContract?.event?.title
-								? `"${failedContract.event.title}"`
-								: `#${payment.contractId.slice(0, 8)}`
-						} has failed. Please try again.`,
+						message:
+							callbackStatus === "cancel"
+								? `Your ${isFinalStage ? "final" : "initial"} payment for contract ${
+										affectedContract?.event?.title
+											? `"${affectedContract.event.title}"`
+											: `#${payment.contractId.slice(0, 8)}`
+									} was cancelled. You can try again whenever you are ready.`
+								: `Your ${isFinalStage ? "final" : "initial"} payment for contract ${
+										affectedContract?.event?.title
+											? `"${affectedContract.event.title}"`
+											: `#${payment.contractId.slice(0, 8)}`
+									} has failed. Please try again.`,
 					},
 				]);
 
 				return {
-					redirectUrl: `${config.frontend_url}/dashboard/contracts/${payment.contractId}?payment=failure`,
-				};
-			}
-
-			if (callbackStatus === "cancel") {
-				if (isPaymentSettled) {
-					return {
-						redirectUrl: `${config.frontend_url}/dashboard/contracts/${payment.contractId}?payment=success`,
-					};
-				}
-
-				const isFinalStage = payment.stage === PaymentStage.FINAL;
-
-				const revertData: Record<string, any> = {
-					metadata: executedPaymentResult ?? {
-						status: "cancel",
-					},
-				};
-
-				if (isFinalStage) {
-					const contract = await tx.contract.findUnique({
-						where: { id: payment.contractId },
-					});
-
-					const initialAmount = (
-						Number(contract?.agreedAmount ?? payment.amount) *
-						INITIAL_PAYMENT_PERCENTAGE
-					).toFixed(2);
-
-					revertData.status = PaymentStatus.ESCROWED;
-					revertData.stage = PaymentStage.INITIAL;
-					revertData.amount = initialAmount;
-				} else {
-					revertData.status = PaymentStatus.CANCELLED;
-				}
-
-				await tx.payment.update({
-					where: { id: payment.id },
-					data: revertData,
-				});
-
-				const cancelledContract = await tx.contract.findUnique({
-					where: { id: payment.contractId },
-					include: { client: true, event: true },
-				});
-
-				await createNotifications(tx, [
-					{
-						userId: cancelledContract?.client.userId ?? payment.clientId,
-						title: "Payment Cancelled",
-						type: NotificationType.PAYMENT,
-						message: `Your ${isFinalStage ? "final" : "initial"} payment for contract ${
-							cancelledContract?.event?.title
-								? `"${cancelledContract.event.title}"`
-								: `#${payment.contractId.slice(0, 8)}`
-						} was cancelled.`,
-					},
-				]);
-
-				return {
-					redirectUrl: `${config.frontend_url}/dashboard/contracts/${payment.contractId}?payment=cancel`,
+					redirectUrl: `${config.frontend_url}/dashboard/contracts/${payment.contractId}?payment=${
+						callbackStatus === "cancel" ? "cancel" : "failure"
+					}`,
 				};
 			}
 

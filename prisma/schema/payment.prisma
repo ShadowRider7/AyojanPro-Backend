@@ -38,7 +38,10 @@ model Payment {
   client Client @relation(fields: [clientId],references: [id])
   refund Refund?
 
-  @@unique([contractId])
+  // One payment per stage: the 30% advance (INITIAL) and the 70% final
+  // payment (FINAL) are two different payments and both of them live in the
+  // platform escrow, so they must not share a row.
+  @@unique([contractId, stage])
   @@index([status])
   @@index([bkashPaymentId])
   @@index([bkashTransactionId])

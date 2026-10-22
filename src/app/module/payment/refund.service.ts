@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import type { Prisma } from "../../../generated/prisma/client";
+import { Prisma } from "../../../generated/prisma/client";
 import {
 	NotificationType,
 	type PaymentStage,
@@ -40,60 +40,76 @@ export const isRefundablePayment = (payment: { status: PaymentStatus }) =>
 /**
  * Records the refund for a cancelled contract. Runs inside the cancellation
  * transaction so the contract and the refund always move together.
+ *
+ * A contract can hold more than one payment — the 30% advance and the 70%
+ * final payment are separate payments and both of them can sit in the
+ * escrow. Every one of them is refunded, so the client gets back everything
+ * they paid.
  */
 export const createContractRefund = async (
 	tx: TxClient,
 	{
 		contractId,
 		clientId,
-		payment,
+		payments,
 		reason,
 	}: {
 		contractId: string;
 		clientId: string;
-		payment: {
+		payments: {
 			id: string;
 			amount: Prisma.Decimal;
 			currency: string;
 			stage: PaymentStage;
 			status: PaymentStatus;
-		};
+		}[];
 		reason: string;
 	},
 ) => {
-	const refund = await tx.refund.create({
-		data: {
-			contractId,
-			paymentId: payment.id,
-			clientId,
-			amount: payment.amount,
-			currency: payment.currency,
-			reason,
-			status: RefundStatus.PENDING,
-			originalStatus: payment.status,
-			note: "The client is owed this money — it is returned to their bKash account.",
-		},
-	});
+	const refunds = [];
 
-	await tx.payment.update({
-		where: { id: payment.id },
-		data: {
-			status: PaymentStatus.REFUNDED,
-			refundAmount: payment.amount,
-			refundReason: reason,
-			refundedAt: new Date(),
-		},
-	});
+	for (const payment of payments) {
+		const refund = await tx.refund.create({
+			data: {
+				contractId,
+				paymentId: payment.id,
+				clientId,
+				amount: payment.amount,
+				currency: payment.currency,
+				reason,
+				status: RefundStatus.PENDING,
+				originalStatus: payment.status,
+				note: "The client is owed this money — it is returned to their bKash account.",
+			},
+		});
+
+		await tx.payment.update({
+			where: { id: payment.id },
+			data: {
+				status: PaymentStatus.REFUNDED,
+				refundAmount: payment.amount,
+				refundReason: reason,
+				refundedAt: new Date(),
+			},
+		});
+
+		refunds.push(refund);
+	}
+
+	const totalAmount = payments.reduce(
+		(sum, payment) => sum + Number(payment.amount),
+		0,
+	);
 
 	await tx.contract.update({
 		where: { id: contractId },
 		data: {
 			refundIssuedAt: new Date(),
-			refundAmount: payment.amount,
+			refundAmount: new Prisma.Decimal(totalAmount.toFixed(2)),
 		},
 	});
 
-	return refund;
+	return refunds;
 };
 
 /**

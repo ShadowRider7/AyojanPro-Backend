@@ -268,6 +268,12 @@ Payment records support contract, client, payment stage, amount, currency, metho
 Payment stages: `INITIAL`, `FINAL`.
 Payment statuses: `PENDING`, `PROCESSING`, `PARTIALLY_COMPLETED`, `ESCROWED`, `COMPLETED`, `FAILED`, `CANCELLED`, `REFUNDED`.
 
+The advance and the final payment are two separate records, so a failed payment never destroys the other one:
+
+- A failed final payment is marked `FAILED` (or `CANCELLED`) and the escrowed advance stays `ESCROWED` — the client can simply retry the payment.
+- Every attempt of a stage carries its own bKash `merchantInvoiceNumber` (bKash rejects a duplicate one) and the checkout session is only stored when bKash really created one — a refused request leaves the record untouched.
+- The final payment is only started when the advance is `ESCROWED`; otherwise the client is told that the initial payment must be settled first.
+
 ### 15.1 Escrow — the platform holds the money
 
 The platform holds the money the client paid until the contract is completed:

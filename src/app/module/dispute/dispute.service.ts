@@ -315,13 +315,16 @@ const resolveDispute = async (
 		include: { payments: true },
 	});
 
-	const refundablePayment = refundClient
-		? contractWithPayments?.payments.find((payment) =>
+	// Every payment of the contract that carries money is refunded — the 30%
+	// advance and the 70% final payment are separate payments and both of them
+	// can sit in the platform escrow.
+	const refundablePayments = refundClient
+		? (contractWithPayments?.payments.filter((payment) =>
 				isRefundablePayment(payment),
-			)
-		: undefined;
+			) ?? [])
+		: [];
 
-	const { refund } = await prisma.$transaction(async (tx) => {
+	const { refunds } = await prisma.$transaction(async (tx) => {
 		const resolved = await tx.dispute.update({
 			where: { id: disputeId },
 			data: {
@@ -337,16 +340,21 @@ const resolveDispute = async (
 			data: { status: ContractStatus.RESOLVED },
 		});
 
-		let createdRefund = null;
+		let createdRefunds: Awaited<ReturnType<typeof createContractRefund>> = [];
 
-		if (refundablePayment) {
-			createdRefund = await createContractRefund(tx, {
+		if (refundablePayments.length > 0) {
+			createdRefunds = await createContractRefund(tx, {
 				contractId: dispute.contractId,
 				clientId: contractWithPayments!.clientId,
-				payment: refundablePayment,
+				payments: refundablePayments,
 				reason: `The dispute was resolved in the client's favour: ${resolution}`,
 			});
 		}
+
+		const refundTotal = createdRefunds.reduce(
+			(sum, refund) => sum + Number(refund.amount),
+			0,
+		);
 
 		const contract = await tx.contract.findUnique({
 			where: { id: dispute.contractId },
@@ -361,8 +369,8 @@ const resolveDispute = async (
 				message: `The dispute on the contract${
 					contract?.event?.title ? ` for "${contract.event.title}"` : ""
 				} has been resolved.${
-					createdRefund
-						? ` A refund of ${createdRefund.amount.toFixed(2)} ${createdRefund.currency} has been issued to your bKash account.`
+					refundTotal
+						? ` A refund of ${refundTotal.toFixed(2)} ${contract?.currency ?? "BDT"} has been issued to your bKash account.`
 						: ""
 				}`,
 			},
@@ -376,12 +384,12 @@ const resolveDispute = async (
 			},
 		]);
 
-		return { refund: createdRefund, dispute: resolved };
+		return { refunds: createdRefunds, dispute: resolved };
 	});
 
-	// The refund is handed over to the payment provider outside of the
+	// The refunds are handed over to the payment provider outside of the
 	// transaction.
-	if (refund) {
+	for (const refund of refunds) {
 		try {
 			await dispatchRefund(refund.id);
 		} catch (error) {

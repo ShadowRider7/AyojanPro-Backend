@@ -11,6 +11,7 @@
 		"vercel-build": "npm run build",
 		"start": "node dist/src/server.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
+		"test:e2e-payment": "tsx scripts/e2e-payment-retry.ts",
 		"format:check": "npx @biomejs/biome format ./src",
 		"format:fix": "npx @biomejs/biome format --write ./src",
 		"lint:check": "npx @biomejs/biome lint ./src",
