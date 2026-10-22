@@ -1,0 +1,10 @@
+# Never ship the local secrets to a public deployment. The runtime values come
+# from the Vercel project's environment variables, and `dotenv` does not
+# override variables that are already set, so the uploaded .env was only ever
+# a leak waiting to happen.
+.env
+.env.*
+!.env.example
+
+.git
+.vscode
