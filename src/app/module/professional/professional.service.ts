@@ -322,7 +322,13 @@ const getAllProfessionals = async (query: IQuery) => {
 	const sortBy = query.sortBy ? query.sortBy : "createdAt";
 	const sortOrder = query.sortOrder ? query.sortOrder : "desc";
 
-	const andConditions: ProfessionalWhereInput[] = [];
+	const andConditions: ProfessionalWhereInput[] = [
+		{
+			user: {
+				emailVerified: true,
+			},
+		},
+	];
 
 	//Searching
 	if (query.searchTerm) {
